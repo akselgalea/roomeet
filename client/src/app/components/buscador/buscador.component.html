@@ -1,0 +1,37 @@
+<div class="uc-container">
+    <div class="user-card" *ngFor="let user of users">
+        <div class="uc-username">
+            <p>{{user.username}}</p>
+        </div>
+        <img [src]="user.foto_perfil" alt="">
+        <div class="uc-row uc-name">
+            <span [ngClass]="user.sexo == '0' ? 'fas fa-mars' : 'fas fa-venus'"></span>
+            <p>{{user.nombre}}</p>
+        </div>
+        <div class="uc-row uc-links">
+            <a href=""><span class="fas fa-user-circle"></span> Ver perfil</a>
+            <a href=""><span class="fas fa-heart"></span> Favoritos</a>
+        </div>
+        <div class="uc-desc">
+            <p>{{user.descripcion}}</p>
+        </div>
+        <div class="uc-row">
+            <span class='fas fa-beer'></span>
+            <p>{{user.bebedor == 0 ? 'No bebe' : 'Consume alcohol'}}</p>
+        </div>
+        <div class="uc-row">
+            <span></span>
+            <p>{{user.fumador == 0 ? 'No fuma' : 'Fumador'}}</p>
+        </div>
+        <div class="uc-row">
+            <span></span>
+            <p>{{user.fiestas == 0 ? 'No hace fiestas' : 'Hace fiestas'}}</p>
+        </div>
+        <div class="uc-row">
+            <span></span>
+            <p>{{user.hijos == 0 ? 'No tiene hijos' : 'Tiene ' + user.hijos + ' hijo(s)'}}</p>
+        </div>
+    
+        <a href="" class="card-button">Editar usuario</a>
+    </div>    
+</div>
