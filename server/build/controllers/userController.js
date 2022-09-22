@@ -15,16 +15,18 @@ class UserController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             // const [rows, fields] = await promisePool.query('SELECT id, username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos from user');
-            const [rows, fields] = yield database_1.promisePool.query('SELECT * from user');
+            const [rows,] = yield database_1.promisePool.query('SELECT * from user');
             res.json(rows);
         });
     }
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const [rows, fields] = yield database_1.promisePool.query('SELECT username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos from user where id = ?', [id]);
+            const [rows,] = yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos, foto_perfil FROM user WHERE username = ?', [id]);
             if (rows.length > 0) {
-                return res.json(rows[0]);
+                const [fotos,] = yield database_1.promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [rows[0].id]);
+                const result = Object.assign(Object.assign({}, rows[0]), { 'fotos': fotos });
+                return res.json(result);
             }
             res.status(404).json({ text: "Este usuario no existe" });
         });

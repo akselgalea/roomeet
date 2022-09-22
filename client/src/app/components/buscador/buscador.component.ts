@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/models/user';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -15,7 +14,6 @@ export class BuscadorComponent implements OnInit {
     this.userService.getUsers().subscribe(
       res => {
         this.users = res;
-        console.log(res);
       },
       err => console.log(err)
     );

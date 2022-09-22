@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400&display=swap');
-
 .uc-container {
     display: flex;
     gap: 1rem;
     font-size: 1.1rem;
     font-family: 'Titillium Web', sans-serif;
+    flex-wrap: wrap;
 }
 
 .user-card {
@@ -65,5 +64,13 @@
             border-color: black;
             border-radius: 5px;
         }
+    }
+}
+
+@media (max-width: calc(600px + 250px)) {
+    .uc-container {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 }

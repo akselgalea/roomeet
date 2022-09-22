@@ -1,0 +1,166 @@
+.user-container {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    max-width: 1000px;
+    margin: auto;
+    padding: .5rem .5rem;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    font-family: 'Titillium Web', sans-serif;
+
+    h1, h2, h3, h4, h5 {margin: 0}
+    span {margin: 0;}
+    p {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+    
+    .uc-presentacion {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .u-name {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+
+            p {font-size: 2rem;}
+
+            .fav {
+                font-size: 1.3rem;
+                text-decoration: none;
+                color: white;
+                background-color: black;
+                padding: .4rem 1.2rem;
+                border: solid 2px white;
+            }
+        
+            .fav:hover {
+                border-color: black;
+                border-radius: 5px;
+            }
+        }
+    }
+
+    .u-fperfil {
+        width: 200px;
+        height: 200px;
+        border: solid 3px black;
+        border-radius: 50%;
+    }
+
+    .uc-username {
+        padding-bottom: .5rem;
+        margin-bottom: .5rem;
+        border-bottom: solid 1px black;
+    }
+
+    .desc-gustos {
+        .uc-desc {text-align: justify;}
+
+    }
+
+    .uc-row {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+}
+
+.desc-gustos {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    .uc-gustos {
+        span {margin-right: 2.5rem}
+    }
+}
+
+.fotos-container {
+    max-width: 460px;
+    .fotos {
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        gap: 3px;
+        
+        img {
+            max-width: 33%;
+            cursor: pointer;
+        }
+    }
+}
+
+.foto-zoom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    gap: 1rem;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(19, 19, 19, 0.842);
+    
+    .foto-courtain {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    img {
+        max-width: 80%;
+        max-height: 80%;
+        z-index: 2;
+    }
+
+    p {
+        width: 80%;
+        text-align: center;
+        color: white;
+        z-index: 2;
+    }
+
+    .cerrar {
+        position: fixed;
+        top: 1rem;
+        right: 1.5rem;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+}
+
+@media (max-width: 850px) {
+    p {font-size: 1rem !important;}
+    a {font-size: 1.1rem !important;}
+    span {font-size: 1rem !important;}
+    .u-name p {font-size: 1.4rem !important;}
+}
+
+@media (max-width: 768px) {
+    .desc-gustos {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 500px) {
+    .u-fperfil {
+        width: 180px !important;
+        height: 180px !important;
+    }
+}

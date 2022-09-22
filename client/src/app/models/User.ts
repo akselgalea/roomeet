@@ -1,6 +1,15 @@
-interface Foto {
+export interface Foto {
     id?: number,
-    link?: string
+    link?: string,
+    descripcion?: string
+}
+
+export interface Preferencias {
+    sexo: number,
+    bebedor: number,
+    fumador: number,
+    fiestas: number,
+    hijos: number
 }
 
 export interface User {
@@ -16,5 +25,6 @@ export interface User {
     fiestas?: number,
     hijos?: number,
     foto_perfil?: string,
+    preferencias?: Preferencias,
     fotos?: Array<Foto>
 }

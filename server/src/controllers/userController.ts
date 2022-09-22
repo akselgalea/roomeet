@@ -4,16 +4,18 @@ import { pool, promisePool } from '../database';
 class UserController {
     public async list (req: Request, res: Response): Promise<any> {
         // const [rows, fields] = await promisePool.query('SELECT id, username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos from user');
-        const [rows, fields] = await promisePool.query('SELECT * from user');
+        const [rows,] = await promisePool.query('SELECT * from user');
 
         res.json(rows);
     }
 
     public async getUser (req: Request, res: Response) : Promise<any> {
         const { id } = req.params;
-        const [rows, fields] = await promisePool.query('SELECT username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos from user where id = ?', [id]);
-        if(rows.length > 0) {
-            return res.json(rows[0]);
+        const [rows,] = await promisePool.query('SELECT id, username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos, foto_perfil FROM user WHERE username = ?', [id]);
+        if((rows as any).length > 0) {
+            const [fotos, ] = await promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [(rows as any)[0].id]);
+            const result = {...(rows as any)[0], ...{'fotos': fotos}};
+            return res.json(result);
         } 
     
         res.status(404).json({text: "Este usuario no existe"});

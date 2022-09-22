@@ -1,0 +1,55 @@
+<div class="user-container">
+    <div class="uc-presentacion" [ngSwitch]="user.sexo">
+        <img class="u-fperfil" [src]="user.foto_perfil" alt="">
+        <div class="u-name">
+            <p>
+                {{user.nombre}}
+                <span *ngSwitchCase="'0'" class="fas fa-mars"></span>
+                <span *ngSwitchCase="'1'" class="fas fa-venus"></span>
+                <span *ngSwitchCase="'2'" class="fas fa-genderless"></span>
+            </p>
+            <a href="" class="fav"><span class="fas fa-heart"></span> Favoritos</a>
+        </div>
+    </div>
+
+    <div class="desc-gustos">
+        <div class="uc-desc">
+            <h2>Descripcion</h2>
+            <p>{{user.descripcion}}</p>
+        </div>
+        <div class="uc-gustos">
+            <h2>Gustos</h2>
+            <div class="uc-row">
+                <span class="fas fa-beer"></span>
+                <p>{{user.bebedor == 0 ? 'No bebe' : 'Consume alcohol'}}</p>
+            </div>
+            <div class="uc-row">
+                <span class="fas fa-smoking"></span>
+                <p>{{user.fumador == 0 ? 'No fuma' : 'Fumador'}}</p>
+            </div>
+            <div class="uc-row">
+                <span class="fas fa-glass-cheers"></span>
+                <p>{{user.fiestas == 0 ? 'No hace fiestas' : 'Hace fiestas'}}</p>
+            </div>
+            <div class="uc-row">
+                <span class="fas fa-baby"></span>
+                <p>{{user.hijos == 0 ? 'No tiene hijos' : 'Tiene ' + user.hijos + ' hijo(s)'}}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="fotos-container">
+        <h2>Fotos</h2>
+        <p *ngIf="user.fotos && user.fotos.length == 0">No hay fotos disponibles.</p>
+        <div class="fotos">
+            <img *ngFor="let foto of user.fotos" src={{foto.link}} alt="" (click)="zoomIn(foto)">
+        </div>
+    </div>
+
+    <div class="foto-zoom" *ngIf="showImg == true">
+        <div class="foto-courtain" (click)="zoomOut()"></div>
+        <span (click)="zoomOut()" class="cerrar fas fa-times"></span>
+        <img src={{img.link}} alt="">
+        <p>{{img.descripcion}}</p>
+    </div>
+</div>

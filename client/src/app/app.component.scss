@@ -1,7 +1,11 @@
-.container {
-    margin-left: 250px;
+@media (min-width: 768px) {
+    .container {
+        margin-left: 250px;
+    }
 }
 
-.card-button {
-    
+@media (max-width: 767px) {
+    .container {
+        margin-bottom: 70px;
+    }
 }
