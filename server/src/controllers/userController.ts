@@ -28,7 +28,7 @@ class UserController {
 
     public async update(req: Request, res: Response): Promise<any> {
         const { id } = req.params;
-        await promisePool.query('UPDATE user SET ? WHERE id = ?', [req.body, id]); 
+        await promisePool.query('UPDATE user SET ? WHERE username = ?', [req.body, id]); 
         res.json({text: 'Updated user ' + id });
     }
 

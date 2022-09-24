@@ -1,6 +1,6 @@
 <div class="user-container">
     <div class="uc-presentacion" [ngSwitch]="user.sexo">
-        <img class="u-fperfil" [src]="user.foto_perfil" alt="">
+        <img class="u-fperfil" src="assets/images/users/{{user.foto_perfil}}" alt="">
         <div class="u-name">
             <p>
                 {{user.nombre}}
@@ -42,14 +42,14 @@
         <h2>Fotos</h2>
         <p *ngIf="user.fotos && user.fotos.length == 0">No hay fotos disponibles.</p>
         <div class="fotos">
-            <img *ngFor="let foto of user.fotos" src={{foto.link}} alt="" (click)="zoomIn(foto)">
+            <img *ngFor="let foto of user.fotos" src="assets/images/users/{{foto.link}}" alt="" (click)="zoomIn(foto)">
         </div>
     </div>
 
     <div class="foto-zoom" *ngIf="showImg == true">
         <div class="foto-courtain" (click)="zoomOut()"></div>
         <span (click)="zoomOut()" class="cerrar fas fa-times"></span>
-        <img src={{img.link}} alt="">
+        <img src="assets/images/users/{{img.link}}" alt="">
         <p>{{img.descripcion}}</p>
     </div>
 </div>

@@ -3,7 +3,7 @@
         <div class="uc-username">
             <p>{{user.username}}</p>
         </div>
-        <img [src]="user.foto_perfil" alt="">
+        <img src="assets/images/users/{{user.foto_perfil}}" alt="">
         <div class="uc-row uc-name">
             <span *ngSwitchCase="'0'" class="fas fa-mars"></span>
             <span *ngSwitchCase="'1'" class="fas fa-venus"></span>

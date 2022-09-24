@@ -164,3 +164,21 @@
         height: 180px !important;
     }
 }
+
+@media (max-width: 300px) {
+    .u-fperfil {
+        width: 120px !important;
+        height: 120px !important;
+    }
+
+    .u-name {
+        p {
+            font-size: 1.2rem !important;
+        }
+    }
+
+    .fav {
+        font-size: 1rem !important;
+        padding: .3rem .5rem !important;
+    }
+}

@@ -40,7 +40,7 @@ class UserController {
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            yield database_1.promisePool.query('UPDATE user SET ? WHERE id = ?', [req.body, id]);
+            yield database_1.promisePool.query('UPDATE user SET ? WHERE username = ?', [req.body, id]);
             res.json({ text: 'Updated user ' + id });
         });
     }
