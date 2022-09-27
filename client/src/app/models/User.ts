@@ -1,3 +1,9 @@
+export interface Hobbie {
+    id?: number,
+    hobbie?: string,
+    categoria?: string
+}
+
 export interface Foto {
     id?: number,
     link?: string,
@@ -26,5 +32,6 @@ export interface User {
     hijos?: number,
     foto_perfil?: string,
     preferencias?: Preferencias,
-    fotos?: Array<Foto>
+    fotos?: Array<Foto>,
+    hobbies?: Array<Hobbie> 
 }

@@ -14,7 +14,7 @@ class UserController {
         const [rows,] = await promisePool.query('SELECT id, username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos, foto_perfil FROM user WHERE username = ?', [id]);
         if((rows as any).length > 0) {
             const [fotos, ] = await promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [(rows as any)[0].id]);
-            const [hobbies, ] = await promisePool.query('SELECT hu.id, h.hobbie FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ?', [(rows as any)[0].id]);
+            const [hobbies, ] = await promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ?', [(rows as any)[0].id]);
 
             return res.status(200).json({...(rows as any)[0], ...{'fotos': fotos}, ...{'hobbies': hobbies}});
         } 
@@ -49,25 +49,25 @@ class UserController {
 
     //Hobbies
     public async createHobbie(req: Request, res: Response): Promise<any> {
-        await promisePool.query('INSERT INTO hobbies set = ?', [req.body]);
-        res.json({text: 'Creating hobbie ' + req.params.id });
+        await promisePool.query('INSERT INTO hobbies set ?', [req.body]);
+        res.json({text: 'Creating hobbie ' + req.body.hobbie });
     }
 
     public async addHobbie(req: Request, res: Response): Promise<any> {
-        await promisePool.query('INSERT INTO hobbies_user set = ?', [req.body]);
-        res.json({text: 'Adding hobbie to user ' + req.params.user_id });
+        await promisePool.query('INSERT INTO hobbies_user set ?', [req.body]);
+        res.json({text: 'Adding hobbie to user ' + req.body.user_id });
     }
 
     public async removeHobbie(req: Request, res: Response): Promise<any> {
         const { id } = req.params;
         await promisePool.query('DELETE FROM hobbies_user where id = ?', [id]);
-        res.json({text: 'Erasing user ' + req.params.id });
+        res.json({text: 'Removing hobbie ' + id + 'from hobbie'});
     }
 
     public async deleteHobbie(req: Request, res: Response): Promise<any> {
         const { id } = req.params;
         await promisePool.query('DELETE FROM hobbies where id = ?', [id]);
-        res.json({text: 'Erasing user ' + req.params.id });
+        res.json({text: 'Erasing hobbie ' + id});
     }
 
 
@@ -81,13 +81,13 @@ class UserController {
 
     public async addFavorito(req: Request, res: Response): Promise<any> {
         await promisePool.query('INSERT INTO favoritos_user set ?', [req.body]);
-        res.json({text: 'Erasing user ' + req.params.id });
+        res.json({text: 'Adding favorito to user ' + req.body.user_id});
     }
 
     public async deleteFavorito(req: Request, res: Response): Promise<any> {
         const { fav } = req.params;
         await promisePool.query('DELETE FROM favoritos_user where id = ?', [fav]);
-        res.json({text: 'Erasing favorito ' + req.params.fav});
+        res.json({text: 'Erasing favorito ' + fav});
     }
 }
 
