@@ -1,4 +1,11 @@
-<app-navigation></app-navigation>
-<div class="container">  
+<ng-container *ngIf="router.url != '/login' &&  router.url != '/registro'; else noContainer">
+  <app-navigation></app-navigation>
+  
+  <div class="container">  
+    <router-outlet></router-outlet>
+  </div>
+</ng-container>
+
+<ng-template #noContainer>
   <router-outlet></router-outlet>
-</div>
+</ng-template>

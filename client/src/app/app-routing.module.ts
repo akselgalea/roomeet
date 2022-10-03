@@ -5,9 +5,13 @@ import { ConfiguracionComponent } from './components/configuracion/configuracion
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { PerfilComponent } from './components/user/perfil/perfil.component';
 import { FavoritosComponent } from './components/favoritos/favoritos.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/buscador', pathMatch: 'full'},
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
+  {path: 'login', component: LoginComponent},
+  {path: 'registro', component: RegisterComponent},
   {path: 'buscador', component: BuscadorComponent},
   {path: 'user/:id', component: PerfilComponent},
   {path: 'favoritos', component: FavoritosComponent},

@@ -82,11 +82,11 @@ class UserController {
             res.json({ text: 'Erasing hobbie ' + id });
         });
     }
-    //Favoritos
+    //Favoritos -- DONE
     getFavoritos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const [rows,] = yield database_1.promisePool.query('SELECT * FROM favoritos_user where user_id = ?', [id]);
+            const [rows,] = yield database_1.promisePool.query('SELECT u.id, u.username, u.nombre, u.descripcion, u.sexo, u.profesion, u.bebedor, u.bebedor, u.fumador, u.fiestas, u.hijos, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [id]);
             return res.json(rows);
         });
     }
@@ -98,8 +98,8 @@ class UserController {
     }
     deleteFavorito(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { fav } = req.params;
-            yield database_1.promisePool.query('DELETE FROM favoritos_user where id = ?', [fav]);
+            const { id, fav } = req.params;
+            yield database_1.promisePool.query('DELETE FROM favoritos_user where user_id = ? && favorito = ?', [id, fav]);
             res.json({ text: 'Erasing favorito ' + fav });
         });
     }

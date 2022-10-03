@@ -71,10 +71,10 @@ class UserController {
     }
 
 
-    //Favoritos
+    //Favoritos -- DONE
     public async getFavoritos(req: Request, res: Response): Promise<any> {
         const { id } = req.params;
-        const [rows, ] = await promisePool.query('SELECT * FROM favoritos_user where user_id = ?', [id]);
+        const [rows, ] = await promisePool.query('SELECT u.id, u.username, u.nombre, u.descripcion, u.sexo, u.profesion, u.bebedor, u.bebedor, u.fumador, u.fiestas, u.hijos, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [id]);
         
         return res.json(rows);
     }
@@ -85,8 +85,8 @@ class UserController {
     }
 
     public async deleteFavorito(req: Request, res: Response): Promise<any> {
-        const { fav } = req.params;
-        await promisePool.query('DELETE FROM favoritos_user where id = ?', [fav]);
+        const { id, fav } = req.params;
+        await promisePool.query('DELETE FROM favoritos_user where user_id = ? && favorito = ?', [id, fav]);
         res.json({text: 'Erasing favorito ' + fav});
     }
 }

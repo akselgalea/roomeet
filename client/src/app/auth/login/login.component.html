@@ -1,0 +1,38 @@
+<div class="login-container">
+    <div class="presentation">
+        <h1>Bienvenido a Roomeet</h1>
+        <p>
+            Nullam condimentum eu ante non aliquam. Etiam elit arcu, accumsan eu felis sit amet, pharetra porta lorem. Mauris dolor felis, commodo ac mauris in, ornare mollis metus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus posuere risus quis massa ornare, non ultricies diam feugiat. Etiam congue eu nunc non vulputate. Nullam consequat sapien eget ligula sagittis malesuada. Fusce ut sem sit amet velit convallis vestibulum at vel metus. Maecenas id mollis lorem, at pulvinar quam. Quisque auctor lobortis arcu, eget luctus sem elementum non.
+        </p>
+    </div>
+
+    <form #login="ngForm" id="login" (ngSubmit)="onSubmit(login)" novalidate>
+        <h1>Iniciar sesion</h1>
+        <div class="form-group">
+            <label for="username">Nombre de usuario</label>
+            <input type="text" #username="ngModel" ngModel name="username" minlength="6" maxlength="20" required>
+            <!-- Validacion -->
+            <div  *ngIf="username.touched && username.invalid">
+                <p class="text-danger" *ngIf="username.errors?.['required']">Campo obligatorio</p>
+                <p class="text-danger" *ngIf="username.errors?.['minlength']">Este campo requiere min. 6 caracteres</p>
+            </div>
+            <div class="text-success" *ngIf="username.valid">Perfecto!</div>
+        </div>
+
+        <div class="form-group pass-input">
+            <label for="password">Contraseña</label>
+            <input type={{type}} #password="ngModel" ngModel name="password"  minlength="8" maxlength="20" required>
+            <i [ngClass]="type === 'password' ? 'far fa-eye' : 'fas fa-eye-slash'" (click)="setType()"></i>
+            <!-- Validacion -->
+            <div class="text-danger" *ngIf="password.touched && password.invalid">
+                <p *ngIf="password.errors?.['required']">Campo obligatorio</p>
+                <p class="text-danger" *ngIf="password.errors?.['minlength']">Este campo requiere min. 8 caracteres</p>
+            </div>
+            <div class="text-success" *ngIf="password.valid">Perfecto!</div>
+        </div>
+        <div class="guard-send">
+            <a [routerLink]="['/registro']">Crear cuenta</a>
+            <button [disabled]="login.invalid" type="submit">Entrar</button>
+        </div>
+    </form>
+</div> 

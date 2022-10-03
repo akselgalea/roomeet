@@ -15,6 +15,7 @@ export interface Preferencias {
     bebedor: number,
     fumador: number,
     fiestas: number,
+    mascota: number,
     hijos: number
 }
 
@@ -31,7 +32,10 @@ export interface User {
     fiestas?: number,
     hijos?: number,
     foto_perfil?: string,
+    estado?: number,
+    reputacion?: number,
+    role_id?: string,
     preferencias?: Preferencias,
     fotos?: Array<Foto>,
-    hobbies?: Array<Hobbie> 
+    hobbies?: Array<Hobbie>
 }

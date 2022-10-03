@@ -1,2 +1,67 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400&display=swap');
+
+body, html {
+    margin: 0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Titillium Web', sans-serif;
+}
+
+p {margin: 0}
+
+.pass-input {
+    position: relative;
+    i {
+        position: absolute;
+        right: 10px;
+        top: 1.8rem;
+    }
+}
+
+.form-group {
+    flex-direction: column;
+
+    input {
+        border-radius: 5px;
+        border: solid 1px;
+        padding: .4rem .5rem;
+    }
+}
+
+.guard-send {
+    justify-content: space-between;
+
+    a {
+        color: black;
+        text-decoration: none;
+        padding: 7px .5rem;
+        border-radius: 5px;
+    }
+
+    a:hover {
+        background-color: rgba(85, 84, 84, 0.774);
+        color: white;
+    }
+
+    button {
+        padding: 9px 1.5rem;
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.945);
+        border-radius: 5px;
+        border: 3px solid;
+        border-color: white;
+        color: white;
+    }
+
+    button:hover {
+        border-color: black;
+    }
+}
+
+.text-success {color: green}
+.text-danger {color: red}
+.mt-1 {margin-top: 1rem};

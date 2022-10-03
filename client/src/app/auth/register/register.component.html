@@ -1,0 +1,55 @@
+<div class="register-container">
+    <form #register="ngForm" id="register" (ngSubmit)="onSubmit(register)" novalidate>
+        <h1>Crear cuenta</h1>
+        <div class="form-group">
+            <label for="username">Nombre de usuario</label>
+            <input type="text" #username="ngModel" name="username" ngModel placeholder="Ingrese su nombre de usuario" minlength="6" maxlength="20" required>
+            <!-- Validacion -->
+            <div *ngIf="username.touched && username.invalid">
+                <p class="text-danger" *ngIf="username.errors?.['required']">Campo obligatorio</p>
+                <p class="text-danger" *ngIf="username.errors?.['minlength']">Este campo requiere min. 6 caracteres</p>
+            </div>
+            <div class="text-success" *ngIf="username.valid">Perfecto!</div>
+        </div>
+
+        <div class="form-group">
+            <label for="username">Email</label>
+            <input type="email" #email="ngModel" name="email" ngModel placeholder="Ingrese su correo electronico" email required>
+            <!-- Validacion -->
+            <div *ngIf="email.touched && email.invalid">
+                <p class="text-danger" *ngIf="email.errors?.['required']">Campo obligatorio</p>
+                <p class="text-danger" *ngIf="email.errors?.['email']">Correo electronido invalido</p>
+            </div>
+            <div class="text-success" *ngIf="email.valid">Perfecto!</div>
+        </div>
+
+        <div class="form-group pass-input">
+            <label for="password">Contraseña</label>
+            <input type={{type}} #password="ngModel" name="password" ngModel placeholder="Ingrese su contraseña" minlength="8" maxlength="20" required>
+            <i [ngClass]="type === 'password' ? 'far fa-eye' : 'fas fa-eye-slash'" (click)="setType()"></i>
+            <!-- Validacion -->
+            <div *ngIf="password.touched && password.invalid">
+                <p class="text-danger" *ngIf="password.errors?.['required']">Campo obligatorio</p>
+                <p class="text-danger" *ngIf="password.errors?.['minlength']">Este campo requiere min. 8 caracteres</p>
+            </div>
+            <div class="text-success" *ngIf="password.valid">Perfecto!</div>
+        </div>
+
+        <div class="form-group pass-input">
+            <label for="password2">Confirmar contraseña</label>
+            <input type={{type}} #password2="ngModel" name="password2" ngModel placeholder="Ingrese su contraseña" minlength="8" maxlength="20" required>
+            <i [ngClass]="type === 'password' ? 'far fa-eye' : 'fas fa-eye-slash'" (click)="setType()"></i>
+            <!-- Validacion -->
+            <div  *ngIf="password2.touched && password2.invalid">
+                <p class="text-danger" *ngIf="password2.errors?.['required']">Campo obligatorio</p>
+                <p class="text-danger" *ngIf="password2.errors?.['minlength']">Este campo requiere min. 8 caracteres</p>
+            </div>
+            <div class="text-success" *ngIf="password2.valid">Perfecto!</div>
+        </div>
+
+        <div class="guard-send">
+            <a [routerLink]="['/login']">Iniciar sesion</a>
+            <button [disabled]="register.invalid" type="submit">Entrar</button>
+        </div>
+    </form>
+</div>
