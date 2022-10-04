@@ -10,6 +10,8 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class PerfilComponent implements OnInit {
   user : User = {};
+  owner : boolean = false;
+  error : string = "";
   showImg : boolean = false;
   img : Foto = {};
 
@@ -17,16 +19,28 @@ export class PerfilComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.userService.getUser(params.get("id") as string).subscribe(res => {
-        this.user = res;
-      });
+      if(params.has("id")) {
+        this.userService.getUser(params.get("id") as string).subscribe(res => {
+          this.user = res;
+        },
+        err => {
+          this.error = err.error.text
+        })
+      } else {
+        this.userService.getPerfil().subscribe(res => {
+          this.user = res;
+          this.owner = true;
+        },
+        err => {
+          this.error = err.error.text
+        })
+      }
     });
   }
 
   zoomIn(foto : Foto) {
     this.img = foto;
     this.showImg = true;
-
   }
 
   zoomOut() {

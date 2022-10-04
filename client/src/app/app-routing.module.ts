@@ -7,15 +7,18 @@ import { PerfilComponent } from './components/user/perfil/perfil.component';
 import { FavoritosComponent } from './components/favoritos/favoritos.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { AuthGuard } from './guards/auth.guard';
+import { AuthedGuard } from './guards/authed.guard';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
-  {path: 'login', component: LoginComponent},
-  {path: 'registro', component: RegisterComponent},
-  {path: 'buscador', component: BuscadorComponent},
-  {path: 'user/:id', component: PerfilComponent},
-  {path: 'favoritos', component: FavoritosComponent},
-  {path: 'preferencias', component: ConfiguracionComponent},
+  {path: 'login', component: LoginComponent, canActivate: [AuthedGuard]},
+  {path: 'registro', component: RegisterComponent, canActivate: [AuthedGuard]},
+  {path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard]},
+  {path: 'buscador', component: BuscadorComponent, canActivate: [AuthGuard]},
+  {path: 'user/:id', component: PerfilComponent, canActivate: [AuthGuard]},
+  {path: 'favoritos', component: FavoritosComponent, canActivate: [AuthGuard]},
+  {path: 'preferencias', component: ConfiguracionComponent, canActivate: [AuthGuard]},
   {path: "**", pathMatch: "full", component: PagenotfoundComponent}
 ];
 

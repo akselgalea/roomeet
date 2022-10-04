@@ -1,26 +1,44 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { User } from '../models/User';
 import { Observable } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   API_URI = 'http://localhost:3000/api'
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
 
-  getUsers(): Observable<User> {
-    return this.http.get(`${this.API_URI}/users`);
+  login(user: User) {
+    return this.http.post(`${this.API_URI}/users/login`, user);
   }
 
-  getUser(id: string): Observable<User> {
-    return this.http.get(`${this.API_URI}/users/${id}`);
+  isLogged(): boolean {
+    const token = localStorage.getItem('token') || '';
+    if(this.jwtHelper.isTokenExpired(token) || !localStorage.getItem('token')) {
+      return false;
+    }
+
+    return true;
   }
 
   registerUser(user: User) {
     return this.http.post(`${this.API_URI}/users/register`, user);
+  }
+
+  getUsers() {
+    return this.http.get(`${this.API_URI}/users`);
+  }
+
+  getPerfil() {
+    return this.http.get(`${this.API_URI}/users/perfil`);
+  }
+
+  getUser(id: string) {
+    return this.http.get(`${this.API_URI}/users/perfil/${id}`);
   }
 
   updateUser(id: string, updatedUser: User): Observable<User> {

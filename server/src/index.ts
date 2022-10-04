@@ -1,13 +1,12 @@
 import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-
 import indexRoutes from './routes/indexRoutes';
 import userRoutes from './routes/userRoutes';
 
 class Server {
     public app : Application;
-    
+
     constructor() {
         this.app = express();
         this.config();

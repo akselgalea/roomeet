@@ -11,75 +11,137 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = void 0;
 const database_1 = require("../database");
+const jwt = require('jsonwebtoken');
 class UserController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const [rows, fields] = await promisePool.query('SELECT id, username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos from user');
-            const [rows,] = yield database_1.promisePool.query('SELECT * from user');
-            return res.json(rows);
+            const [users,] = yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos, foto_perfil from user');
+            return res.json(users);
+        });
+    }
+    getPerfil(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data } = req.body;
+            const [user,] = yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos, foto_perfil FROM user WHERE username = ?', [data.username]);
+            if (user.length > 0) {
+                const [fotos,] = yield database_1.promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [user[0].id]);
+                const [hobbies,] = yield database_1.promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ?', [user[0].id]);
+                return res.json(Object.assign(Object.assign(Object.assign({}, user[0]), { 'fotos': fotos }), { 'hobbies': hobbies }));
+            }
+            res.status(404).json({ text: "Este usuario no existe" });
         });
     }
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const [rows,] = yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos, foto_perfil FROM user WHERE username = ?', [id]);
-            if (rows.length > 0) {
-                const [fotos,] = yield database_1.promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [rows[0].id]);
-                const [hobbies,] = yield database_1.promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ?', [rows[0].id]);
-                return res.status(200).json(Object.assign(Object.assign(Object.assign({}, rows[0]), { 'fotos': fotos }), { 'hobbies': hobbies }));
+            const [user,] = yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos, foto_perfil FROM user WHERE username = ?', [id]);
+            if (user.length > 0) {
+                const [fotos,] = yield database_1.promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [user[0].id]);
+                const [hobbies,] = yield database_1.promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ?', [user[0].id]);
+                return res.json(Object.assign(Object.assign(Object.assign({}, user[0]), { 'fotos': fotos }), { 'hobbies': hobbies }));
             }
             res.status(404).json({ text: "Este usuario no existe" });
         });
     }
+    login(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { username, password } = req.body;
+            const [rows,] = yield database_1.promisePool.query('SELECT username, role_id FROM user where username = ? AND password = ?', [username, password]);
+            if (rows.length > 0) {
+                const token = jwt.sign(JSON.stringify(rows[0]), 'stil');
+                return res.json({ token });
+            }
+            res.status(400).json({ message: "Datos de usuario incorrectos" });
+        });
+    }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            let error;
             yield database_1.promisePool.query('INSERT INTO user set ?', [req.body]).catch(err => {
-                res.json({ text: err.sqlMessage });
+                if (err.sqlMessage.includes('user_email_IDX'))
+                    return error = "Este email ya se encuentra registrado";
+                if (err.sqlMessage.includes('user_username_IDX'))
+                    return error = "Este nombre de usuario ya esta en uso";
+                error = err.sqlMessage;
             });
+            if (error)
+                return res.status(400).json({ message: error });
             res.status(200).json({ message: 'User created' });
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            let error;
             const { id } = req.params;
-            yield database_1.promisePool.query('UPDATE user SET ? WHERE username = ?', [req.body, id]);
-            res.json({ text: 'Updated user ' + id });
+            yield database_1.promisePool.query('UPDATE user SET ? WHERE username = ?', [req.body, id]).catch(err => {
+                if (err.sqlMessage.includes('user_email_IDX'))
+                    return error = "Este email ya se encuentra registrado";
+                if (err.sqlMessage.includes('user_username_IDX'))
+                    return error = "Este nombre de usuario ya esta en uso";
+                error = err.sqlMessage;
+            });
+            if (error)
+                return res.status(400).json({ message: error });
+            res.status(200).json({ message: 'Updated user ' + id });
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            let error;
             const { id } = req.params;
             yield database_1.promisePool.query('DELETE FROM user where id = ?', [id]).catch(err => {
-                res.json({ text: err });
+                error = err.sqlMessage;
             });
-            res.json({ text: 'Erasing user ' + req.params.id });
+            if (error)
+                return res.status(400).json({ message: error });
+            res.json({ message: 'Erasing user ' + id });
         });
     }
     //Hobbies
     createHobbie(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.promisePool.query('INSERT INTO hobbies set ?', [req.body]);
-            res.json({ text: 'Creating hobbie ' + req.body.hobbie });
+            let error;
+            yield database_1.promisePool.query('INSERT INTO hobbies set ?', [req.body]).catch(err => {
+                error = err.sqlMessage;
+            });
+            if (error)
+                return res.status(400).json({ message: error });
+            res.json({ message: 'Creating hobbie ' + req.body.hobbie });
         });
     }
     addHobbie(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.promisePool.query('INSERT INTO hobbies_user set ?', [req.body]);
-            res.json({ text: 'Adding hobbie to user ' + req.body.user_id });
+            let error;
+            yield database_1.promisePool.query('INSERT INTO hobbies_user set ?', [req.body]).catch(err => {
+                error = err.sqlMessage;
+            });
+            if (error)
+                return res.status(400).json({ message: error });
+            res.json({ message: 'Adding hobbie to user ' + req.body.user_id });
         });
     }
     removeHobbie(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            let error;
             const { id } = req.params;
-            yield database_1.promisePool.query('DELETE FROM hobbies_user where id = ?', [id]);
-            res.json({ text: 'Removing hobbie ' + id + 'from hobbie' });
+            yield database_1.promisePool.query('DELETE FROM hobbies_user where id = ?', [id]).catch(err => {
+                error = err.sqlMessage;
+            });
+            if (error)
+                return res.status(400).json({ message: error });
+            res.json({ message: 'Removing hobbie ' + id + 'from hobbie' });
         });
     }
     deleteHobbie(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            let error;
             const { id } = req.params;
-            yield database_1.promisePool.query('DELETE FROM hobbies where id = ?', [id]);
-            res.json({ text: 'Erasing hobbie ' + id });
+            yield database_1.promisePool.query('DELETE FROM hobbies where id = ?', [id]).catch(err => {
+                error = err.sqlMessage;
+            });
+            if (error)
+                return res.status(400).json({ message: error });
+            res.json({ message: 'Erasing hobbie ' + id });
         });
     }
     //Favoritos -- DONE
@@ -92,15 +154,20 @@ class UserController {
     }
     addFavorito(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.promisePool.query('INSERT INTO favoritos_user set ?', [req.body]);
-            res.json({ text: 'Adding favorito to user ' + req.body.user_id });
+            let error;
+            yield database_1.promisePool.query('INSERT INTO favoritos_user set ?', [req.body]).catch(err => {
+                error = err.sqlMessage;
+            });
+            if (error)
+                return res.status(400).json({ message: error });
+            res.json({ message: 'Adding favorito to user ' + req.body.user_id });
         });
     }
     deleteFavorito(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id, fav } = req.params;
             yield database_1.promisePool.query('DELETE FROM favoritos_user where user_id = ? && favorito = ?', [id, fav]);
-            res.json({ text: 'Erasing favorito ' + fav });
+            res.json({ message: 'Erasing favorito ' + fav });
         });
     }
 }

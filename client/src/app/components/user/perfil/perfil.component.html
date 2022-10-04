@@ -1,4 +1,4 @@
-<div class="user-container">
+<div class="user-container" *ngIf="!error;else notFound">
     <div class="uc-presentacion" [ngSwitch]="user.sexo">
         <img class="u-fperfil" src="assets/images/users/{{user.foto_perfil}}" alt="">
         <div class="u-name">
@@ -62,3 +62,9 @@
         <p>{{img.descripcion}}</p>
     </div>
 </div>
+
+<ng-template #notFound>
+    <h1>
+       {{error}}
+    </h1>
+</ng-template>

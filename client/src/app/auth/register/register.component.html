@@ -40,11 +40,12 @@
             <input type={{type}} #password2="ngModel" name="password2" ngModel placeholder="Ingrese su contraseña" minlength="8" maxlength="20" required>
             <i [ngClass]="type === 'password' ? 'far fa-eye' : 'fas fa-eye-slash'" (click)="setType()"></i>
             <!-- Validacion -->
-            <div  *ngIf="password2.touched && password2.invalid">
+            <div *ngIf="password2.touched && password2.invalid">
                 <p class="text-danger" *ngIf="password2.errors?.['required']">Campo obligatorio</p>
                 <p class="text-danger" *ngIf="password2.errors?.['minlength']">Este campo requiere min. 8 caracteres</p>
             </div>
-            <div class="text-success" *ngIf="password2.valid">Perfecto!</div>
+            <div class="text-danger" *ngIf="password2.valid && password2.value != password.value">Las contraseñas no son iguales</div>
+            <div class="text-success" *ngIf="password2.valid && password2.value === password.value ">Perfecto!</div>
         </div>
 
         <div class="guard-send">
