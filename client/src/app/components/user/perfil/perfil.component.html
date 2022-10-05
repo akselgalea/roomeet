@@ -8,7 +8,7 @@
                 <span *ngSwitchCase="'1'" class="fas fa-venus"></span>
                 <span *ngSwitchCase="'2'" class="fas fa-genderless"></span>
             </p>
-            <a href="" class="fav"><span class="fas fa-heart"></span> Favoritos</a>
+            <a href="" class="fav" *ngIf="!owner"><span class="fas fa-heart"></span> Favoritos</a>
         </div>
     </div>
 
@@ -52,6 +52,10 @@
         <p *ngIf="user.fotos && user.fotos.length == 0">No hay fotos disponibles.</p>
         <div class="fotos">
             <img *ngFor="let foto of user.fotos" src="assets/images/users/{{foto.link}}" alt="" (click)="zoomIn(foto)">
+        </div>
+        <div class="fotos-add" *ngIf="owner">
+            <input type="file" (change)="onFileSelected($event)">
+            <img (click)="onUpload()" src="assets/images/add-image.png" alt="">
         </div>
     </div>
 

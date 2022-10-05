@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Foto, User } from 'src/app/models/User';
@@ -14,8 +15,9 @@ export class PerfilComponent implements OnInit {
   error : string = "";
   showImg : boolean = false;
   img : Foto = {};
+  newimg : Foto = {};
 
-  constructor(private userService: UserService, private route: ActivatedRoute) { }
+  constructor(private userService: UserService, private route: ActivatedRoute, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -46,5 +48,13 @@ export class PerfilComponent implements OnInit {
   zoomOut() {
     this.showImg = false;
     this.img = {};
+  }
+
+  onFileSelected(event: any) {
+    this.newimg = event.target.files[0];
+  }
+
+  onUpload() {
+    console.log(this.newimg);
   }
 }

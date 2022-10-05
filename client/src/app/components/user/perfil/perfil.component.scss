@@ -99,12 +99,25 @@
     .fotos {
         width: 100%;
         display: flex;
-        justify-content: space-evenly;
+        flex-wrap: wrap;
         gap: 3px;
         
         img {
-            max-width: 33%;
+            max-width: 32%;
             cursor: pointer;
+        }
+    }
+
+    .fotos-add {
+        max-width: 32%;
+        img {
+            width: 100%;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        img:hover {
+            background-color: rgba(175, 175, 175, 0.322);
         }
     }
 }
