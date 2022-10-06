@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Foto, User } from 'src/app/models/User';
 import { UserService } from 'src/app/services/user.service';
@@ -15,7 +16,9 @@ export class PerfilComponent implements OnInit {
   error : string = "";
   showImg : boolean = false;
   img : Foto = {};
-  newimg : Foto = {};
+
+  preview = '';
+  showform = false;
 
   constructor(private userService: UserService, private route: ActivatedRoute, private http: HttpClient) { }
 
@@ -50,11 +53,19 @@ export class PerfilComponent implements OnInit {
     this.img = {};
   }
 
-  onFileSelected(event: any) {
-    this.newimg = event.target.files[0];
+  showImgForm() {this.showform = true;}
+  closeImgForm() {this.showform = false;}
+
+  loadImg(event: any) {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(event.target.files[0])
+    reader.onload = (e: any) => {
+      this.preview = e.target.result;
+    }
   }
 
-  onUpload() {
-    console.log(this.newimg);
+  uploadImg(newimg: NgForm) {
+    console.log(newimg.form.controls);
   }
 }

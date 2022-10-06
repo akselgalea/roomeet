@@ -9,7 +9,9 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root'
 })
 export class UserService {
-  API_URI = 'http://localhost:3000/api'
+  API_URI = 'http://localhost:3000/api';
+  ASSETS = '../assets/images/users';
+
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
 
   login(user: User) {

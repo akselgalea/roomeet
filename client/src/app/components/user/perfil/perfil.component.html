@@ -54,8 +54,7 @@
             <img *ngFor="let foto of user.fotos" src="assets/images/users/{{foto.link}}" alt="" (click)="zoomIn(foto)">
         </div>
         <div class="fotos-add" *ngIf="owner">
-            <input type="file" (change)="onFileSelected($event)">
-            <img (click)="onUpload()" src="assets/images/add-image.png" alt="">
+            <img (click)="showImgForm()" src="assets/images/add-image.png" alt="">
         </div>
     </div>
 
@@ -65,6 +64,24 @@
         <img src="assets/images/users/{{img.link}}" alt="">
         <p>{{img.descripcion}}</p>
     </div>
+</div>
+
+<div class="modal-newimg d-flex" *ngIf="showform">
+    <h1>Subir una foto</h1>
+    
+    <div class="preview">
+        <p>Preview</p>
+        <img [src]="preview" alt="">
+    </div>
+    
+    <form (ngSubmit)="uploadImg(newImg)" #newImg="ngForm">
+        <div class="d-flex form-group">
+            <label for="descripcion">Descripcion</label>
+            <input type="text" #descripcion="ngModel" ngModel name="descripcion">
+        </div>
+        <input accept="image/*" type="file" #newfoto="ngModel" ngModel name="newfoto" (change)="loadImg($event)">
+        <button type="submit">Subir</button>
+    </form>
 </div>
 
 <ng-template #notFound>
