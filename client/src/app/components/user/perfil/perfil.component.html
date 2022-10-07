@@ -8,7 +8,7 @@
                 <span *ngSwitchCase="'1'" class="fas fa-venus"></span>
                 <span *ngSwitchCase="'2'" class="fas fa-genderless"></span>
             </p>
-            <a href="" class="fav" *ngIf="!owner"><span class="fas fa-heart"></span> Favoritos</a>
+            <a class="fav" *ngIf="!owner" (click)="addToFav(user.id)"><span class="fas fa-heart"></span> Favoritos</a>
         </div>
     </div>
 

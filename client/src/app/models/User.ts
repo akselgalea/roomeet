@@ -4,6 +4,12 @@ export interface Hobbie {
     categoria?: string
 }
 
+export interface Favorito {
+    id?: number,
+    favorito: number,
+    user_id: number
+}
+
 export interface Foto {
     id?: number,
     link?: string,

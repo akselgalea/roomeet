@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { User } from '../models/User';
+import { Favorito, User } from '../models/User';
 import { Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -51,4 +51,7 @@ export class UserService {
     return this.http.delete(`${this.API_URI}/users/${id}`);
   }
 
+  createFavorito(id: string) {
+    return this.http.post(`${this.API_URI}/users/favoritos`, id);
+  }
 }

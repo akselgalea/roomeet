@@ -68,4 +68,11 @@ export class PerfilComponent implements OnInit {
   uploadImg(newimg: NgForm) {
     console.log(newimg.form.controls);
   }
+
+  addToFav(id: any) {
+    console.log('perfil');
+    this.userService.createFavorito(id).subscribe(params => {
+      console.log(params);
+    });
+  }
 }
