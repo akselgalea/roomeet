@@ -155,15 +155,16 @@
         z-index: 2;
     }
 
-    .cerrar {
-        position: fixed;
-        top: 1rem;
-        right: 1.5rem;
-        color: white;
-        font-size: 2rem;
-        cursor: pointer;
-        z-index: 2;
-    }
+    .cerrar { color: white; }
+}
+
+.cerrar {
+    z-index: 2;
+    cursor: pointer;
+    position: fixed;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2rem;
 }
 
 .modal-newimg {
@@ -191,6 +192,8 @@
         }
         img {
             max-width: 300px;
+            max-height: 200px;
+            margin: 1rem 0;
         }
     }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgToastService } from 'ng-angular-popup';
+import { NotificationsService } from 'src/app/services/notifications.service';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../../models/User'
 
@@ -13,7 +13,7 @@ import { User } from '../../models/User'
 export class LoginComponent implements OnInit {
   type = "password";
 
-  constructor(private userService: UserService, private toast: NgToastService, private router: Router) { }
+  constructor(private userService: UserService, private ns:NotificationsService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -24,38 +24,19 @@ export class LoginComponent implements OnInit {
       password: login.controls["password"].value
     }
 
-    this.userService.login(data).subscribe((res: any)=> {
-      this.notification('success', 'Iniciando sesion', 'Datos ingresados correctamente');
+    this.userService.login(data).subscribe((res: any) => {
+      this.ns.notification('success', 'Iniciando sesion', 'Datos ingresados correctamente');
       localStorage.setItem('token', res.token);
 
       this.router.navigate(['/perfil']);
     }, err => {
-      this.notification('error', 'Ha ocurrido un error', err.error.message)
+      console.log(err.statusMessage);
+      this.ns.notification('error', 'Ha ocurrido un error', err.status)
     });
   }
 
   setType() {
     if(this.type === "password") this.type = "text";
     else this.type = "password";
-  }
-
-  notification(type: string, title: string, message: string) {
-    switch(type) {
-      case 'warning':
-        this.toast.warning({detail: title, summary: message, position: 'tr', duration: 3000});
-        break;
-      
-      case 'success':
-        this.toast.success({detail: title, summary: message, position: 'tr', duration: 3000});
-        break;
-
-      case 'error':
-        this.toast.error({detail: title, summary: message, position: 'tr', duration: 3000});
-        break;
-      
-      case 'info':
-        this.toast.info({detail: title, summary: message, position: 'tr', duration: 3000});
-        break;
-    }
   }
 }

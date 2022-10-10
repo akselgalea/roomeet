@@ -19,13 +19,13 @@ class UserRoutes {
         this.router.delete('/:id', verifyToken, userController_1.userController.delete);
         //User hobbies
         this.router.post('/hobbies', verifyToken, userController_1.userController.createHobbie);
-        this.router.post('/:user/hobbies/add', verifyToken, userController_1.userController.addHobbie);
-        this.router.delete('/:user/hobbies/:id', verifyToken, userController_1.userController.removeHobbie);
+        this.router.post('/hobbies/add', verifyToken, userController_1.userController.addHobbie);
+        this.router.delete('/hobbies/:id', verifyToken, userController_1.userController.removeHobbie);
         this.router.delete('/hobbies/:id', verifyToken, userController_1.userController.deleteHobbie);
         //User favoritos
-        this.router.get('/:id/favoritos', verifyToken, userController_1.userController.getFavoritos);
-        this.router.post('/:id/favoritos', verifyToken, userController_1.userController.addFavorito);
-        this.router.delete('/:id/favoritos/:fav', verifyToken, userController_1.userController.deleteFavorito);
+        this.router.get('/favoritos', verifyToken, userController_1.userController.getFavoritos);
+        this.router.post('/favoritos', verifyToken, userController_1.userController.addFavorito);
+        this.router.delete('/favoritos/:fav', verifyToken, userController_1.userController.deleteFavorito);
     }
 }
 const userRoutes = new UserRoutes();

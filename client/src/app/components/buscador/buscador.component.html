@@ -12,7 +12,7 @@
         </div>
         <div class="uc-row uc-links">
             <a [routerLink]="['/user', user.username]"><span class="fas fa-user-circle"></span> Ver perfil</a>
-            <a href=""><span class="fas fa-heart"></span> Favoritos</a>
+            <a (click)="addToFav(user.id)"><span class="fas fa-heart"></span> Favoritos</a>
         </div>
         <!-- <div class="uc-desc">
             <p>{{user.descripcion}}</p>

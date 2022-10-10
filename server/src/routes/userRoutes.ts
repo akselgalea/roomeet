@@ -23,14 +23,14 @@ class UserRoutes {
 
         //User hobbies
         this.router.post('/hobbies', verifyToken, userController.createHobbie);
-        this.router.post('/:user/hobbies/add', verifyToken, userController.addHobbie);
-        this.router.delete('/:user/hobbies/:id', verifyToken, userController.removeHobbie);
+        this.router.post('/hobbies/add', verifyToken, userController.addHobbie);
+        this.router.delete('/hobbies/:id', verifyToken, userController.removeHobbie);
         this.router.delete('/hobbies/:id', verifyToken, userController.deleteHobbie);
 
         //User favoritos
-        this.router.get('/:id/favoritos', verifyToken, userController.getFavoritos);
-        this.router.post('/:id/favoritos', verifyToken, userController.addFavorito);
-        this.router.delete('/:id/favoritos/:fav', verifyToken, userController.deleteFavorito);
+        this.router.get('/favoritos', verifyToken, userController.getFavoritos);
+        this.router.post('/favoritos', verifyToken, userController.addFavorito);
+        this.router.delete('/favoritos/:fav', verifyToken, userController.deleteFavorito);
     }
 }
 

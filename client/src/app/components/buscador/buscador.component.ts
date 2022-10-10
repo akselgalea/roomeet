@@ -19,4 +19,9 @@ export class BuscadorComponent implements OnInit {
     );
   }
 
+  addToFav(id: any) {
+    this.userService.createFavorito(id).subscribe(params => {
+      console.log(params);
+    });
+  }
 }

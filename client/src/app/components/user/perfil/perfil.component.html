@@ -15,6 +15,8 @@
     <div>
         <h2>Hobbies</h2>
         <div class="uc-hobbies">
+            <p *ngIf="user.hobbies && user.hobbies.length == 0">No hay hobbies disponibles.</p>
+            
             <p *ngFor="let hobbie of user.hobbies">
                 {{hobbie.hobbie}}
             </p>
@@ -67,11 +69,12 @@
 </div>
 
 <div class="modal-newimg d-flex" *ngIf="showform">
+    <span (click)="closeImgForm()" class="cerrar fas fa-times"></span>
     <h1>Subir una foto</h1>
     
     <div class="preview">
         <p>Preview</p>
-        <img [src]="preview" alt="">
+        <img [src]="preview ? preview : 'assets/images/users/default.jpg'" alt="">
     </div>
     
     <form (ngSubmit)="uploadImg(newImg)" #newImg="ngForm">

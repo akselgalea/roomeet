@@ -70,7 +70,6 @@ export class PerfilComponent implements OnInit {
   }
 
   addToFav(id: any) {
-    console.log('perfil');
     this.userService.createFavorito(id).subscribe(params => {
       console.log(params);
     });
