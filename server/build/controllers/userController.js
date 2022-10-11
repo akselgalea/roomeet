@@ -148,8 +148,8 @@ class UserController {
     //Favoritos -- DONE
     getFavoritos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            yield database_1.promisePool.query('SELECT u.id, u.username, u.nombre, u.descripcion, u.sexo, u.profesion, u.bebedor, u.bebedor, u.fumador, u.fiestas, u.hijos, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [id]).then(result => {
+            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
+            yield database_1.promisePool.query('SELECT u.id, u.username, u.nombre, u.sexo, u.profesion, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [userId[0].id]).then(result => {
                 res.status(200).json(result[0]);
             }).catch(err => {
                 res.status(400).json({ message: err.sqlMessage });
@@ -160,8 +160,8 @@ class UserController {
     addFavorito(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
-            const { id } = req.body;
-            yield database_1.promisePool.query('INSERT INTO favoritos_user SET favorito = ?, user_id = ?', [id, userId[0].id]).then(() => {
+            const { favorito } = req.body;
+            yield database_1.promisePool.query('INSERT INTO favoritos_user SET favorito = ?, user_id = ?', [favorito, userId[0].id]).then(() => {
                 res.status(200).json({ message: 'Operacion realizada con exito' });
             }).catch(err => {
                 res.status(400).json({ message: err.sqlMessage });
@@ -171,8 +171,9 @@ class UserController {
     }
     deleteFavorito(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id, fav } = req.params;
-            yield database_1.promisePool.query('DELETE FROM favoritos_user WHERE user_id = ? && favorito = ?', [id, fav]).then(() => {
+            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
+            const { fav } = req.params;
+            yield database_1.promisePool.query('DELETE FROM favoritos_user WHERE favorito = ? && user_id = ?', [fav, userId[0].id]).then(() => {
                 res.status(200).json({ message: 'Favorito removido con exito!' });
             }).catch(err => {
                 res.status(400).json({ message: err.sqlMessage });

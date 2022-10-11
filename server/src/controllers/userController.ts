@@ -141,8 +141,8 @@ class UserController {
 
     //Favoritos -- DONE
     public async getFavoritos(req: Request, res: Response): Promise<any> {
-        const { id } = req.params;
-        await promisePool.query('SELECT u.id, u.username, u.nombre, u.descripcion, u.sexo, u.profesion, u.bebedor, u.bebedor, u.fumador, u.fiestas, u.hijos, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [id]).then(result => {
+        const [userId,] = await promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
+        await promisePool.query('SELECT u.id, u.username, u.nombre, u.sexo, u.profesion, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [(userId as any)[0].id]).then(result => {
             res.status(200).json(result[0])
         }).catch(err => {
             res.status(400).json({message: err.sqlMessage})
@@ -153,9 +153,9 @@ class UserController {
 
     public async addFavorito(req: Request, res: Response): Promise<any> {
         const [userId,] = await promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
-        const {id} = req.body;
+        const {favorito} = req.body;
         
-        await promisePool.query('INSERT INTO favoritos_user SET favorito = ?, user_id = ?', [id, (userId as any)[0].id]).then(() => {
+        await promisePool.query('INSERT INTO favoritos_user SET favorito = ?, user_id = ?', [favorito, (userId as any)[0].id]).then(() => {
             res.status(200).json({message: 'Operacion realizada con exito'})
         }).catch(err => {
             res.status(400).json({message: err.sqlMessage})
@@ -165,9 +165,11 @@ class UserController {
     }
 
     public async deleteFavorito(req: Request, res: Response): Promise<any> {
-        const { id, fav } = req.params;
-        await promisePool.query('DELETE FROM favoritos_user WHERE user_id = ? && favorito = ?', [id, fav]).then(() => {
-            res.status(200).json({message: 'Favorito removido con exito!'});
+        const [userId,] = await promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
+        const { fav } = req.params;
+
+        await promisePool.query('DELETE FROM favoritos_user WHERE favorito = ? && user_id = ?', [fav, (userId as any)[0].id]).then(() => {
+            res.status(200).json({message: 'Favorito removido con exito!'})
         }).catch(err => {
             res.status(400).json({message: err.sqlMessage})
         });

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NotificationsService } from 'src/app/services/notifications.service';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -8,20 +9,24 @@ import { UserService } from '../../services/user.service';
 })
 export class BuscadorComponent implements OnInit {
   users: any = [];
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private ns: NotificationsService) { }
 
   ngOnInit(): void {
     this.userService.getUsers().subscribe(
       res => {
         this.users = res;
       },
-      err => console.log(err)
+      err => {
+        this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
+      }
     );
   }
 
   addToFav(id: any) {
-    this.userService.createFavorito(id).subscribe(params => {
-      console.log(params);
+    this.userService.createFavorito(id).subscribe((res: any) => {
+      this.ns.notification('success', res.message, 'Se ha agregado a tus favoritos')
+    }, err => {
+      this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
     });
   }
 }

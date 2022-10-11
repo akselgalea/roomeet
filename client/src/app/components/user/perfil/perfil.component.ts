@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { NgForm, NgSelectOption } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Foto, User } from 'src/app/models/User';
+import { NotificationsService } from 'src/app/services/notifications.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -20,7 +21,7 @@ export class PerfilComponent implements OnInit {
   preview = '';
   showform = false;
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private http: HttpClient) { }
+  constructor(private userService: UserService, private route: ActivatedRoute, private ns: NotificationsService, private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -70,8 +71,14 @@ export class PerfilComponent implements OnInit {
   }
 
   addToFav(id: any) {
-    this.userService.createFavorito(id).subscribe(params => {
-      console.log(params);
+    this.userService.createFavorito(id).subscribe((res: any) => {
+      this.ns.notification('success', res.message, 'Se ha agregado a tus favoritos')
+    }, err => {
+      this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
     });
+  }
+  
+  editPerfil() {
+    this.router.navigate(['preferencias/perfil'])
   }
 }

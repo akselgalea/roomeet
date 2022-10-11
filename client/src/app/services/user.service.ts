@@ -35,8 +35,10 @@ export class UserService {
   deleteUser(id: string) { return this.http.delete(`${this.API_URI}/users/${id}`); }
   
   //Favoritos
-  createFavorito(id: string) { return this.http.post(`${this.API_URI}/users/favoritos`, id); }
+  getFavoritos() { return this.http.get(`${this.API_URI}/users/favoritos`); }
+  createFavorito(id: string) { return this.http.post(`${this.API_URI}/users/favoritos`, {favorito: id}); }
+  deleteFavorito(id: string) { return this.http.delete(`${this.API_URI}/users/favoritos/${id}`); }
 
   //Hobbies
-  addHobbie(id: string) { return this.http.post(`${this.API_URI}/users/hobbies/add`, id); }
+  addHobbie(id: string) { return this.http.post(`${this.API_URI}/users/hobbies/add`, {hobbie: id}); }
 }

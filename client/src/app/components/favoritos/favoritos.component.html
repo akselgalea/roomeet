@@ -1,1 +1,14 @@
-<p>favoritos works!</p>
+<div class="favoritos">
+    <h1 *ngIf="users.length == 0">No tienes favoritos</h1>
+    <div *ngFor="let user of users">
+        <div class="fav-header">{{user.nombre}}</div>
+        <div class="fav-card">
+            <img src="assets/images/users/{{user.foto_perfil}}" alt="">
+            <div class="fav-links">
+                <a [routerLink]="['/user', user.username]"><span class="fas fa-user-alt"></span> Ver perfil</a>
+                <a (click)="pedirContacto(user.id)"><span class="far fa-comment-alt"></span> Pedir contacto</a>
+                <a class="red" (click)="delFav(user.id)"><span class="fas fa-minus-square"></span> Quitar de favoritos</a>
+            </div>
+        </div>
+    </div>
+</div>

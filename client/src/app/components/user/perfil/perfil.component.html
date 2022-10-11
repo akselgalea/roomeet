@@ -9,6 +9,7 @@
                 <span *ngSwitchCase="'2'" class="fas fa-genderless"></span>
             </p>
             <a class="fav" *ngIf="!owner" (click)="addToFav(user.id)"><span class="fas fa-heart"></span> Favoritos</a>
+            <a class="fav" *ngIf="owner" (click)="editPerfil()"><span class="fas fa-edit"></span> Editar</a>
         </div>
     </div>
 

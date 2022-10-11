@@ -4,6 +4,7 @@ import { BuscadorComponent } from './components/buscador/buscador.component';
 import { ConfiguracionComponent } from './components/configuracion/configuracion.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { PerfilComponent } from './components/user/perfil/perfil.component';
+import { EditarperfilComponent } from './components/user/editarperfil/editarperfil.component';
 import { FavoritosComponent } from './components/favoritos/favoritos.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [AuthedGuard]},
   {path: 'registro', component: RegisterComponent, canActivate: [AuthedGuard]},
   {path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard]},
+  {path: 'preferencias/perfil', component: EditarperfilComponent, canActivate: [AuthGuard]},
   {path: 'buscador', component: BuscadorComponent, canActivate: [AuthGuard]},
   {path: 'user/:id', component: PerfilComponent, canActivate: [AuthGuard]},
   {path: 'favoritos', component: FavoritosComponent, canActivate: [AuthGuard]},
