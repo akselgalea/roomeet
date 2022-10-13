@@ -9,9 +9,11 @@ import { UserService } from '../../services/user.service';
 })
 export class BuscadorComponent implements OnInit {
   users: any = [];
+  api_url = '';
   constructor(private userService: UserService, private ns: NotificationsService) { }
 
   ngOnInit(): void {
+    this.api_url = this.userService.SV_URL;
     this.userService.getUsers().subscribe(
       res => {
         this.users = res;

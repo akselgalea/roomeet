@@ -1,6 +1,6 @@
 <div class="user-container" *ngIf="!error;else notFound">
     <div class="uc-presentacion" [ngSwitch]="user.sexo">
-        <img class="u-fperfil" src="assets/images/users/{{user.foto_perfil}}" alt="">
+        <img class="u-fperfil" [src]="api_url + user.foto_perfil" alt="">
         <div class="u-name">
             <p>
                 {{user.nombre}}
@@ -54,7 +54,7 @@
         <h2>Fotos</h2>
         <p *ngIf="user.fotos && user.fotos.length == 0">No hay fotos disponibles.</p>
         <div class="fotos">
-            <img *ngFor="let foto of user.fotos" src="assets/images/users/{{foto.link}}" alt="" (click)="zoomIn(foto)">
+            <img *ngFor="let foto of user.fotos" [src]="api_url + foto.link" alt="" (click)="zoomIn(foto)">
         </div>
         <div class="fotos-add" *ngIf="owner">
             <img (click)="showImgForm()" src="assets/images/add-image.png" alt="">
@@ -64,7 +64,7 @@
     <div class="foto-zoom" *ngIf="showImg == true">
         <div class="foto-courtain" (click)="zoomOut()"></div>
         <span (click)="zoomOut()" class="cerrar fas fa-times"></span>
-        <img src="assets/images/users/{{img.link}}" alt="">
+        <img [src]="api_url + img.link" alt="">
         <p>{{img.descripcion}}</p>
     </div>
 </div>
@@ -83,8 +83,8 @@
             <label for="descripcion">Descripcion</label>
             <input type="text" #descripcion="ngModel" ngModel name="descripcion">
         </div>
-        <input accept="image/*" type="file" #newfoto="ngModel" ngModel name="newfoto" (change)="loadImg($event)">
-        <button type="submit">Subir</button>
+        <input accept="image/*" type="file" #newfoto="ngModel" ngModel name="newimage" (change)="loadImg($event)" required>
+        <button type="submit" [disabled]="newImg.invalid">Subir</button>
     </form>
 </div>
 

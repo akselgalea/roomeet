@@ -91,6 +91,28 @@ class UserController {
         return res
     }
 
+    public async uploadImage(req: Request, res: Response): Promise<any> {
+        const [userId,] = await promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
+        const file = req.file;
+        if(file) {
+            let data = {
+                link: file.path,
+                descripcion: req.body.descripcion,
+                user_id: (userId as any)[0].id
+
+            }
+            
+            await promisePool.query('INSERT INTO fotos_user set ?', data).then(() => {
+                res.json({message: "Imagen subida con exito!"});
+            }, err => {
+                res.status(400).json({message: err.sqlMessage})
+            })
+        } else {
+            res.status(400).json({message: 'Errol al subir la imagen'});
+        }
+
+        return res;
+    }
 
     //Hobbies
     public async createHobbie(req: Request, res: Response): Promise<any> {

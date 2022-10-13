@@ -11,14 +11,14 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class FavoritosComponent implements OnInit {
   users: any = [];
-
+  api_url = '';
   constructor(private userService: UserService, private ns: NotificationsService, private router: Router) { }
 
   ngOnInit(): void {
+    this.api_url = this.userService.SV_URL;
     this.userService.getFavoritos().subscribe(
       res => {
         this.users = res;
-        console.log(res);
       },
       err => console.log(err)
     );

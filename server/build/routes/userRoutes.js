@@ -1,8 +1,21 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const multer_1 = __importDefault(require("multer"));
 const userController_1 = require("../controllers/userController");
 const jwt = require('jsonwebtoken');
+const storage = multer_1.default.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "uploads");
+    },
+    filename: function (req, file, cb) {
+        cb(null, `${Date.now()}_${file.originalname}`);
+    }
+});
+const upload = (0, multer_1.default)({ storage: storage });
 class UserRoutes {
     constructor() {
         this.router = (0, express_1.Router)();
@@ -15,6 +28,7 @@ class UserRoutes {
         this.router.get('/perfil/:id', verifyToken, userController_1.userController.getUser);
         this.router.post('/login', userController_1.userController.login);
         this.router.post('/register', userController_1.userController.create);
+        this.router.post('/upload-image', upload.single("file"), verifyToken, userController_1.userController.uploadImage);
         this.router.put('/:id', verifyToken, userController_1.userController.update);
         this.router.delete('/:id', verifyToken, userController_1.userController.delete);
         //User hobbies

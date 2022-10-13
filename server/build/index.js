@@ -24,6 +24,7 @@ class Server {
     routes() {
         this.app.use(indexRoutes_1.default);
         this.app.use('/api/users/', userRoutes_1.default);
+        this.app.use('/uploads', express_1.default.static('uploads'));
     }
     start() {
         this.app.listen(this.app.get('port'), () => {

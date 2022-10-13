@@ -1,8 +1,20 @@
 import { Router } from 'express';
+import multer from 'multer';
 import { userController } from '../controllers/userController';
 import { Request, Response } from "express";
 
 const jwt = require('jsonwebtoken');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "uploads");
+    },
+    filename: function (req, file, cb) {
+        cb(null, `${Date.now()}_${file.originalname}`);
+    }
+});
+
+const upload = multer({storage: storage});
 
 class UserRoutes {
     router: Router = Router();
@@ -18,6 +30,7 @@ class UserRoutes {
         this.router.get('/perfil/:id', verifyToken, userController.getUser);
         this.router.post('/login', userController.login);
         this.router.post('/register', userController.create);
+        this.router.post('/upload-image', upload.single("file"), verifyToken, userController.uploadImage);
         this.router.put('/:id', verifyToken, userController.update);
         this.router.delete('/:id', verifyToken, userController.delete);
 

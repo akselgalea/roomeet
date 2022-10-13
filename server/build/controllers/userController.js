@@ -100,6 +100,28 @@ class UserController {
             return res;
         });
     }
+    uploadImage(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
+            const file = req.file;
+            if (file) {
+                let data = {
+                    link: file.path,
+                    descripcion: req.body.descripcion,
+                    user_id: userId[0].id
+                };
+                yield database_1.promisePool.query('INSERT INTO fotos_user set ?', data).then(() => {
+                    res.json({ message: "Imagen subida con exito!" });
+                }, err => {
+                    res.status(400).json({ message: err.sqlMessage });
+                });
+            }
+            else {
+                res.status(400).json({ message: 'Errol al subir la imagen' });
+            }
+            return res;
+        });
+    }
     //Hobbies
     createHobbie(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
