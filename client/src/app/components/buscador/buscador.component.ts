@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from 'src/app/models/User';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { UserService } from '../../services/user.service';
 
@@ -8,7 +9,7 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./buscador.component.scss']
 })
 export class BuscadorComponent implements OnInit {
-  users: any = [];
+  users: User[] = [];
   api_url = '';
   constructor(private userService: UserService, private ns: NotificationsService) { }
 
@@ -16,7 +17,7 @@ export class BuscadorComponent implements OnInit {
     this.api_url = this.userService.SV_URL;
     this.userService.getUsers().subscribe(
       res => {
-        this.users = res;
+        this.users = (res as User[]);
       },
       err => {
         this.ns.notification('error', 'Ha ocurrido un error', err.error.message)

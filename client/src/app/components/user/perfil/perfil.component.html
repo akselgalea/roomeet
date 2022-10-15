@@ -1,15 +1,13 @@
-<div class="user-container" *ngIf="!error;else notFound">
-    <div class="uc-presentacion" [ngSwitch]="user.sexo">
+<div class="user-container container-mw" *ngIf="!error;else notFound">
+    <div class="uc-presentacion">
         <img class="u-fperfil" [src]="api_url + user.foto_perfil" alt="">
         <div class="u-name">
             <p>
                 {{user.nombre}}
-                <span *ngSwitchCase="'0'" class="fas fa-mars"></span>
-                <span *ngSwitchCase="'1'" class="fas fa-venus"></span>
-                <span *ngSwitchCase="'2'" class="fas fa-genderless"></span>
+                <span class="fas" [ngClass]="{'fa-mars': user.sexo == 0, 'fa-venus': user.sexo == 1, 'fa-genderless': user.sexo == 2}"></span>
             </p>
-            <a class="fav" *ngIf="!owner" (click)="addToFav(user.id)"><span class="fas fa-heart"></span> Favoritos</a>
-            <a class="fav" *ngIf="owner" (click)="editPerfil()"><span class="fas fa-edit"></span> Editar</a>
+            <a class="fav" *ngIf="!owner;else isOwner" (click)="addToFav(user.id)"><span class="fas fa-heart"></span> Favoritos</a>
+            <ng-template #isOwner><a class="fav" (click)="editPerfil()"><span class="fas fa-edit"></span> Editar</a></ng-template>
         </div>
     </div>
 

@@ -1,13 +1,11 @@
 <div class="uc-container">
-    <div class="user-card" *ngFor="let user of users" [ngSwitch]="user.sexo">
+    <div class="user-card" *ngFor="let user of users">
         <div class="uc-username">
             <p>{{user.username}}</p>
         </div>
         <img [src]="api_url + user.foto_perfil" alt="">
         <div class="uc-row uc-name">
-            <span *ngSwitchCase="'0'" class="fas fa-mars"></span>
-            <span *ngSwitchCase="'1'" class="fas fa-venus"></span>
-            <span *ngSwitchCase="'2'" class="fas fa-genderless"></span>
+            <span class="fas" [ngClass]="{'fa-mars': user.sexo == 0, 'fa-venus': user.sexo == 1, 'fa-genderless': user.sexo == 2}"></span>
             <p>{{user.nombre}}</p>
         </div>
         <div class="uc-row uc-links">

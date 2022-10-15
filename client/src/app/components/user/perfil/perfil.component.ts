@@ -32,7 +32,7 @@ export class PerfilComponent implements OnInit {
           this.user = res;
         },
         err => {
-          this.error = err.error.text;
+          this.error = err.error.message;
           this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
         })
       } else {
@@ -41,7 +41,7 @@ export class PerfilComponent implements OnInit {
           this.owner = true;
         },
         err => {
-          this.error = err.error.text;
+          this.error = err.error.message;
           this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
         })
       }

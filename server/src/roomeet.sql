@@ -95,7 +95,7 @@ CREATE TABLE `favoritos_user` (
   KEY `FK_favorito_user_user` (`user_id`),
   CONSTRAINT `FK_favorito_user_favorito` FOREIGN KEY (`favorito`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_favorito_user_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -105,9 +105,21 @@ CREATE TABLE `favoritos_user` (
 LOCK TABLES `favoritos_user` WRITE;
 /*!40000 ALTER TABLE `favoritos_user` DISABLE KEYS */;
 INSERT INTO `favoritos_user` VALUES
-(1,2,1),
-(2,5,1),
-(3,6,1);
+(10,2,75),
+(16,6,75),
+(17,12,75),
+(18,74,75),
+(21,1,75),
+(34,2,1),
+(35,5,1),
+(36,6,1),
+(37,12,1),
+(38,74,1),
+(39,75,1),
+(40,1,2),
+(41,6,2),
+(42,12,2),
+(43,75,5);
 /*!40000 ALTER TABLE `favoritos_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,7 +216,7 @@ CREATE TABLE `fotos_user` (
   PRIMARY KEY (`id`),
   KEY `FK_fotos_user_user` (`user_id`),
   CONSTRAINT `FK_fotos_user_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -214,12 +226,15 @@ CREATE TABLE `fotos_user` (
 LOCK TABLES `fotos_user` WRITE;
 /*!40000 ALTER TABLE `fotos_user` DISABLE KEYS */;
 INSERT INTO `fotos_user` VALUES
-(1,'78273701_10215298077550667_1485843008338264064_n.jpg','Un tipo con una gata',1),
-(2,'304892690_10221222435375910_3713512612682555694_n.jpg','Dibujito que hizo mi amorcito',1),
-(3,'miamor.jpg','Mi mujer <3',1),
-(4,'17359415_1286945244722841_812214084910296585_o.jpg',NULL,2),
-(5,'280671177_375458494530837_1878306170965297269_n.jpg',NULL,2),
-(6,'304764058_10221222435335909_1081713666181243477_n.jpg',NULL,2);
+(23,'uploads/1665633249103_miamor.jpg','Mi amoooorrr <3',1),
+(24,'uploads/1665634436790_278559119_10220626151429184_3524319958639572027_n.jpg','yo con lentes',1),
+(25,'uploads/1665634499873_78273701_10215298077550667_1485843008338264064_n.jpg','asdasdasd',1),
+(26,'uploads/1665634512901_308198810_193998656430240_7511973942936051402_n.jpg','',1),
+(27,'uploads/1665634537104_304892690_10221222435375910_3713512612682555694_n.jpg','',1),
+(28,'uploads/1665673900907_280671177_375458494530837_1878306170965297269_n.jpg','',2),
+(29,'uploads/1665673907295_17359415_1286945244722841_812214084910296585_o.jpg','',2),
+(30,'uploads/1665673916797_304764058_10221222435335909_1081713666181243477_n.jpg','',2),
+(31,'uploads/1665673977755_304892690_10221222435375910_3713512612682555694_n.jpg','',5);
 /*!40000 ALTER TABLE `fotos_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -407,7 +422,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_username_IDX` (`username`) USING BTREE,
   UNIQUE KEY `user_email_IDX` (`email`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -417,13 +432,23 @@ CREATE TABLE `user` (
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` VALUES
-(1,'aksel2202','afyaksel@gmail.com','password','Aksel Galea','Descripcion epica digna de nobel',0,NULL,0,0,0,0,0,'308198810_193998656430240_7511973942936051402_n.jpg',0,100,'admin'),
-(2,'yennuine','yenn@gmail.com','password','Yenn','Mi amorcito <3',1,NULL,0,0,0,0,0,'miamor.jpg',0,100,'user'),
-(5,'random','ormenhoaxel@gmail.com','password','22','123123',2,NULL,1,1,1,0,1,'default.jpg',0,100,'user'),
-(6,'aksel1','ormenhoaxel@hotmail.com','password',NULL,NULL,2,NULL,0,0,0,0,0,'default.jpg',0,100,'user'),
-(12,'aksel2','123@123','12345678',NULL,NULL,2,NULL,0,0,0,0,0,'default.jpg',0,100,'user');
+(1,'aksel2202','afyaksel@gmail.com','password','Aksel Galea','Descripcion epica digna de nobel',0,NULL,0,0,0,0,0,'uploads/1665634512901_308198810_193998656430240_7511973942936051402_n.jpg',0,100,'admin'),
+(2,'yennuine','yenn@gmail.com','password','Yenn','Mi amorcito <3',1,NULL,0,0,0,0,0,'uploads/1665633249103_miamor.jpg',0,100,'user'),
+(5,'random','ormenhoaxel@gmail.com','password','Nombre Random','123123',0,NULL,1,1,1,0,1,'uploads/default.jpg',0,100,'user'),
+(6,'aksel1','ormenhoaxel@hotmail.com','password','Aksel Ormeño',NULL,0,NULL,0,0,0,0,0,'uploads/default.jpg',0,100,'user'),
+(12,'aksel2','123@123','12345678','Axel 2022',NULL,1,NULL,0,0,0,0,0,'uploads/default.jpg',0,100,'user'),
+(74,'usuario','1@1','12341234','Usuario premium 1',NULL,1,NULL,0,0,0,0,0,'uploads/default.jpg',0,100,'user'),
+(75,'usuario2','1@2','12341234','Nombresaso',NULL,2,NULL,0,0,0,0,0,'uploads/default.jpg',0,100,'user');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'roomeet'
+--
+
+--
+-- Dumping routines for database 'roomeet'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -434,4 +459,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-10 12:42:31
+-- Dump completed on 2022-10-15 12:10:21
