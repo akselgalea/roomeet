@@ -25,7 +25,7 @@ p {margin: 0}
     i {
         position: absolute;
         right: 10px;
-        top: 1.8rem;
+        top: 1.6rem;
     }
 }
 
@@ -54,22 +54,24 @@ p {margin: 0}
         background-color: rgba(85, 84, 84, 0.774);
         color: white;
     }
+}
 
-    button {
-        padding: 9px 1.5rem;
-        cursor: pointer;
-        background-color: rgba(0, 0, 0, 0.945);
-        border-radius: 5px;
-        border: 3px solid;
-        border-color: white;
-        color: white;
-    }
+button {
+    padding: 9px 1.5rem;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.945);
+    border-radius: 5px;
+    border: 3px solid;
+    border-color: white;
+    color: white;
+}
 
-    button:hover {
-        border-color: black;
-    }
+button:hover {
+    border-color: black;
 }
 
 .text-success {color: green}
 .text-danger {color: red}
 .mt-1 {margin-top: 1rem}
+.d-flex {display: flex;}
+.bg-red {background-color: rgb(192, 63, 63) !important;}

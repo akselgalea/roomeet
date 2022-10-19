@@ -28,7 +28,7 @@ export class UserService {
 
   registerUser(user: User) { return this.http.post(`${this.API_URI}/users/register`, user); }
   comfirmPass(pass: string) { return this.http.post(`${this.API_URI}/users/comfirm-pass`, {password: pass}); }
-  getUsers() { return this.http.get(`${this.API_URI}/users`); }
+  getUsers() { return this.http.get(`${this.API_URI}/users/buscador`); }
   getPerfil() { return this.http.get(`${this.API_URI}/users/perfil`); }
   getUser(id: string) { return this.http.get(`${this.API_URI}/users/perfil/${id}`); }
   uploadImg(img: any) { return this.http.post(`${this.API_URI}/users/upload-image`, img); }
@@ -36,6 +36,7 @@ export class UserService {
   deleteUser(id: string) { return this.http.delete(`${this.API_URI}/users/${id}`); }
   
   //Favoritos
+  isFavorito(id: string) { return this.http.get(`${this.API_URI}/users/favorito/${id}`); }
   getFavoritos() { return this.http.get(`${this.API_URI}/users/favoritos`); }
   createFavorito(id: string) { return this.http.post(`${this.API_URI}/users/favoritos`, {favorito: id}); }
   deleteFavorito(id: string) { return this.http.delete(`${this.API_URI}/users/favoritos/${id}`); }

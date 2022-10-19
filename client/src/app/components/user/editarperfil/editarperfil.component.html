@@ -1,6 +1,6 @@
 <div *ngIf="!confirmed" class="editar-perfil">
-    <form #passConfirmation="ngForm" (ngSubmit)="comfirmPass(passConfirmation)">
-        <div class="form-group pass-input">
+    <form class="pass-confirmation" #passConfirmation="ngForm" (ngSubmit)="comfirmPass(passConfirmation)">
+        <div class="d-flex form-group pass-input">
             <label for="password">Contraseña</label>
             <input type={{type}} #password="ngModel" ngModel name="password"  minlength="8" maxlength="20" required>
             <i [ngClass]="type === 'password' ? 'far fa-eye' : 'fas fa-eye-slash'" (click)="setType()"></i>

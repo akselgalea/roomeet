@@ -24,6 +24,7 @@ class UserRoutes {
     config() {
         //Directly to the user
         this.router.get('/', verifyToken, userController_1.userController.list);
+        this.router.get('/buscador', verifyToken, userController_1.userController.buscador);
         this.router.get('/perfil', verifyToken, userController_1.userController.getPerfil);
         this.router.get('/perfil/:id', verifyToken, userController_1.userController.getUser);
         this.router.post('/login', userController_1.userController.login);
@@ -38,6 +39,7 @@ class UserRoutes {
         this.router.delete('/hobbies/:id', verifyToken, userController_1.userController.removeHobbie);
         this.router.delete('/hobbies/:id', verifyToken, userController_1.userController.deleteHobbie);
         //User favoritos
+        this.router.get('/favorito/:id', verifyToken, userController_1.userController.isFavorito);
         this.router.get('/favoritos', verifyToken, userController_1.userController.getFavoritos);
         this.router.post('/favoritos', verifyToken, userController_1.userController.addFavorito);
         this.router.delete('/favoritos/:fav', verifyToken, userController_1.userController.deleteFavorito);

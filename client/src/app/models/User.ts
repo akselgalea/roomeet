@@ -36,6 +36,7 @@ export interface User {
     bebedor?: number,
     fumador?: number,
     fiestas?: number,
+    mascotas?: number,
     hijos?: number,
     foto_perfil?: string,
     estado?: number,

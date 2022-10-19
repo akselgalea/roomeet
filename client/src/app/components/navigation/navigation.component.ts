@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -9,14 +9,18 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class NavigationComponent implements OnInit {
   counter = 0;
-  constructor(private userService: UserService) { }
+  paths = ['/login', '/register'];
+  
+  constructor(private userService: UserService, private _location: Location) { }
 
   ngOnInit(): void {
-    this.userService.getSolicitudesPendientes().subscribe((res: any) => {
-      this.counter = res;
-    }, err => {
-      console.log(err);
-    })
+    if(!this.paths.includes(this._location.path())) {
+      this.userService.getSolicitudesPendientes().subscribe((res: any) => {
+        this.counter = res;
+      }, err => {
+        console.log(err);
+      })
+    }
   }
 
 }

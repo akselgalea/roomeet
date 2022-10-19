@@ -7,7 +7,7 @@
             <div class="fav-links">
                 <a [routerLink]="['/user', user.username]"><span class="fas fa-user-alt"></span> Ver perfil</a>
                 <a (click)="pedirContacto(user.id)"><span class="far fa-comment-alt"></span> Pedir contacto</a>
-                <a class="red" (click)="delFav(user.id)"><span class="fas fa-minus-square"></span> Quitar de favoritos</a>
+                <a class="bg-red" (click)="delFav(user.id)"><span class="fas fa-minus-square"></span> Quitar de favoritos</a>
             </div>
         </div>
     </div>

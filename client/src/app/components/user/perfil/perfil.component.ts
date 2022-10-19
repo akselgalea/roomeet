@@ -14,6 +14,7 @@ import { UserService } from 'src/app/services/user.service';
 export class PerfilComponent implements OnInit {
   user: User = {};
   owner: boolean = false;
+  favorito: boolean = false;
   error: string = "";
   showImg: boolean = false;
   img: Foto = {};
@@ -30,6 +31,7 @@ export class PerfilComponent implements OnInit {
       if(params.has("id")) {
         this.userService.getUser(params.get("id") as string).subscribe(res => {
           this.user = res;
+          this.isFavorite(this.user.id);
         },
         err => {
           this.error = err.error.message;
@@ -87,10 +89,28 @@ export class PerfilComponent implements OnInit {
   addToFav(id: any) {
     this.userService.createFavorito(id).subscribe((res: any) => {
       this.ns.notification('success', res.message, 'Se ha agregado a tus favoritos')
+      this.favorito = true;
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
     });
   }
   
+  delFav(id: any) {
+    this.userService.deleteFavorito(id).subscribe((res: any) => {
+      this.ns.notification('success', 'Operacion realizada con exito', res.message);
+      this.favorito = false;
+    }, err => {
+      this.ns.notification('error', err.error.message, 'Ha ocurrido un error');
+    })
+  }
+  
+  isFavorite(id: any) {
+    this.userService.isFavorito(id).subscribe((res: any) => {
+      this.favorito = res.result;
+    }, err => {
+      console.log(err);
+    })
+  }
+
   editPerfil() {this.router.navigate(['preferencias/perfil'])}
 }

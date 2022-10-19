@@ -6,7 +6,10 @@
                 {{user.nombre}}
                 <span class="fas" [ngClass]="{'fa-mars': user.sexo == 0, 'fa-venus': user.sexo == 1, 'fa-genderless': user.sexo == 2}"></span>
             </p>
-            <a class="fav" *ngIf="!owner;else isOwner" (click)="addToFav(user.id)"><span class="fas fa-heart"></span> Favoritos</a>
+            <ng-container *ngIf="!owner;else isOwner">
+                <a class="fav" *ngIf="!favorito;else isFav" (click)="addToFav(user.id)"><span class="fas fa-heart"></span> Favoritos</a>
+                <ng-template #isFav><button class="bg-red" (click)="delFav(user.id)"><span class="fas fa-minus-square"></span> Quitar de favoritos</button></ng-template>
+            </ng-container>
             <ng-template #isOwner><a class="fav" (click)="editPerfil()"><span class="fas fa-edit"></span> Editar</a></ng-template>
         </div>
     </div>
@@ -40,6 +43,10 @@
             <div class="uc-row">
                 <span class="fas fa-glass-cheers"></span>
                 <p>{{user.fiestas == 0 ? 'No hace fiestas' : 'Hace fiestas'}}</p>
+            </div>
+            <div class="uc-row">
+                <span class="fas fa-paw"></span>
+                <p>{{user.mascotas == 0 ? 'No tiene mascotas' : 'Tiene ' + user.mascotas + ' mascota(s)'}}</p>
             </div>
             <div class="uc-row">
                 <span class="fas fa-baby"></span>

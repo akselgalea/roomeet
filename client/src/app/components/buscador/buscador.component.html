@@ -1,3 +1,7 @@
+<div *ngIf="users.length == 0">
+    <h1>No hay resultados disponibles</h1>
+</div>
+
 <div class="uc-container">
     <div class="user-card" *ngFor="let user of users">
         <div class="uc-username">
@@ -26,6 +30,10 @@
         <div class="uc-row">
             <span class="fas fa-glass-cheers"></span>
             <p>{{user.fiestas == 0 ? 'No hace fiestas' : 'Hace fiestas'}}</p>
+        </div>
+        <div class="uc-row">
+            <span class="fas fa-paw"></span>
+            <p>{{user.mascotas == 0 ? 'No tiene mascotas' : 'Tiene ' + user.mascotas + ' mascota(s)'}}</p>
         </div>
         <div class="uc-row">
             <span class="fas fa-baby"></span>

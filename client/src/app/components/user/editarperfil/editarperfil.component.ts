@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as SHA256 from 'crypto-js/sha256';
 import { NgForm } from '@angular/forms';
 import { User } from 'src/app/models/User';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -27,7 +28,7 @@ export class EditarperfilComponent implements OnInit {
   }
 
   comfirmPass(passForm: NgForm) {
-    this.userService.comfirmPass(passForm.controls["password"].value).subscribe((res: any) => {
+    this.userService.comfirmPass(SHA256(passForm.controls["password"].value).toString()).subscribe((res: any) => {
       this.ns.notification('success', res.message, 'Ahora puedes editar tu perfil');
       this.confirmed = true;
     }, err => {

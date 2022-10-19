@@ -16,14 +16,26 @@ class UserController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data } = req.body;
-            const [users,] = yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos, foto_perfil FROM user WHERE username != ?', [data.username]);
+            const [users,] = yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE username != ?', [data.username]);
             return res.json(users);
+        });
+    }
+    buscador(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data } = req.body;
+            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
+            yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE username != ? EXCEPT SELECT u.id, u.username, u.nombre, u.descripcion, u.sexo, u.profesion, u.bebedor, u.fumador, u.fiestas, u.mascotas, u.hijos, u.foto_perfil FROM favoritos_user JOIN user as u ON favorito = u.id WHERE user_id = ?', [data.username, userId[0].id]).then(([users,]) => {
+                res.json(users);
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
         });
     }
     getPerfil(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data } = req.body;
-            const [user,] = yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos, foto_perfil FROM user WHERE username = ?', [data.username]);
+            const [user,] = yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE username = ?', [data.username]);
             if (user.length > 0) {
                 const [fotos,] = yield database_1.promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [user[0].id]);
                 const [hobbies,] = yield database_1.promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ?', [user[0].id]);
@@ -35,7 +47,7 @@ class UserController {
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const [user,] = yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, bebedor, fumador, fiestas, hijos, foto_perfil FROM user WHERE username = ?', [id]);
+            const [user,] = yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE username = ?', [id]);
             if (user.length > 0) {
                 const [fotos,] = yield database_1.promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [user[0].id]);
                 const [hobbies,] = yield database_1.promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ?', [user[0].id]);
@@ -188,9 +200,18 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
             const { favorito } = req.body;
-            yield database_1.promisePool.query('INSERT INTO favoritos_user SET favorito = ?, user_id = ?', [favorito, userId[0].id]).then(() => {
-                res.status(200).json({ message: 'Operacion realizada con exito' });
-            }).catch(err => {
+            yield database_1.promisePool.query('SELECT * FROM favoritos_user WHERE favorito = ? && user_id = ?', [favorito, userId[0].id]).then(([rows,]) => __awaiter(this, void 0, void 0, function* () {
+                if (rows.length > 0) {
+                    res.status(400).json({ message: 'Este usuario ya esta en tus favoritos!' });
+                }
+                else {
+                    yield database_1.promisePool.query('INSERT INTO favoritos_user SET favorito = ?, user_id = ?', [favorito, userId[0].id]).then(() => {
+                        res.status(200).json({ message: 'Operacion realizada con exito' });
+                    }).catch(err => {
+                        res.status(400).json({ message: err.sqlMessage });
+                    });
+                }
+            }), err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
             return res;
@@ -204,6 +225,22 @@ class UserController {
                 res.status(200).json({ message: 'Favorito removido con exito!' });
             }).catch(err => {
                 res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
+    isFavorito(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
+            const { id } = req.params;
+            yield database_1.promisePool.query('SELECT id FROM favoritos_user WHERE favorito = ? && user_id = ?', [id, userId[0].id]).then(([rows,]) => {
+                if (rows.length > 0)
+                    res.json({ result: true });
+                else
+                    res.json({ result: false });
+            }, err => {
+                console.log(err);
+                res.status(400).json({ message: 'Ha ocurrido un error' });
             });
             return res;
         });

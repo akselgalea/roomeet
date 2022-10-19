@@ -20,14 +20,16 @@ export class BuscadorComponent implements OnInit {
         this.users = (res as User[]);
       },
       err => {
-        this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
+        console.log(err.error.message);
+        this.ns.notification('error', 'Ha ocurrido un error', 'Operacion fallida')
       }
     );
   }
 
   addToFav(id: any) {
     this.userService.createFavorito(id).subscribe((res: any) => {
-      this.ns.notification('success', res.message, 'Se ha agregado a tus favoritos')
+      this.ns.notification('success', res.message, 'Se ha agregado a tus favoritos');
+      this.ngOnInit();
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
     });
