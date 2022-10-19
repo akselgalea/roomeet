@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/models/User';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { UserService } from 'src/app/services/user.service';
+import * as SHA256 from 'crypto-js/sha256';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +22,7 @@ export class RegisterComponent implements OnInit {
     let data : User = {
       username: register.controls["username"].value,
       email: register.controls["email"].value,
-      password: register.controls["password"].value
+      password: SHA256(register.controls["password"].value).toString()
     }
 
     this.userService.registerUser(data).subscribe((res: any) => {

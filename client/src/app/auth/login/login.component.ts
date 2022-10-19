@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as SHA256 from 'crypto-js/sha256';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -21,7 +22,7 @@ export class LoginComponent implements OnInit {
   onSubmit(login: NgForm) {
     let data : User = {
       username: login.controls["username"].value,
-      password: login.controls["password"].value
+      password: SHA256(login.controls["password"].value).toString()
     }
 
     this.userService.login(data).subscribe((res: any) => {

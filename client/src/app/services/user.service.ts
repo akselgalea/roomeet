@@ -44,5 +44,5 @@ export class UserService {
   addHobbie(id: string) { return this.http.post(`${this.API_URI}/users/hobbies/add`, {hobbie: id}); }
 
 
-  getSolicitudesPendientes() { return this.http.get(`${this.API_URI}/users/solicitudes/pendientes`) }
+  getSolicitudesPendientes() { return this.http.get(`${this.API_URI}/users/solicitudes/pendientes`); }
 }
