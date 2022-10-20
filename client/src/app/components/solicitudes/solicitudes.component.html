@@ -1,0 +1,18 @@
+<div class="fl-container solicitudes">
+    <h1 class="text-center">Solicitudes de contacto</h1>
+    <h1 *ngIf="solicitudes.length == 0">No tienes solicitudes de contacto</h1>
+    <div *ngFor="let soli of solicitudes">
+        <div class="fl-header">{{soli.nombre}}</div>
+        <div class="fl-card">
+            <img [src]="api_url + soli.foto_perfil" alt="">
+            <div class="fl-links">
+                <a [routerLink]="['/user', soli.username]"><span class="fas fa-user-alt"></span> Ver perfil</a>
+                <ng-container *ngIf="soli.estado == 0;else soliAceptada">
+                    <a  class="bg-green" (click)="acceptSol(soli)"><span class="fas fa-check-circle"></span> Aceptar solicitud</a>
+                    <a class="bg-red" (click)="rechazarSol(soli)"><span class="fas fa-minus-square"></span> Rechazar solicitud</a>
+                </ng-container>
+                <ng-template #soliAceptada><a class="bg-red" (click)="revocarPermiso(soli)"><span class="fas fa-minus-square"></span> Revocar permisos</a></ng-template>
+            </div>
+        </div>
+    </div>
+</div>

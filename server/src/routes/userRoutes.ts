@@ -48,7 +48,11 @@ class UserRoutes {
         this.router.post('/favoritos', verifyToken, userController.addFavorito);
         this.router.delete('/favoritos/:fav', verifyToken, userController.deleteFavorito);
 
+        //Solicitudes
+        this.router.get('/solicitudes', verifyToken, userController.getSolicitudes);
         this.router.get('/solicitudes/pendientes', verifyToken, userController.getCantPendientes);
+        this.router.post('/solicitud', verifyToken, userController.createSolicitud);
+        this.router.put('/solicitud/:id', verifyToken, userController.updateSolicitud);
     }
 }
 

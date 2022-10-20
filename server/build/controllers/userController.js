@@ -23,8 +23,7 @@ class UserController {
     buscador(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data } = req.body;
-            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
-            yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE username != ? EXCEPT SELECT u.id, u.username, u.nombre, u.descripcion, u.sexo, u.profesion, u.bebedor, u.fumador, u.fiestas, u.mascotas, u.hijos, u.foto_perfil FROM favoritos_user JOIN user as u ON favorito = u.id WHERE user_id = ?', [data.username, userId[0].id]).then(([users,]) => {
+            yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE username != ? EXCEPT SELECT u.id, u.username, u.nombre, u.descripcion, u.sexo, u.profesion, u.bebedor, u.fumador, u.fiestas, u.mascotas, u.hijos, u.foto_perfil FROM favoritos_user JOIN user as u ON favorito = u.id WHERE user_id = ?', [data.username, req.body.data.id]).then(([users,]) => {
                 res.json(users);
             }, err => {
                 res.status(400).json({ message: err.sqlMessage });
@@ -59,7 +58,7 @@ class UserController {
     login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { username, password } = req.body;
-            yield database_1.promisePool.query('SELECT username, role_id FROM user where username = ? AND password = ?', [username, password]).then(([data,]) => {
+            yield database_1.promisePool.query('SELECT id, username, role_id FROM user where username = ? AND password = ?', [username, password]).then(([data,]) => {
                 if (data.length === 0)
                     res.status(400).json({ message: "Datos de usuario incorrectos" });
                 else {
@@ -119,13 +118,12 @@ class UserController {
     }
     uploadImage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
             const file = req.file;
             if (file) {
                 let data = {
                     link: file.path,
                     descripcion: req.body.descripcion,
-                    user_id: userId[0].id
+                    user_id: req.body.data.id
                 };
                 yield database_1.promisePool.query('INSERT INTO fotos_user set ?', data).then(() => {
                     res.json({ message: "Imagen subida con exito!" });
@@ -152,10 +150,9 @@ class UserController {
     }
     addHobbie(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
             const { id } = req.body.id;
-            yield database_1.promisePool.query('INSERT INTO hobbies_user set hobbies_id = ?, user_id = ?', [id, userId[0].id]).then(() => {
-                res.status(200).json({ message: 'Adding hobbie to user ' + userId });
+            yield database_1.promisePool.query('INSERT INTO hobbies_user SET hobbies_id = ?, user_id = ?', [id, req.body.data.id]).then(() => {
+                res.status(200).json({ message: 'Adding hobbie to user ' + req.body.data.id });
             }).catch(err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
@@ -187,9 +184,8 @@ class UserController {
     //Favoritos -- DONE
     getFavoritos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
-            yield database_1.promisePool.query('SELECT u.id, u.username, u.nombre, u.sexo, u.profesion, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [userId[0].id]).then(result => {
-                res.status(200).json(result[0]);
+            yield database_1.promisePool.query('SELECT u.id, u.username, u.nombre, u.sexo, u.profesion, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [req.body.data.id]).then(([rows,]) => {
+                res.json(rows);
             }).catch(err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
@@ -198,14 +194,13 @@ class UserController {
     }
     addFavorito(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
             const { favorito } = req.body;
-            yield database_1.promisePool.query('SELECT * FROM favoritos_user WHERE favorito = ? && user_id = ?', [favorito, userId[0].id]).then(([rows,]) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('SELECT * FROM favoritos_user WHERE favorito = ? && user_id = ?', [favorito, req.body.data.id]).then(([rows,]) => __awaiter(this, void 0, void 0, function* () {
                 if (rows.length > 0) {
                     res.status(400).json({ message: 'Este usuario ya esta en tus favoritos!' });
                 }
                 else {
-                    yield database_1.promisePool.query('INSERT INTO favoritos_user SET favorito = ?, user_id = ?', [favorito, userId[0].id]).then(() => {
+                    yield database_1.promisePool.query('INSERT INTO favoritos_user SET favorito = ?, user_id = ?', [favorito, req.body.data.id]).then(() => {
                         res.status(200).json({ message: 'Operacion realizada con exito' });
                     }).catch(err => {
                         res.status(400).json({ message: err.sqlMessage });
@@ -219,9 +214,8 @@ class UserController {
     }
     deleteFavorito(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
             const { fav } = req.params;
-            yield database_1.promisePool.query('DELETE FROM favoritos_user WHERE favorito = ? && user_id = ?', [fav, userId[0].id]).then(() => {
+            yield database_1.promisePool.query('DELETE FROM favoritos_user WHERE favorito = ? && user_id = ?', [fav, req.body.data.id]).then(() => {
                 res.status(200).json({ message: 'Favorito removido con exito!' });
             }).catch(err => {
                 res.status(400).json({ message: err.sqlMessage });
@@ -231,9 +225,8 @@ class UserController {
     }
     isFavorito(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
             const { id } = req.params;
-            yield database_1.promisePool.query('SELECT id FROM favoritos_user WHERE favorito = ? && user_id = ?', [id, userId[0].id]).then(([rows,]) => {
+            yield database_1.promisePool.query('SELECT id FROM favoritos_user WHERE favorito = ? && user_id = ?', [id, req.body.data.id]).then(([rows,]) => {
                 if (rows.length > 0)
                     res.json({ result: true });
                 else
@@ -245,11 +238,44 @@ class UserController {
             return res;
         });
     }
+    getSolicitudes(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('SELECT pc.*, u.username, u.nombre, u.foto_perfil FROM peticion_contacto AS pc JOIN user AS u ON u.id = pc.user_id WHERE pc.contactado_id = ? && pc.estado != 2', [req.body.data.id]).then(([rows,]) => {
+                res.json(rows);
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
     getCantPendientes(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
-            yield database_1.promisePool.query('SELECT id FROM peticion_contacto WHERE contactado_id = ? && acepta = 0', [userId[0].id]).then((data) => {
-                res.json(data[0].length);
+            yield database_1.promisePool.query('SELECT count(id) AS cantidad FROM peticion_contacto WHERE contactado_id = 1 && estado = 0', [req.body.data.id]).then(([data,]) => {
+                res.json(data[0].cantidad);
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
+    createSolicitud(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const data = {
+                contactado_id: req.body.id,
+                user_id: req.body.data.id
+            };
+            yield database_1.promisePool.query('INSERT INTO peticion_contacto SET ?', [data]).then(() => {
+                res.json({ message: 'Solicitud generada con exito' });
+            }, err => {
+                res.status(200).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
+    updateSolicitud(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('UPDATE peticion_contacto SET estado = ? WHERE id = ?', [req.body.estado, req.params.id]).then(() => {
+                res.json({ message: 'Solicitud aceptado con exito!' });
             }, err => {
                 res.status(400).json({ message: err.sqlMessage });
             });

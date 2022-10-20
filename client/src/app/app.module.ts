@@ -17,6 +17,7 @@ import { NgToastModule } from 'ng-angular-popup';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { EditarperfilComponent } from './components/user/editarperfil/editarperfil.component';
+import { SolicitudesComponent } from './components/solicitudes/solicitudes.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { EditarperfilComponent } from './components/user/editarperfil/editarperf
     FavoritosComponent,
     LoginComponent,
     RegisterComponent,
-    EditarperfilComponent
+    EditarperfilComponent,
+    SolicitudesComponent
   ],
   imports: [
     BrowserModule,

@@ -11,11 +11,10 @@ class UserController {
 
     public async buscador (req: Request, res: Response): Promise<any> {
         const {data} = req.body;
-        const [userId,] = await promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
 
         await promisePool.query(
             'SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE username != ? EXCEPT SELECT u.id, u.username, u.nombre, u.descripcion, u.sexo, u.profesion, u.bebedor, u.fumador, u.fiestas, u.mascotas, u.hijos, u.foto_perfil FROM favoritos_user JOIN user as u ON favorito = u.id WHERE user_id = ?'
-        , [data.username, (userId as any)[0].id]).then(([users,]) => {
+        , [data.username, req.body.data.id]).then(([users,]) => {
             res.json(users);
         }, err => {
             res.status(400).json({message: err.sqlMessage});
@@ -54,7 +53,7 @@ class UserController {
 
     public async login(req: Request, res: Response): Promise<any> {
         const {username, password} = req.body;
-        await promisePool.query('SELECT username, role_id FROM user where username = ? AND password = ?', [username, password]).then(([data,]: any) => {
+        await promisePool.query('SELECT id, username, role_id FROM user where username = ? AND password = ?', [username, password]).then(([data,]: any) => {
             if(data.length === 0) res.status(400).json({message: "Datos de usuario incorrectos"});
             else {
                 const token = jwt.sign(JSON.stringify(data[0]), 'stil');
@@ -110,14 +109,12 @@ class UserController {
     }
 
     public async uploadImage(req: Request, res: Response): Promise<any> {
-        const [userId,] = await promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
         const file = req.file;
         if(file) {
             let data = {
                 link: file.path,
                 descripcion: req.body.descripcion,
-                user_id: (userId as any)[0].id
-
+                user_id: req.body.data.id
             }
             
             await promisePool.query('INSERT INTO fotos_user set ?', data).then(() => {
@@ -144,11 +141,10 @@ class UserController {
     }
 
     public async addHobbie(req: Request, res: Response): Promise<any> {
-        const [userId,] = await promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
         const {id} = req.body.id; 
 
-        await promisePool.query('INSERT INTO hobbies_user set hobbies_id = ?, user_id = ?', [id, (userId as any)[0].id]).then(() => {
-            res.status(200).json({message: 'Adding hobbie to user ' + userId});
+        await promisePool.query('INSERT INTO hobbies_user SET hobbies_id = ?, user_id = ?', [id, req.body.data.id]).then(() => {
+            res.status(200).json({message: 'Adding hobbie to user ' + req.body.data.id});
         }).catch(err => {
             res.status(400).json({message: err.sqlMessage});
         });
@@ -181,9 +177,8 @@ class UserController {
 
     //Favoritos -- DONE
     public async getFavoritos(req: Request, res: Response): Promise<any> {
-        const [userId,] = await promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
-        await promisePool.query('SELECT u.id, u.username, u.nombre, u.sexo, u.profesion, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [(userId as any)[0].id]).then(result => {
-            res.status(200).json(result[0])
+        await promisePool.query('SELECT u.id, u.username, u.nombre, u.sexo, u.profesion, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [req.body.data.id]).then(([rows,]: any) => {
+            res.json(rows)
         }).catch(err => {
             res.status(400).json({message: err.sqlMessage})
         });
@@ -192,14 +187,12 @@ class UserController {
     }
 
     public async addFavorito(req: Request, res: Response): Promise<any> {
-        const [userId,] = await promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
         const {favorito} = req.body;
-        
-        await promisePool.query('SELECT * FROM favoritos_user WHERE favorito = ? && user_id = ?', [favorito, (userId as any)[0].id]).then(async ([rows,] : any) => {
+        await promisePool.query('SELECT * FROM favoritos_user WHERE favorito = ? && user_id = ?', [favorito, req.body.data.id]).then(async ([rows,] : any) => {
             if(rows.length > 0) {
                 res.status(400).json({message: 'Este usuario ya esta en tus favoritos!'})
             } else {
-                await promisePool.query('INSERT INTO favoritos_user SET favorito = ?, user_id = ?', [favorito, (userId as any)[0].id]).then(() => {
+                await promisePool.query('INSERT INTO favoritos_user SET favorito = ?, user_id = ?', [favorito, req.body.data.id]).then(() => {
                     res.status(200).json({message: 'Operacion realizada con exito'})
                 }).catch(err => {
                     res.status(400).json({message: err.sqlMessage})
@@ -213,10 +206,9 @@ class UserController {
     }
 
     public async deleteFavorito(req: Request, res: Response): Promise<any> {
-        const [userId,] = await promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
         const { fav } = req.params;
 
-        await promisePool.query('DELETE FROM favoritos_user WHERE favorito = ? && user_id = ?', [fav, (userId as any)[0].id]).then(() => {
+        await promisePool.query('DELETE FROM favoritos_user WHERE favorito = ? && user_id = ?', [fav, req.body.data.id]).then(() => {
             res.status(200).json({message: 'Favorito removido con exito!'})
         }).catch(err => {
             res.status(400).json({message: err.sqlMessage})
@@ -226,10 +218,9 @@ class UserController {
     }
 
     public async isFavorito(req: Request, res: Response): Promise<any> {
-        const [userId,] = await promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
         const {id} = req.params;
 
-        await promisePool.query('SELECT id FROM favoritos_user WHERE favorito = ? && user_id = ?', [id, (userId as any)[0].id]).then(([rows,]: any) => {
+        await promisePool.query('SELECT id FROM favoritos_user WHERE favorito = ? && user_id = ?', [id, req.body.data.id]).then(([rows,]: any) => {
             if(rows.length > 0) res.json({result: true});
             else res.json({result: false});
         }, err => {
@@ -240,14 +231,46 @@ class UserController {
         return res;
     }
 
+    public async getSolicitudes(req: Request, res: Response): Promise<any> {
+        await promisePool.query('SELECT pc.*, u.username, u.nombre, u.foto_perfil FROM peticion_contacto AS pc JOIN user AS u ON u.id = pc.user_id WHERE pc.contactado_id = ? && pc.estado != 2', [req.body.data.id]).then(([rows,]: any) => {
+            res.json(rows);
+        }, err => {
+            res.status(400).json({message: err.sqlMessage});
+        })
+        return res;
+    }
+
     public async getCantPendientes(req: Request, res: Response): Promise<any> {
-        const [userId,] = await promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
-    
-        await promisePool.query('SELECT id FROM peticion_contacto WHERE contactado_id = ? && acepta = 0', [(userId as any)[0].id]).then((data) => {
-            res.json((data as any)[0].length)
+        await promisePool.query('SELECT count(id) AS cantidad FROM peticion_contacto WHERE contactado_id = 1 && estado = 0', [req.body.data.id]).then(([data,]: any) => {
+            res.json(data[0].cantidad);
         }, err => {
             res.status(400).json({message: err.sqlMessage})
         });
+
+        return res;
+    }
+
+    public async createSolicitud(req: Request, res: Response): Promise<any> {
+        const data = {
+            contactado_id: req.body.id,
+            user_id: req.body.data.id
+        }
+        
+        await promisePool.query('INSERT INTO peticion_contacto SET ?', [data]).then(() => {
+            res.json({message: 'Solicitud generada con exito'})
+        }, err => {
+            res.status(200).json({message: err.sqlMessage})
+        })
+
+        return res;
+    }
+
+    public async updateSolicitud(req: Request, res: Response): Promise<any> {
+        await promisePool.query('UPDATE peticion_contacto SET estado = ? WHERE id = ?', [req.body.estado, req.params.id]).then(() => {
+            res.json({message: 'Solicitud aceptado con exito!'})
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        })
 
         return res;
     }

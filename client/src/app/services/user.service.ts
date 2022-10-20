@@ -44,6 +44,8 @@ export class UserService {
   //Hobbies
   addHobbie(id: string) { return this.http.post(`${this.API_URI}/users/hobbies/add`, {hobbie: id}); }
 
-
-  getSolicitudesPendientes() { return this.http.get(`${this.API_URI}/users/solicitudes/pendientes`); }
+  getSolicitudes() { return this.http.get(`${this.API_URI}/users/solicitudes`); }
+  getCantSolicitudesPendientes() { return this.http.get(`${this.API_URI}/users/solicitudes/pendientes`); }
+  createSolicitud(id: string) { return this.http.post(`${this.API_URI}/users/solicitud`, {id: id}); }
+  updateSolicitud(id: number, opt: number) { return this.http.put(`${this.API_URI}/users/solicitud/${id}`, {estado: opt}); }
 }

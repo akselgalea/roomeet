@@ -1,10 +1,10 @@
-<div class="favoritos container-mw">
+<div class="fl-container container-mw">
     <h1 *ngIf="users.length == 0">No tienes favoritos</h1>
     <div *ngFor="let user of users">
-        <div class="fav-header">{{user.nombre}}</div>
-        <div class="fav-card">
+        <div class="fl-header">{{user.nombre}}</div>
+        <div class="fl-card">
             <img [src]="api_url + user.foto_perfil" alt="">
-            <div class="fav-links">
+            <div class="fl-links">
                 <a [routerLink]="['/user', user.username]"><span class="fas fa-user-alt"></span> Ver perfil</a>
                 <a (click)="pedirContacto(user.id)"><span class="far fa-comment-alt"></span> Pedir contacto</a>
                 <a class="bg-red" (click)="delFav(user.id)"><span class="fas fa-minus-square"></span> Quitar de favoritos</a>

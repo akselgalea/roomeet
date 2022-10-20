@@ -10,6 +10,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthedGuard } from './guards/authed.guard';
+import { SolicitudesComponent } from './components/solicitudes/solicitudes.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'buscador', component: BuscadorComponent, canActivate: [AuthGuard]},
   {path: 'user/:id', component: PerfilComponent, canActivate: [AuthGuard]},
   {path: 'favoritos', component: FavoritosComponent, canActivate: [AuthGuard]},
+  {path: 'solicitudes', component: SolicitudesComponent, canActivate: [AuthGuard]},
   {path: 'preferencias', component: ConfiguracionComponent, canActivate: [AuthGuard]},
   {path: "**", pathMatch: "full", component: PagenotfoundComponent}
 ];

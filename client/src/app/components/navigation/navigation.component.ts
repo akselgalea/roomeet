@@ -15,7 +15,7 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit(): void {
     if(!this.paths.includes(this._location.path())) {
-      this.userService.getSolicitudesPendientes().subscribe((res: any) => {
+      this.userService.getCantSolicitudesPendientes().subscribe((res: any) => {
         this.counter = res;
       }, err => {
         console.log(err);

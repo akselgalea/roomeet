@@ -29,11 +29,16 @@ export class FavoritosComponent implements OnInit {
       this.ns.notification('success', 'Operacion realizada con exito', res.message);
       this.ngOnInit()
     }, err => {
-      this.ns.notification('error', err.error.message, 'Ha ocurrido un error');
+      this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
     })
   }
 
   pedirContacto(id: string) {
-    console.log(id);
+    this.userService.createSolicitud(id).subscribe((res: any) => {
+      this.ns.notification('success', 'Operacion realizada con exito', res.message)
+    }, err => {
+      console.log(err);
+      this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
+    })
   }
 }

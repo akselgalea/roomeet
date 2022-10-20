@@ -1,4 +1,4 @@
-<div class="user-container container-mw" *ngIf="!error;else notFound">
+<div class="user-container container-mw" *ngIf="!error && user.id;else notFound">
     <div class="uc-presentacion">
         <img class="u-fperfil" [src]="api_url + user.foto_perfil" alt="">
         <div class="u-name">
