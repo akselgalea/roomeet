@@ -30,8 +30,7 @@ export class LoginComponent implements OnInit {
 
       this.router.navigate(['/perfil']);
     }, err => {
-      console.log(err.statusMessage);
-      this.ns.notification('error', 'Ha ocurrido un error', err.status)
+      this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
     });
   }
 

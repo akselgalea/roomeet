@@ -29,6 +29,7 @@ class UserRoutes {
         this.router.post('/login', userController_1.userController.login);
         this.router.post('/register', userController_1.userController.create);
         this.router.post('/upload-image', upload.single("file"), verifyToken, userController_1.userController.uploadImage);
+        this.router.post('/comfirm-pass', verifyToken, userController_1.userController.comparePass);
         this.router.put('/:id', verifyToken, userController_1.userController.update);
         this.router.delete('/:id', verifyToken, userController_1.userController.delete);
         //User hobbies
@@ -40,6 +41,7 @@ class UserRoutes {
         this.router.get('/favoritos', verifyToken, userController_1.userController.getFavoritos);
         this.router.post('/favoritos', verifyToken, userController_1.userController.addFavorito);
         this.router.delete('/favoritos/:fav', verifyToken, userController_1.userController.deleteFavorito);
+        this.router.get('/solicitudes/pendientes', verifyToken, userController_1.userController.getCantPendientes);
     }
 }
 const userRoutes = new UserRoutes();

@@ -47,12 +47,17 @@ class UserController {
     login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { username, password } = req.body;
-            const [rows,] = yield database_1.promisePool.query('SELECT username, role_id FROM user where username = ? AND password = ?', [username, password]);
-            if (rows.length > 0) {
-                const token = jwt.sign(JSON.stringify(rows[0]), 'stil');
-                return res.status(200).json({ token });
-            }
-            return res.status(400).json({ message: "Datos de usuario incorrectos" });
+            yield database_1.promisePool.query('SELECT username, role_id FROM user where username = ? AND password = ?', [username, password]).then(([data,]) => {
+                if (data.length === 0)
+                    res.status(400).json({ message: "Datos de usuario incorrectos" });
+                else {
+                    const token = jwt.sign(JSON.stringify(data[0]), 'stil');
+                    res.json({ token });
+                }
+            }, err => {
+                console.log(err.sqlMessage);
+            });
+            return res;
         });
     }
     create(req, res) {
@@ -198,6 +203,32 @@ class UserController {
             yield database_1.promisePool.query('DELETE FROM favoritos_user WHERE favorito = ? && user_id = ?', [fav, userId[0].id]).then(() => {
                 res.status(200).json({ message: 'Favorito removido con exito!' });
             }).catch(err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
+    getCantPendientes(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [userId,] = yield database_1.promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
+            yield database_1.promisePool.query('SELECT id FROM peticion_contacto WHERE contactado_id = ? && acepta = 0', [userId[0].id]).then((data) => {
+                res.json(data[0].length);
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
+    comparePass(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('SELECT password FROM user WHERE username = ?', [req.body.data.username]).then((data) => {
+                if (data[0][0].password === req.body.password) {
+                    res.json({ message: 'Felicidades! Las contraseñas coinciden' });
+                }
+                else {
+                    res.status(400).json({ message: 'Las contraseñas no coinciden' });
+                }
+            }, err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
             return res;

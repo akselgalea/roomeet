@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { User } from 'src/app/models/User';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { UserService } from 'src/app/services/user.service';
@@ -9,9 +10,10 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./editarperfil.component.scss']
 })
 export class EditarperfilComponent implements OnInit {
-  user: User = {}; 
+  type = "password";
   api_url = '';
-  flag = false;
+  confirmed = false;
+  user: User = {}; 
 
   constructor(private userService: UserService, private ns: NotificationsService) { }
 
@@ -24,4 +26,17 @@ export class EditarperfilComponent implements OnInit {
     })
   }
 
+  comfirmPass(passForm: NgForm) {
+    this.userService.comfirmPass(passForm.controls["password"].value).subscribe((res: any) => {
+      this.ns.notification('success', res.message, 'Ahora puedes editar tu perfil');
+      this.confirmed = true;
+    }, err => {
+      this.ns.notification('error', 'Contraseña incorrecta', err.error.message);
+    })
+  }
+
+  setType() {
+    if(this.type === "password") this.type = "text";
+    else this.type = "password";
+  }
 }

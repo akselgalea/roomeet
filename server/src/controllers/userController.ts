@@ -39,14 +39,17 @@ class UserController {
 
     public async login(req: Request, res: Response): Promise<any> {
         const {username, password} = req.body;
-        const [rows,] = await promisePool.query('SELECT username, role_id FROM user where username = ? AND password = ?', [username, password]);
+        await promisePool.query('SELECT username, role_id FROM user where username = ? AND password = ?', [username, password]).then(([data,]: any) => {
+            if(data.length === 0) res.status(400).json({message: "Datos de usuario incorrectos"});
+            else {
+                const token = jwt.sign(JSON.stringify(data[0]), 'stil');
+                res.json({token});
+            }
+        }, err => {
+            console.log(err.sqlMessage);
+        })
         
-        if((rows as any).length > 0) {
-            const token = jwt.sign(JSON.stringify((rows as any)[0]), 'stil') ;
-            return res.status(200).json({token});
-        }
-
-        return res.status(400).json({message: "Datos de usuario incorrectos"});
+        return res;
     }
     
     public async create(req: Request, res: Response): Promise<any> {
@@ -197,6 +200,32 @@ class UserController {
         });
 
         return res
+    }
+
+    public async getCantPendientes(req: Request, res: Response): Promise<any> {
+        const [userId,] = await promisePool.query('SELECT id FROM user WHERE username = ?', [req.body.data.username]);
+    
+        await promisePool.query('SELECT id FROM peticion_contacto WHERE contactado_id = ? && acepta = 0', [(userId as any)[0].id]).then((data) => {
+            res.json((data as any)[0].length)
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        });
+
+        return res;
+    }
+
+    public async comparePass(req: Request, res: Response): Promise<any> {
+        await promisePool.query('SELECT password FROM user WHERE username = ?', [req.body.data.username]).then((data: any) => {
+            if(data[0][0].password === req.body.password) {
+                res.json({message: 'Felicidades! Las contraseñas coinciden'})
+            } else {
+                res.status(400).json({message: 'Las contraseñas no coinciden'});
+            }
+        }, err => {
+            res.status(400).json({message: err.sqlMessage});
+        })
+         
+        return res;
     }
 }
 

@@ -27,7 +27,7 @@ export class UserService {
   }
 
   registerUser(user: User) { return this.http.post(`${this.API_URI}/users/register`, user); }
-
+  comfirmPass(pass: string) { return this.http.post(`${this.API_URI}/users/comfirm-pass`, {password: pass}); }
   getUsers() { return this.http.get(`${this.API_URI}/users`); }
   getPerfil() { return this.http.get(`${this.API_URI}/users/perfil`); }
   getUser(id: string) { return this.http.get(`${this.API_URI}/users/perfil/${id}`); }
@@ -42,4 +42,7 @@ export class UserService {
 
   //Hobbies
   addHobbie(id: string) { return this.http.post(`${this.API_URI}/users/hobbies/add`, {hobbie: id}); }
+
+
+  getSolicitudesPendientes() { return this.http.get(`${this.API_URI}/users/solicitudes/pendientes`) }
 }
