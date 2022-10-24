@@ -18,6 +18,7 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { EditarperfilComponent } from './components/user/editarperfil/editarperfil.component';
 import { SolicitudesComponent } from './components/solicitudes/solicitudes.component';
+import { ConfigBuscadorComponent } from './components/configuracion/config-buscador/config-buscador.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { SolicitudesComponent } from './components/solicitudes/solicitudes.compo
     LoginComponent,
     RegisterComponent,
     EditarperfilComponent,
-    SolicitudesComponent
+    SolicitudesComponent,
+    ConfigBuscadorComponent
   ],
   imports: [
     BrowserModule,

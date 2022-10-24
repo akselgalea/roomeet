@@ -1,18 +1,50 @@
 <div class="fl-container solicitudes">
     <h1 class="text-center">Solicitudes de contacto</h1>
     <h1 *ngIf="solicitudes.length == 0">No tienes solicitudes de contacto</h1>
-    <div *ngFor="let soli of solicitudes">
+    <div *ngFor="let soli of solicitudes.solis">
         <div class="fl-header">{{soli.nombre}}</div>
         <div class="fl-card">
             <img [src]="api_url + soli.foto_perfil" alt="">
             <div class="fl-links">
                 <a [routerLink]="['/user', soli.username]"><span class="fas fa-user-alt"></span> Ver perfil</a>
                 <ng-container *ngIf="soli.estado == 0;else soliAceptada">
-                    <a  class="bg-green" (click)="acceptSol(soli)"><span class="fas fa-check-circle"></span> Aceptar solicitud</a>
+                    <a class="bg-green" (click)="acceptSol(soli)"><span class="fas fa-check-circle"></span> Aceptar solicitud</a>
                     <a class="bg-red" (click)="rechazarSol(soli)"><span class="fas fa-minus-square"></span> Rechazar solicitud</a>
                 </ng-container>
                 <ng-template #soliAceptada><a *ngIf="soli.estado == 1" class="bg-red" (click)="revocarPermiso(soli)"><span class="fas fa-minus-square"></span> Revocar permisos</a></ng-template>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="fl-container solicitudes">
+    <h1 class="text-center">Mis solicitudes de contacto</h1>
+    <h1 *ngIf="solicitudes.length == 0">No tienes solicitudes de contacto</h1>
+    <div *ngFor="let soli of solicitudes.mysolis">
+        <div class="fl-header" [ngSwitch]="soli.estado">
+            <p>{{soli.nombre}}</p>
+            <p *ngSwitchCase="0">Pendiente</p>
+            <p *ngSwitchCase="1">Aceptada</p>
+            <p *ngSwitchCase="2">Rechazada</p>
+        </div>
+        <div class="fl-card">
+            <img [src]="api_url + soli.foto_perfil" alt="">
+            <div class="fl-links">
+                <a [routerLink]="['/user', soli.username]"><span class="fas fa-user-alt"></span> Ver perfil</a>
+                <ng-container *ngIf="soli.estado == 0;else soliAceptada">
+                    <a class="bg-red" (click)="eliminarSol(soli.id)"><span class="fas fa-minus-square"></span> Eliminar solicitud</a>
+                </ng-container>
+                <ng-template #soliAceptada><a *ngIf="soli.estado == 1" (click)="verInfoContacto(soli.contactado_id)"><span class="far fa-comment-alt"></span> Ver info de contacto</a></ng-template>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="contact-info" *ngIf="showInfo">
+    <span (click)="closeInfo()" class="cerrar fas fa-times"></span>
+    <div>
+        <div class="contact-link" *ngFor="let forma of info">
+            <p>{{forma.forma}}: {{forma.link}}</p>
         </div>
     </div>
 </div>

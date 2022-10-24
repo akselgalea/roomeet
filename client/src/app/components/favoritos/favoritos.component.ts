@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { elementAt } from 'rxjs';
 import { User } from 'src/app/models/User';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { UserService } from 'src/app/services/user.service';
@@ -10,8 +11,11 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./favoritos.component.scss']
 })
 export class FavoritosComponent implements OnInit {
-  users: any = [];
+  users: any = {};
   api_url = '';
+  showInfo: boolean = false;
+  info: any = [];
+
   constructor(private userService: UserService, private ns: NotificationsService, private router: Router) { }
 
   ngOnInit(): void {
@@ -19,6 +23,14 @@ export class FavoritosComponent implements OnInit {
     this.userService.getFavoritos().subscribe(
       res => {
         this.users = res;
+        
+        for(let i = 0; i < this.users.favs.length; i++) {
+          let soli = this.users.solis.find((soli: any) => soli.id === this.users.favs[i].id);
+          if(soli != undefined) {
+            if(soli.estado == 1) this.users.favs[i].solicitud = 'aprobada';
+            else this.users.favs[i].solicitud = 'pendiente';
+          } else this.users.favs[i].solicitud = 'no';
+        }
       },
       err => console.log(err)
     );
@@ -33,12 +45,35 @@ export class FavoritosComponent implements OnInit {
     })
   }
 
-  pedirContacto(id: string) {
-    this.userService.createSolicitud(id).subscribe((res: any) => {
-      this.ns.notification('success', 'Operacion realizada con exito', res.message)
+  pedirContacto(user: any) {
+    this.userService.createSolicitud(user.id).subscribe((res: any) => {
+      this.ns.notification('success', 'Operacion realizada con exito', res.message);
+      user.solicitud = 'pendiente';
     }, err => {
       console.log(err);
       this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
     })
   }
+
+  eliminarSol(user: any) {
+    this.userService.deleteSolicitudByUserId(user.id).subscribe((res: any) => {
+      this.ns.notification('success', 'Operacion realizada con exito', res.message);
+      user.solicitud = 'no';
+    }, err => {
+      console.log(err);
+      this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
+    })
+  }
+
+  verInfoContacto(id: string) {
+    this.userService.getInfoContacto(id).subscribe((res: any) => {
+      this.showInfo = true;
+      this.info = res;
+    })
+  }
+
+  closeInfo() {
+    this.showInfo = false;
+  }
+  
 }

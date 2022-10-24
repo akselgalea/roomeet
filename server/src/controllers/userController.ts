@@ -177,8 +177,12 @@ class UserController {
 
     //Favoritos -- DONE
     public async getFavoritos(req: Request, res: Response): Promise<any> {
-        await promisePool.query('SELECT u.id, u.username, u.nombre, u.sexo, u.profesion, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [req.body.data.id]).then(([rows,]: any) => {
-            res.json(rows)
+        await promisePool.query('SELECT u.id, u.username, u.nombre, u.sexo, u.profesion, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [req.body.data.id]).then(async ([rows,]: any) => {
+            await promisePool.query('SELECT u.id, pc.id AS soli_id, pc.estado FROM peticion_contacto AS pc JOIN user AS u ON u.id = pc.contactado_id WHERE pc.user_id = ?', [req.body.data.id]).then(([data,]: any) => {
+                res.json({favs: rows, solis: data})
+            }, err => {
+                res.status(400).json({message: err.sqlMessage});
+            })
         }).catch(err => {
             res.status(400).json({message: err.sqlMessage})
         });
@@ -232,8 +236,10 @@ class UserController {
     }
 
     public async getSolicitudes(req: Request, res: Response): Promise<any> {
-        await promisePool.query('SELECT pc.*, u.username, u.nombre, u.foto_perfil FROM peticion_contacto AS pc JOIN user AS u ON u.id = pc.user_id WHERE pc.contactado_id = ? && pc.estado != 2', [req.body.data.id]).then(([rows,]: any) => {
-            res.json(rows);
+        await promisePool.query('SELECT pc.*, u.username, u.nombre, u.foto_perfil FROM peticion_contacto AS pc JOIN user AS u ON u.id = pc.user_id WHERE pc.contactado_id = ? && pc.estado != 2', [req.body.data.id]).then(async ([rows,]: any) => {
+            await promisePool.query('SELECT pc.*, u.username, u.nombre, u.foto_perfil FROM peticion_contacto AS pc JOIN user AS u ON u.id = pc.contactado_id WHERE pc.user_id = ?', [req.body.data.id]).then(([data,]: any) => {
+                res.json({solis: rows, mysolis: data})
+            })
         }, err => {
             res.status(400).json({message: err.sqlMessage});
         })
@@ -275,6 +281,26 @@ class UserController {
         return res;
     }
 
+    public async deleteSolicitud(req: Request, res: Response): Promise<any> {
+        await promisePool.query('DELETE FROM peticion_contacto WHERE id = ?', [req.params.id]).then(() => {
+            res.status(200).json({message: 'Solicitud removida con exito!'})
+        }).catch(err => {
+            res.status(400).json({message: err.sqlMessage})
+        });
+
+        return res;
+    }
+
+    public async deleteSolicitudByUserId(req: Request, res: Response): Promise<any> {
+        await promisePool.query('DELETE FROM peticion_contacto WHERE contactado_id = ? && user_id = ?', [req.params.id, req.body.data.id]).then(() => {
+            res.status(200).json({message: 'Solicitud removida con exito!'})
+        }).catch(err => {
+            res.status(400).json({message: err.sqlMessage})
+        });
+
+        return res;
+    }
+
     public async comparePass(req: Request, res: Response): Promise<any> {
         await promisePool.query('SELECT password FROM user WHERE username = ?', [req.body.data.username]).then((data: any) => {
             if(data[0][0].password === req.body.password) {
@@ -286,6 +312,26 @@ class UserController {
             res.status(400).json({message: err.sqlMessage});
         })
          
+        return res;
+    }
+
+    public async getInfoContacto(req: Request, res: Response): Promise<any> {
+        await promisePool.query('SELECT fu.id, f.forma, fu.link FROM formas_contacto_user AS fu JOIN formas_contacto AS f ON f.id = fu.forma_id WHERE fu.user_id = ?', [req.params.id]).then(([data, ]: any) => {
+            res.json(data)
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        })
+        
+        return res;
+    }
+
+    public async getBuscadorConfig(req: Request, res: Response): Promise<any> {
+        await promisePool.query('SELECT * FROM preferencias WHERE user_id = ?', [req.body.data.id]).then(([rows,]: any) => {
+            res.json(rows);
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        })
+
         return res;
     }
 }

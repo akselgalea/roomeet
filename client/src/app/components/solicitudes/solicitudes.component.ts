@@ -9,6 +9,8 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class SolicitudesComponent implements OnInit {
   solicitudes: any = [];
+  showInfo: boolean = false;
+  info: any = [];
   api_url = '';
 
   constructor(private userService: UserService, private ns: NotificationsService) { }
@@ -51,6 +53,26 @@ export class SolicitudesComponent implements OnInit {
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
     })
+  }
+
+  eliminarSol(id: string) {
+    this.userService.deleteSolicitud(id).subscribe((res: any) => {
+      this.ns.notification('success', 'Operacion realizada con exito', res.message);
+      this.ngOnInit()
+    }, err => {
+      this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
+    })
+  }
+
+  verInfoContacto(id: string) {
+    this.userService.getInfoContacto(id).subscribe((res: any) => {
+      this.showInfo = true;
+      this.info = res;
+    })
+  }
+
+  closeInfo() {
+    this.showInfo = false;
   }
 
 }

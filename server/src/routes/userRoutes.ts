@@ -53,6 +53,14 @@ class UserRoutes {
         this.router.get('/solicitudes/pendientes', verifyToken, userController.getCantPendientes);
         this.router.post('/solicitud', verifyToken, userController.createSolicitud);
         this.router.put('/solicitud/:id', verifyToken, userController.updateSolicitud);
+        this.router.delete('/solicitud/:id', verifyToken, userController.deleteSolicitud);
+        this.router.delete('/solicitud/user/:id', verifyToken, userController.deleteSolicitudByUserId);
+
+        //Info contacto
+        this.router.get('/:id/contacto', verifyToken, userController.getInfoContacto);
+
+        //Configuracion
+        this.router.get('/configuracion/buscador', verifyToken, userController.getBuscadorConfig);
     }
 }
 

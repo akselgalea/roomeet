@@ -11,18 +11,20 @@ import { RegisterComponent } from './auth/register/register.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthedGuard } from './guards/authed.guard';
 import { SolicitudesComponent } from './components/solicitudes/solicitudes.component';
+import { ConfigBuscadorComponent } from './components/configuracion/config-buscador/config-buscador.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent, canActivate: [AuthedGuard]},
   {path: 'registro', component: RegisterComponent, canActivate: [AuthedGuard]},
   {path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard]},
-  {path: 'preferencias/perfil', component: EditarperfilComponent, canActivate: [AuthGuard]},
   {path: 'buscador', component: BuscadorComponent, canActivate: [AuthGuard]},
   {path: 'user/:id', component: PerfilComponent, canActivate: [AuthGuard]},
   {path: 'favoritos', component: FavoritosComponent, canActivate: [AuthGuard]},
   {path: 'solicitudes', component: SolicitudesComponent, canActivate: [AuthGuard]},
   {path: 'preferencias', component: ConfiguracionComponent, canActivate: [AuthGuard]},
+  {path: 'preferencias/perfil', component: EditarperfilComponent, canActivate: [AuthGuard]},
+  {path: 'preferencias/buscador', component: ConfigBuscadorComponent, canActivate: [AuthGuard]},
   {path: "**", pathMatch: "full", component: PagenotfoundComponent}
 ];
 

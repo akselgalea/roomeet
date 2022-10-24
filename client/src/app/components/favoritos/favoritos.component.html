@@ -1,14 +1,27 @@
 <div class="fl-container container-mw">
     <h1 *ngIf="users.length == 0">No tienes favoritos</h1>
-    <div *ngFor="let user of users">
+    <div *ngFor="let user of users.favs">
         <div class="fl-header">{{user.nombre}}</div>
         <div class="fl-card">
             <img [src]="api_url + user.foto_perfil" alt="">
             <div class="fl-links">
                 <a [routerLink]="['/user', user.username]"><span class="fas fa-user-alt"></span> Ver perfil</a>
-                <a (click)="pedirContacto(user.id)"><span class="far fa-comment-alt"></span> Pedir contacto</a>
+                <ng-container [ngSwitch]="user.solicitud">
+                    <a *ngSwitchCase="'no'" (click)="pedirContacto(user)"><span class="far fa-comment-alt"></span> Pedir contacto</a>
+                    <a *ngSwitchCase="'pendiente'" (click)="eliminarSol(user)"><span class="fas fa-minus-square"></span> Eliminar solicitud</a>
+                    <a *ngSwitchCase="'aprobada'" (click)="verInfoContacto(user.id)"><span class="far fa-comment-alt"></span> Ver info contacto</a>
+                </ng-container>
                 <a class="bg-red" (click)="delFav(user.id)"><span class="fas fa-minus-square"></span> Quitar de favoritos</a>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="contact-info" *ngIf="showInfo">
+    <span (click)="closeInfo()" class="cerrar fas fa-times"></span>
+    <div>
+        <div class="contact-link" *ngFor="let forma of info">
+            <p>{{forma.forma}}: {{forma.link}}</p>
         </div>
     </div>
 </div>

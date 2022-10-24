@@ -48,6 +48,12 @@ class UserRoutes {
         this.router.get('/solicitudes/pendientes', verifyToken, userController_1.userController.getCantPendientes);
         this.router.post('/solicitud', verifyToken, userController_1.userController.createSolicitud);
         this.router.put('/solicitud/:id', verifyToken, userController_1.userController.updateSolicitud);
+        this.router.delete('/solicitud/:id', verifyToken, userController_1.userController.deleteSolicitud);
+        this.router.delete('/solicitud/user/:id', verifyToken, userController_1.userController.deleteSolicitudByUserId);
+        //Info contacto
+        this.router.get('/:id/contacto', verifyToken, userController_1.userController.getInfoContacto);
+        //Configuracion
+        this.router.get('/configuracion/buscador', verifyToken, userController_1.userController.getBuscadorConfig);
     }
 }
 const userRoutes = new UserRoutes();
