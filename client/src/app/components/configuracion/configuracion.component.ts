@@ -15,6 +15,7 @@ export class ConfiguracionComponent implements OnInit {
   }
 
   logOut() {
+    localStorage.setItem('confirmed', '');
     this.userService.logOut();
     this.router.navigate(['/login']);
   }

@@ -22,15 +22,21 @@ export class EditarperfilComponent implements OnInit {
     this.api_url = this.userService.SV_URL;
     this.userService.getPerfil().subscribe((res : any) => {
       this.user = res;
+      console.log(res);
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un problema', err.error.message)
     })
+
+    if(localStorage.getItem('confirmed') === 'true') {
+      this.confirmed = true;
+    }
   }
 
   comfirmPass(passForm: NgForm) {
     this.userService.comfirmPass(SHA256(passForm.controls["password"].value).toString()).subscribe((res: any) => {
-      this.ns.notification('success', res.message, 'Ahora puedes editar tu perfil');
+      this.ns.notification('success', 'Datos correctos', 'Ahora puedes editar tu perfil');
       this.confirmed = true;
+      localStorage.setItem('confirmed', 'true');
     }, err => {
       this.ns.notification('error', 'Contraseña incorrecta', err.error.message);
     })
@@ -39,5 +45,9 @@ export class EditarperfilComponent implements OnInit {
   setType() {
     if(this.type === "password") this.type = "text";
     else this.type = "password";
+  }
+
+  editarPerfil(editForm: NgForm) {
+    console.log(editForm.controls);
   }
 }

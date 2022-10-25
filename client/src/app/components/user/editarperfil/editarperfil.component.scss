@@ -6,3 +6,19 @@
         float: right;
     }
 }
+
+.editar-perfil {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+    
+    .form-group {
+        display: flex;
+        flex-direction: column;
+
+        textarea {
+            height: 150px;
+        }
+    }
+} 
+    

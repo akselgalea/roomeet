@@ -1,1 +1,9 @@
-<button (click)="logOut()">Cerrar sesion</button>
+<div class="fl-container">
+    <div class="fl-card">
+        <div class="fl-links">
+            <a [routerLink]="['/preferencias/perfil']"><span class="fas fa-user-alt"></span> Configurar perfil</a>
+            <a [routerLink]="['/preferencias/buscador']"><span class="fas fa-search"></span> Configurar buscador</a>
+            <a (click)="logOut()"><span class="fas fa-sign-out-alt"></span> Cerrar sesion</a>
+        </div>
+    </div>
+</div>
