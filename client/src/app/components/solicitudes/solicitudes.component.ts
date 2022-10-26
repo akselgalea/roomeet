@@ -47,6 +47,7 @@ export class SolicitudesComponent implements OnInit {
 
     this.userService.updateSolicitud(solicitud.id, 2).subscribe((res: any) => {
       this.ns.notification('success', 'Solicitud rechazada con exito', 'Este usuario no podra ver tu informacion de contacto');
+      this.ngOnInit();
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
     })

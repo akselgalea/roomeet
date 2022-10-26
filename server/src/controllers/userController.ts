@@ -241,7 +241,7 @@ class UserController {
     }
 
     public async getCantPendientes(req: Request, res: Response): Promise<any> {
-        await promisePool.query('SELECT count(id) AS cantidad FROM peticion_contacto WHERE contactado_id = 1 && estado = 0', [req.body.data.id]).then(([data,]: any) => {
+        await promisePool.query('SELECT count(id) AS cantidad FROM peticion_contacto WHERE contactado_id = ? && estado = 0', [req.body.data.id]).then(([data,]: any) => {
             res.json(data[0].cantidad);
         }, err => {
             res.status(400).json({message: err.sqlMessage})

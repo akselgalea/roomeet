@@ -11,7 +11,7 @@
                     <a  class="bg-green" (click)="acceptSol(soli)"><span class="fas fa-check-circle"></span> Aceptar solicitud</a>
                     <a class="bg-red" (click)="rechazarSol(soli)"><span class="fas fa-minus-square"></span> Rechazar solicitud</a>
                 </ng-container>
-                <ng-template #soliAceptada><a class="bg-red" (click)="revocarPermiso(soli)"><span class="fas fa-minus-square"></span> Revocar permisos</a></ng-template>
+                <ng-template #soliAceptada><a *ngIf="soli.estado == 1" class="bg-red" (click)="revocarPermiso(soli)"><span class="fas fa-minus-square"></span> Revocar permisos</a></ng-template>
             </div>
         </div>
     </div>
