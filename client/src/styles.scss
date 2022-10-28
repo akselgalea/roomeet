@@ -29,7 +29,14 @@ p {margin: 0}
     }
 }
 
-.d-flex {display: flex;}
+.d-flex {
+    display: flex;
+    gap: 1rem;
+}
+
+.flexd-col {flex-direction: column;}
+.flexd-col-r {flex-direction: column-reverse;}
+
 .form-group {
     flex-direction: column;
 

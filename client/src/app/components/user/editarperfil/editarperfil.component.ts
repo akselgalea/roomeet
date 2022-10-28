@@ -20,14 +20,8 @@ export class EditarperfilComponent implements OnInit {
 
   ngOnInit(): void {
     this.api_url = this.userService.SV_URL;
-    this.userService.getPerfil().subscribe((res : any) => {
-      this.user = res;
-      console.log(res);
-    }, err => {
-      this.ns.notification('error', 'Ha ocurrido un problema', err.error.message)
-    })
-
     if(localStorage.getItem('confirmed') === 'true') {
+      this.getUser();
       this.confirmed = true;
     }
   }
@@ -35,6 +29,7 @@ export class EditarperfilComponent implements OnInit {
   comfirmPass(passForm: NgForm) {
     this.userService.comfirmPass(SHA256(passForm.controls["password"].value).toString()).subscribe((res: any) => {
       this.ns.notification('success', 'Datos correctos', 'Ahora puedes editar tu perfil');
+      this.getUser();
       this.confirmed = true;
       localStorage.setItem('confirmed', 'true');
     }, err => {
@@ -47,7 +42,22 @@ export class EditarperfilComponent implements OnInit {
     else this.type = "password";
   }
 
+  getUser() {
+    this.userService.getPerfil().subscribe((res : any) => {
+      this.user = res;
+      console.log(res);
+    }, err => {
+      this.ns.notification('error', 'Ha ocurrido un problema', err.error.message)
+    })
+
+  }
+
   editarPerfil(editForm: NgForm) {
-    console.log(editForm.controls);
+    let data = {
+      username: editForm.controls["username"].value || this.user.username,
+      nombre: editForm.controls["name"].value || this.user.nombre,
+      descripcion: editForm.controls["description"].value || this.user.descripcion,
+    }
+    console.log(data);
   }
 }

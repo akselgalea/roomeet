@@ -33,6 +33,7 @@ export interface User {
     nombre?: string,
     descripcion?: string,
     sexo?: number,
+    profesion?: number,
     bebedor?: number,
     fumador?: number,
     fiestas?: number,
