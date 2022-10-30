@@ -332,6 +332,26 @@ class UserController {
             return res;
         });
     }
+    getMyInfoContacto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('SELECT fu.id, f.forma, fu.link FROM formas_contacto_user AS fu JOIN formas_contacto AS f ON f.id = fu.forma_id WHERE fu.user_id = ?', [req.body.data.id]).then(([data,]) => {
+                res.json(data);
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
+    getFormasContacto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('SELECT * FROM formas_contacto').then(([data,]) => {
+                res.json(data);
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
     getBuscadorConfig(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.promisePool.query('SELECT * FROM preferencias WHERE user_id = ?', [req.body.data.id]).then(([rows,]) => {

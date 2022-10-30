@@ -323,6 +323,26 @@ class UserController {
         return res;
     }
 
+    public async getMyInfoContacto(req: Request, res: Response): Promise<any> {
+        await promisePool.query('SELECT fu.id, f.forma, fu.link FROM formas_contacto_user AS fu JOIN formas_contacto AS f ON f.id = fu.forma_id WHERE fu.user_id = ?', [req.body.data.id]).then(([data, ]: any) => {
+            res.json(data)
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        })
+        
+        return res;
+    }
+
+    public async getFormasContacto(req: Request, res: Response): Promise<any> {
+        await promisePool.query('SELECT * FROM formas_contacto').then(([data, ]: any) => {
+            res.json(data)
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        })
+        
+        return res;
+    }
+
     public async getBuscadorConfig(req: Request, res: Response): Promise<any> {
         await promisePool.query('SELECT * FROM preferencias WHERE user_id = ?', [req.body.data.id]).then(([rows,]: any) => {
             res.json(rows[0]);

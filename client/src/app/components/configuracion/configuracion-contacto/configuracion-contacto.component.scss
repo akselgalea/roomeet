@@ -1,0 +1,30 @@
+.formas-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.forma-contacto {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    button {
+        float: right
+    }
+}
+
+.fl-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+@media (min-width: 568px) {
+    .formas-form {
+        grid-template-columns: 200px 1fr 100px;
+    }
+}
+
+@media (max-width: 567px) {
+    .formas-form {
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+}

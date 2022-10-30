@@ -52,8 +52,13 @@ export class UserService {
   deleteSolicitud(id: string) { return this.http.delete(`${this.API_URI}/users/solicitud/${id}`)}
   deleteSolicitudByUserId(id: string) { return this.http.delete(`${this.API_URI}/users/solicitud/user/${id}`)}
 
+  //Info contacto
   getInfoContacto(id: string) { return this.http.get(`${this.API_URI}/users/${id}/contacto`); }
+  getMyInfoContacto() { return this.http.get(`${this.API_URI}/users/contacto`); }
+  getFormasContacto() { return this.http.get(`${this.API_URI}/users/formas-contacto`); }
+  deleteFormaContacto(id: string) { return this.http.delete(`${this.API_URI}/users/formas-contacto/${id}`); }
 
+  //Buscador Config
   getBuscadorConfig() { return this.http.get(`${this.API_URI}/users/configuracion/buscador`); }
   createBuscadorConfig(config: any) { return this.http.post(`${this.API_URI}/users/configuracion/buscador`, {config: config}); }
   updateBuscadorConfig(config: any) { return this.http.put(`${this.API_URI}/users/configuracion/buscador`, {config: config}); }

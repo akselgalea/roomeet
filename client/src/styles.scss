@@ -42,7 +42,7 @@ p {margin: 0}
 .form-group {
     flex-direction: column;
 
-    input {
+    input, select {
         border-radius: 5px;
         border: solid 1px;
         padding: .4rem .5rem;
@@ -180,4 +180,5 @@ button:hover {
 
 .btn-disabled:hover {
     border-color: transparent;
+    cursor: default;
 }
