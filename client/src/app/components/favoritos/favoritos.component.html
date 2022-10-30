@@ -1,6 +1,6 @@
 <div class="fl-container container-mw">
     <h1 *ngIf="users.length == 0">No tienes favoritos</h1>
-    <div *ngFor="let user of users.favs">
+    <div *ngFor="let user of users">
         <div class="fl-header">{{user.nombre}}</div>
         <div class="fl-card">
             <img [src]="api_url + user.foto_perfil" alt="">

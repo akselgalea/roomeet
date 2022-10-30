@@ -32,7 +32,7 @@ export class UserService {
   getPerfil() { return this.http.get(`${this.API_URI}/users/perfil`); }
   getUser(id: string) { return this.http.get(`${this.API_URI}/users/perfil/${id}`); }
   uploadImg(img: any) { return this.http.post(`${this.API_URI}/users/upload-image`, img); }
-  updateUser(id: string, updatedUser: User): Observable<User> { return this.http.put(`${this.API_URI}/users/${id}`, updatedUser); }
+  updateUser(user: User) { return this.http.put(`${this.API_URI}/users`, {user: user}); }
   deleteUser(id: string) { return this.http.delete(`${this.API_URI}/users/${id}`); }
   
   //Favoritos
@@ -55,4 +55,6 @@ export class UserService {
   getInfoContacto(id: string) { return this.http.get(`${this.API_URI}/users/${id}/contacto`); }
 
   getBuscadorConfig() { return this.http.get(`${this.API_URI}/users/configuracion/buscador`); }
+  createBuscadorConfig(config: any) { return this.http.post(`${this.API_URI}/users/configuracion/buscador`, {config: config}); }
+  updateBuscadorConfig(config: any) { return this.http.put(`${this.API_URI}/users/configuracion/buscador`, {config: config}); }
 }

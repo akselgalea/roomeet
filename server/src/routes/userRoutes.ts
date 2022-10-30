@@ -33,8 +33,8 @@ class UserRoutes {
         this.router.post('/register', userController.create);
         this.router.post('/upload-image', upload.single("file"), verifyToken, userController.uploadImage);
         this.router.post('/comfirm-pass', verifyToken, userController.comparePass);
-        this.router.put('/:id', verifyToken, userController.update);
-        this.router.delete('/:id', verifyToken, userController.delete);
+        this.router.put('/', verifyToken, userController.update);
+        this.router.delete('/', verifyToken, userController.delete);
 
         //User hobbies
         this.router.post('/hobbies', verifyToken, userController.createHobbie);
@@ -61,6 +61,10 @@ class UserRoutes {
 
         //Configuracion
         this.router.get('/configuracion/buscador', verifyToken, userController.getBuscadorConfig);
+        this.router.post('/configuracion/buscador', verifyToken, userController.createBuscadorConfig);
+        this.router.put('/configuracion/buscador', verifyToken, userController.updateBuscadorConfig);
+        this.router.delete('/configuracion/buscador', verifyToken, userController.deleteBuscadorConfig);
+        
     }
 }
 

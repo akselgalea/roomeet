@@ -19,10 +19,12 @@
             <div class="text-success" *ngIf="username.valid">Perfecto!</div>
         </div>
 
-        <div class="form-group pass-input">
+        <div class="form-group">
             <label for="password">Contraseña</label>
-            <input type={{type}} #password="ngModel" ngModel name="password"  minlength="8" maxlength="20" required>
-            <i [ngClass]="type === 'password' ? 'far fa-eye' : 'fas fa-eye-slash'" (click)="setType()"></i>
+            <div class="pass-input">
+                <input type={{type}} #password="ngModel" ngModel name="password"  minlength="8" maxlength="20" required>
+                <i [ngClass]="type === 'password' ? 'far fa-eye' : 'fas fa-eye-slash'" (click)="setType()"></i>
+            </div>
             <!-- Validacion -->
             <div class="text-danger" *ngIf="password.touched && password.invalid">
                 <p *ngIf="password.errors?.['required']">Campo obligatorio</p>
@@ -32,7 +34,7 @@
         </div>
         <div class="guard-send">
             <a [routerLink]="['/registro']">Crear cuenta</a>
-            <button [disabled]="login.invalid" type="submit">Entrar</button>
+            <button [disabled]="login.invalid" type="submit" [ngClass]="!login.pristine && login.invalid ? 'btn-disabled' : ''">Entrar</button>
         </div>
     </form>
 </div>

@@ -31,8 +31,8 @@ class UserRoutes {
         this.router.post('/register', userController_1.userController.create);
         this.router.post('/upload-image', upload.single("file"), verifyToken, userController_1.userController.uploadImage);
         this.router.post('/comfirm-pass', verifyToken, userController_1.userController.comparePass);
-        this.router.put('/:id', verifyToken, userController_1.userController.update);
-        this.router.delete('/:id', verifyToken, userController_1.userController.delete);
+        this.router.put('/', verifyToken, userController_1.userController.update);
+        this.router.delete('/', verifyToken, userController_1.userController.delete);
         //User hobbies
         this.router.post('/hobbies', verifyToken, userController_1.userController.createHobbie);
         this.router.post('/hobbies/add', verifyToken, userController_1.userController.addHobbie);
@@ -54,6 +54,9 @@ class UserRoutes {
         this.router.get('/:id/contacto', verifyToken, userController_1.userController.getInfoContacto);
         //Configuracion
         this.router.get('/configuracion/buscador', verifyToken, userController_1.userController.getBuscadorConfig);
+        this.router.post('/configuracion/buscador', verifyToken, userController_1.userController.createBuscadorConfig);
+        this.router.put('/configuracion/buscador', verifyToken, userController_1.userController.updateBuscadorConfig);
+        this.router.delete('/configuracion/buscador', verifyToken, userController_1.userController.deleteBuscadorConfig);
     }
 }
 const userRoutes = new UserRoutes();

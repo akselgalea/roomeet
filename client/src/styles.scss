@@ -21,11 +21,13 @@ p {margin: 0}
 }
 
 .pass-input {
+    display: flex;
+    flex-direction: column;
     position: relative;
     i {
         position: absolute;
         right: 10px;
-        top: 1.6rem;
+        top: .45rem;
     }
 }
 
@@ -45,6 +47,11 @@ p {margin: 0}
         border: solid 1px;
         padding: .4rem .5rem;
     }
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
 }
 
 .guard-send {
@@ -163,4 +170,14 @@ button:hover {
     top: 1rem;
     right: 1.5rem;
     font-size: 2rem;
+}
+
+.btn-disabled {
+    background-color: grey;
+    border-color: grey;
+    color: white;
+}
+
+.btn-disabled:hover {
+    border-color: transparent;
 }

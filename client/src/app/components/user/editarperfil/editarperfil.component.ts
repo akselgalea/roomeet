@@ -49,15 +49,26 @@ export class EditarperfilComponent implements OnInit {
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un problema', err.error.message)
     })
-
   }
 
   editarPerfil(editForm: NgForm) {
     let data = {
-      username: editForm.controls["username"].value || this.user.username,
-      nombre: editForm.controls["name"].value || this.user.nombre,
-      descripcion: editForm.controls["description"].value || this.user.descripcion,
+      username: editForm.controls["username"].pristine ? this.user.username : editForm.controls["username"].value,
+      nombre: editForm.controls["name"].pristine ? this.user.nombre : editForm.controls["name"].value,
+      descripcion: editForm.controls["description"].pristine ? this.user.descripcion : editForm.controls["description"].value,
+      sexo: editForm.controls["sex"].pristine ? this.user.sexo : editForm.controls["sex"].value,
+      profesion: editForm.controls["profession"].pristine ? this.user.profesion : editForm.controls["profession"].value,
+      fumador: editForm.controls["smokes"].pristine ? this.user.fumador : editForm.controls["smokes"].value,
+      bebedor: editForm.controls["drinks"].pristine ? this.user.bebedor : editForm.controls["drinks"].value,
+      fiestas: editForm.controls["parties"].pristine ? this.user.fiestas : editForm.controls["parties"].value,
+      mascotas: editForm.controls["pets"].pristine ? this.user.mascotas : editForm.controls["pets"].value,
+      hijos: editForm.controls["childs"].pristine ? this.user.hijos : editForm.controls["childs"].value
     }
-    console.log(data);
+    
+    this.userService.updateUser(data).subscribe(res => {
+      this.ns.notification('success', 'Operacion realizada con exito', 'Usuario actualizado!');
+    }, err => {
+      this.ns.notification('error', 'Ha ocurrido un problema', err.error.message);
+    });
   }
 }

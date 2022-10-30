@@ -19,6 +19,9 @@ import { TokenInterceptorService } from './services/token-interceptor.service';
 import { EditarperfilComponent } from './components/user/editarperfil/editarperfil.component';
 import { SolicitudesComponent } from './components/solicitudes/solicitudes.component';
 import { ConfigBuscadorComponent } from './components/configuracion/config-buscador/config-buscador.component';
+import { HobbiesComponent } from './components/configuracion/perfil/hobbies/hobbies.component';
+import { FotosComponent } from './components/configuracion/perfil/fotos/fotos.component';
+import { ConfiguracionContactoComponent } from './components/configuracion/configuracion-contacto/configuracion-contacto.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import { ConfigBuscadorComponent } from './components/configuracion/config-busca
     RegisterComponent,
     EditarperfilComponent,
     SolicitudesComponent,
-    ConfigBuscadorComponent
+    ConfigBuscadorComponent,
+    HobbiesComponent,
+    FotosComponent,
+    ConfiguracionContactoComponent,
   ],
   imports: [
     BrowserModule,

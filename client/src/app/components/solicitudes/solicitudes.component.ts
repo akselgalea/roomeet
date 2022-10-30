@@ -8,7 +8,13 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./solicitudes.component.scss']
 })
 export class SolicitudesComponent implements OnInit {
-  solicitudes: any = [];
+  solicitudes: any = {
+    //Solicitudes que me hicieron
+    solis: [],
+    //Solicitudes que hice
+    mysolis: []
+  };
+
   showInfo: boolean = false;
   info: any = [];
   api_url = '';

@@ -89,7 +89,7 @@
             <input type="text" #descripcion="ngModel" ngModel name="descripcion">
         </div>
         <input accept="image/*" type="file" #newfoto="ngModel" ngModel name="newimage" (change)="loadImg($event)" required>
-        <button type="submit" [disabled]="newImg.invalid">Subir</button>
+        <button type="submit" [disabled]="newImg.invalid" [ngClass]="!newImg.pristine && newImg.invalid ? 'btn-disabled' : ''">Subir</button>
     </form>
 </div>
 

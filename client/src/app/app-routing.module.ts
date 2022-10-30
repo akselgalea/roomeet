@@ -12,6 +12,9 @@ import { AuthGuard } from './guards/auth.guard';
 import { AuthedGuard } from './guards/authed.guard';
 import { SolicitudesComponent } from './components/solicitudes/solicitudes.component';
 import { ConfigBuscadorComponent } from './components/configuracion/config-buscador/config-buscador.component';
+import { HobbiesComponent } from './components/configuracion/perfil/hobbies/hobbies.component';
+import { FotosComponent } from './components/configuracion/perfil/fotos/fotos.component';
+import { ConfiguracionContactoComponent } from './components/configuracion/configuracion-contacto/configuracion-contacto.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -24,7 +27,10 @@ const routes: Routes = [
   {path: 'solicitudes', component: SolicitudesComponent, canActivate: [AuthGuard]},
   {path: 'preferencias', component: ConfiguracionComponent, canActivate: [AuthGuard]},
   {path: 'preferencias/perfil', component: EditarperfilComponent, canActivate: [AuthGuard]},
+  {path: 'preferencias/perfil/hobbies', component: HobbiesComponent, canActivate: [AuthGuard]},
+  {path: 'preferencias/perfil/fotos', component: FotosComponent, canActivate: [AuthGuard]},
   {path: 'preferencias/buscador', component: ConfigBuscadorComponent, canActivate: [AuthGuard]},
+  {path: 'preferencias/contacto', component: ConfiguracionContactoComponent, canActivate: [AuthGuard]},
   {path: "**", pathMatch: "full", component: PagenotfoundComponent}
 ];
 

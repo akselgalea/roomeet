@@ -19,7 +19,7 @@ export class BuscadorComponent implements OnInit {
 
     this.userService.getBuscadorConfig().subscribe(
       (res: any) => {
-        if(res.length === 0) this.router.navigate(['/preferencias/buscador']);
+        if(!res) this.router.navigate(['/preferencias/buscador']);
         else {
           this.userService.getUsers().subscribe(
             res => {

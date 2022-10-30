@@ -11,7 +11,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./favoritos.component.scss']
 })
 export class FavoritosComponent implements OnInit {
-  users: any = {};
+  users: any = [];
   api_url = '';
   showInfo: boolean = false;
   info: any = [];
@@ -21,15 +21,15 @@ export class FavoritosComponent implements OnInit {
   ngOnInit(): void {
     this.api_url = this.userService.SV_URL;
     this.userService.getFavoritos().subscribe(
-      res => {
-        this.users = res;
+      (res: any) => {
+        this.users = res.favs;
         
-        for(let i = 0; i < this.users.favs.length; i++) {
-          let soli = this.users.solis.find((soli: any) => soli.id === this.users.favs[i].id);
+        for(let i = 0; i < this.users.length; i++) {
+          let soli = res.solis.find((soli: any) => soli.id === this.users[i].id);
           if(soli != undefined) {
-            if(soli.estado == 1) this.users.favs[i].solicitud = 'aprobada';
-            else this.users.favs[i].solicitud = 'pendiente';
-          } else this.users.favs[i].solicitud = 'no';
+            if(soli.estado == 1) this.users[i].solicitud = 'aprobada';
+            else this.users[i].solicitud = 'pendiente';
+          } else this.users[i].solicitud = 'no';
         }
       },
       err => console.log(err)

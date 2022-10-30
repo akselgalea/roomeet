@@ -35,7 +35,6 @@ export class PerfilComponent implements OnInit {
         },
         err => {
           this.error = err.error.message;
-          this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
         })
       } else {
         this.userService.getPerfil().subscribe(res => {

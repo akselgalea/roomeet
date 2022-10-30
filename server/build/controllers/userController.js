@@ -40,7 +40,7 @@ class UserController {
                 const [hobbies,] = yield database_1.promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ?', [user[0].id]);
                 return res.json(Object.assign(Object.assign(Object.assign({}, user[0]), { 'fotos': fotos }), { 'hobbies': hobbies }));
             }
-            return res.status(404).json({ text: "Este usuario no existe" });
+            return res.status(404).json({ message: "Este usuario no existe" });
         });
     }
     getUser(req, res) {
@@ -52,7 +52,7 @@ class UserController {
                 const [hobbies,] = yield database_1.promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ?', [user[0].id]);
                 return res.status(200).json(Object.assign(Object.assign(Object.assign({}, user[0]), { 'fotos': fotos }), { 'hobbies': hobbies }));
             }
-            return res.status(404).json({ text: "Este usuario no existe" });
+            return res.status(404).json({ message: "Este usuario no existe" });
         });
     }
     login(req, res) {
@@ -91,14 +91,13 @@ class UserController {
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             let error;
-            const { id } = req.params;
-            yield database_1.promisePool.query('UPDATE user SET ? WHERE username = ?', [req.body, id]).then(() => {
-                res.status(200).json({ message: 'Updated user ' + id });
+            yield database_1.promisePool.query('UPDATE user SET ? WHERE id = ?', [req.body.user, req.body.data.id]).then(() => {
+                res.status(200).json({ message: 'Updated user ' + req.body.data.id });
             }).catch(err => {
-                if (err.sqlMessage.includes('user_email_IDX'))
-                    return error = "Este email ya se encuentra registrado";
                 if (err.sqlMessage.includes('user_username_IDX'))
-                    return error = "Este nombre de usuario ya esta en uso";
+                    error = "Este nombre de usuario ya esta en uso";
+                else if (err.sqlMessage.includes('user_email_IDX'))
+                    error = "Este email ya se encuentra registrado";
                 error = err.sqlMessage;
                 res.status(400).json({ message: error });
             });
@@ -336,7 +335,38 @@ class UserController {
     getBuscadorConfig(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.promisePool.query('SELECT * FROM preferencias WHERE user_id = ?', [req.body.data.id]).then(([rows,]) => {
-                res.json(rows);
+                res.json(rows[0]);
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
+    updateBuscadorConfig(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('UPDATE preferencias SET ? WHERE user_id = ?', [req.body.config, req.body.data.id]).then(() => {
+                res.status(200).json({ message: 'Configuracion actualizada con exito' });
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
+    createBuscadorConfig(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            req.body.config.user_id = req.body.data.id;
+            yield database_1.promisePool.query('INSERT INTO preferencias SET ?', [req.body.config]).then(() => {
+                res.status(200).json({ message: 'Configuracion creada con exito' });
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
+    deleteBuscadorConfig(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('DELETE FROM preferencias WHERE user_id = ?', [req.body.data.id]).then(() => {
+                res.status(200).json({ message: 'Configuracion removida con exito' });
             }, err => {
                 res.status(400).json({ message: err.sqlMessage });
             });

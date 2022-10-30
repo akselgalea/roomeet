@@ -1,6 +1,6 @@
 <div class="fl-container solicitudes">
     <h1 class="text-center">Solicitudes de contacto</h1>
-    <h1 *ngIf="solicitudes.length == 0">No tienes solicitudes de contacto</h1>
+    <h1 *ngIf="solicitudes.solis.length == 0">No tienes solicitudes de contacto</h1>
     <div *ngFor="let soli of solicitudes.solis">
         <div class="fl-header">{{soli.nombre}}</div>
         <div class="fl-card">
@@ -19,7 +19,7 @@
 
 <div class="fl-container solicitudes">
     <h1 class="text-center">Mis solicitudes de contacto</h1>
-    <h1 *ngIf="solicitudes.length == 0">No tienes solicitudes de contacto</h1>
+    <h1 *ngIf="solicitudes.mysolis.length == 0">No tienes solicitudes de contacto</h1>
     <div *ngFor="let soli of solicitudes.mysolis">
         <div class="fl-header" [ngSwitch]="soli.estado">
             <p>{{soli.nombre}}</p>

@@ -1,9 +1,20 @@
-<div *ngIf="!confirmed">
+<div class="fl-container">
+    <div class="fl-card">
+        <div class="fl-links">
+            <a [routerLink]="['/preferencias/perfil/hobbies']"><span class="fas fa-puzzle-piece"></span> Administrar hobbies</a>
+            <a [routerLink]="['/preferencias/perfil/fotos']"><span class="far fa-images"></span> Administrar fotos</a>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!confirmed;else confirmedContent">
     <form class="pass-confirmation" #passConfirmation="ngForm" (ngSubmit)="comfirmPass(passConfirmation)">
-        <div class="d-flex form-group pass-input">
+        <div class="d-flex form-group">
             <label for="password">Contraseña</label>
-            <input type={{type}} #password="ngModel" ngModel name="password"  minlength="8" maxlength="20" required>
-            <i [ngClass]="type === 'password' ? 'far fa-eye' : 'fas fa-eye-slash'" (click)="setType()"></i>
+            <div class="pass-input">
+                <input type={{type}} #password="ngModel" ngModel name="password"  minlength="8" maxlength="20" required>
+                <i [ngClass]="type === 'password' ? 'far fa-eye' : 'fas fa-eye-slash'" (click)="setType()"></i>
+            </div>
             <!-- Validacion -->
             <div class="text-danger" *ngIf="password.touched && password.invalid">
                 <p *ngIf="password.errors?.['required']">Campo obligatorio</p>
@@ -11,66 +22,85 @@
             </div>
             <div class="text-success" *ngIf="password.valid">Perfecto!</div>
         </div>
-        <button type="submit" [disabled]="passConfirmation.invalid">Confirmar</button>
+        <button type="submit" [disabled]="passConfirmation.invalid" [ngClass]="!passConfirmation.pristine && passConfirmation.invalid ? 'btn-disabled' : ''">Confirmar</button>
     </form>
 </div>
-<form *ngIf="confirmed" #editProfile="ngForm" (ngSubmit)="editarPerfil(editProfile)">
-    <div class="editar-perfil">
-        <div class="d-flex flexd-col">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" #username="ngModel" ngModel name="username" [value]="user.username">
+
+<ng-template #confirmedContent>
+    <form #editProfile="ngForm" (ngSubmit)="editarPerfil(editProfile)">
+        <div class="editar-perfil">
+            <div class="d-flex flexd-col">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" #username="ngModel" ngModel name="username" [value]="user.username" minlength="6" maxlength="20" [required]="!username.pristine && username.value == '' ? true : false" disabled>
+                    <p class="text-danger" *ngIf="username.errors?.['minlength'] || !username.pristine && username.value == '' ">Este campo requiere min. 6 caracteres</p>
+                </div>
+                <div class="form-group">
+                    <label for="name">Nombre</label>
+                    <input type="text" #name="ngModel" ngModel name="name" [value]="user.nombre">
+                </div>
+                <div>
+                    <p>A que te dedicas?</p>
+                    <input type="radio" #profession="ngModel" ngModel name="profession" value="0" [checked]="user.sexo == 0">
+                    <label>Estudiar</label>
+                    <input type="radio" #profession="ngModel" ngModel name="profession" value="1" [checked]="user.sexo == 1">
+                    <label>Trabajar</label>
+                    <input type="radio" #profession="ngModel" ngModel name="profession" value="2" [checked]="user.sexo == 2">
+                    <label>Ninguno</label>
+                </div>
             </div>
             <div class="form-group">
-                <label for="name">Nombre</label>
-                <input type="text" #name="ngModel" ngModel name="name" [value]="user.nombre">
-            </div>
-            <div class="form-group">
-                <label for="profession">Profesion</label>
-                <input type="text" #profession="ngModel" ngModel name="profession" [value]="user.profesion">
+                <label for="description">Descripcion</label>
+                <textarea #description="ngModel" ngModel  name="description" [value]="user.descripcion"></textarea>
             </div>
         </div>
-        <div class="form-group">
-            <label for="description">Descripcion</label>
-            <textarea #description="ngModel" ngModel  name="description" [value]="user.descripcion"></textarea>
+        <div class="editar-perfil radio-inputs">
+            <div>
+                <p>Como te identificas?</p>
+                <input type="radio" id="man" #sex="ngModel" ngModel name="sex" value="0" [checked]="user.sexo == 0">
+                <label for="man">Hombre</label>
+                <input type="radio" id="woman" #sex="ngModel" ngModel name="sex" value="1" [checked]="user.sexo == 1">
+                <label for="woman">Mujer</label>
+                <input type="radio" id="nonbinary" #sex="ngModel" ngModel name="sex" value="2" [checked]="user.sexo == 2">
+                <label for="nonbinary">No binario</label>
+            </div>
+            <div>
+                <p>Bebes alcohol?</p>
+                <input type="radio" #drinks="ngModel" ngModel name="drinks" value="0" [checked]="user.bebedor == 0">
+                <label>No</label>
+                <input type="radio" #drinks="ngModel" ngModel name="drinks" value="1" [checked]="user.bebedor == 1">
+                <label>Si</label>
+            </div>
+            <div>
+                <p>Fumas cigarrillos?</p>
+                <input type="radio" #smokes="ngModel" ngModel name="smokes" value="0" [checked]="user.fumador == 0">
+                <label>No</label>
+                <input type="radio" #smokes="ngModel" ngModel name="smokes" value="1" [checked]="user.fumador == 1">
+                <label>Si</label>
+            </div>
+            <div>
+                <p>Te gusta hacer fiestas en tu casa?</p>
+                <input type="radio" #parties="ngModel" ngModel name="parties" value="0" [checked]="user.fiestas == 0">
+                <label>No</label>
+                <input type="radio" #parties="ngModel" ngModel name="parties" value="1" [checked]="user.fiestas == 1">
+                <label>Si</label>
+            </div>
+            <div>
+                <p>Tienes mascotas?</p>
+                <input type="radio" #pets="ngModel" ngModel name="pets" value="0" [checked]="user.mascotas == 0">
+                <label>No</label>
+                <input type="radio" #pets="ngModel" ngModel name="pets" value="1" [checked]="user.mascotas == 1">
+                <label>Si</label>
+            </div>
+            <div>
+                <p>Tienes hijos?</p>
+                <input type="radio" #childs="ngModel" ngModel name="childs" value="0" [checked]="user.hijos == 0">
+                <label>No</label>
+                <input type="radio" #childs="ngModel" ngModel name="childs" value="1" [checked]="user.hijos == 1">
+                <label>Si</label>
+            </div>
         </div>
-    </div>
-    <div class="editar-perfil radio-inputs">
-        <div>
-            <p>Como te identificas?</p>
-            <input type="radio" id="man" #sex="ngModel" ngModel name="sex" value="0">
-            <label for="man">Hombre</label>
-            <input type="radio" id="woman" #sex="ngModel" ngModel name="sex" value="1">
-            <label for="woman">Mujer</label>
-            <input type="radio" id="nonbinary" #sex="ngModel" ngModel name="sex" value="2">
-            <label for="nonbinary">No binario</label>
-        </div>
-        <div>
-            <p>Bebes alcohol?</p>
-            <input type="text" #drinks="ngModel" ngModel name="drinks" [value]="user.bebedor">
-            <label for="yes">Si</label>
-            <label for="no">No</label>
-        </div>
-        <div>
-            <label for="drinks">Bebes alcohol?</label>
-            <input type="text" #drinks="ngModel" ngModel name="drinks" [value]="user.bebedor">
-        </div>
-        <div>
-            <label for="smokes">Fumas cigarrillos?</label>
-            <input type="text" #smokes="ngModel" ngModel name="smokes" [value]="user.fumador">
-        </div>
-        <div>
-            <label for="parties">Te gusta hacer fiestas en tu casa?</label>
-            <input type="text" #parties="ngModel" ngModel name="parties" [value]="user.fiestas">
-        </div>
-        <div>
-            <label for="pets">Tienes mascotas?</label>
-            <input type="text" #pets="ngModel" ngModel name="pets" [value]="user.mascotas">
-        </div>
-        <div>
-            <label for="childs">Tienes hijos?</label>
-            <input type="text" #childs="ngModel" ngModel name="childs" [value]="user.hijos">
-        </div>
-    </div>
-    <button type="submit" [disabled]="editProfile.invalid"><span class="fas fa-save"></span> Guardar</button>
-</form>
+        <button type="submit" [disabled]="editProfile.invalid || editProfile.pristine" [ngClass]="editProfile.pristine || !editProfile.pristine && editProfile.invalid ? 'btn-disabled' : ''"><span class="fas fa-save"></span> Guardar</button>
+        <button type="button" (click)="editProfile.reset()"><span class="fas fa-save"></span> Limpiar formulario</button>
+    </form>
+</ng-template>

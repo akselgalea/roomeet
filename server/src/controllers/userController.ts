@@ -34,7 +34,7 @@ class UserController {
             return res.json({...(user as any)[0], ...{'fotos': fotos}, ...{'hobbies': hobbies}});
         } 
     
-        return res.status(404).json({text: "Este usuario no existe"});
+        return res.status(404).json({message: "Este usuario no existe"});
     }
 
     public async getUser (req: Request, res: Response): Promise<any> {
@@ -48,7 +48,7 @@ class UserController {
             return res.status(200).json({...(user as any)[0], ...{'fotos': fotos}, ...{'hobbies': hobbies}});
         } 
     
-        return res.status(404).json({text: "Este usuario no existe"});
+        return res.status(404).json({message: "Este usuario no existe"});
     }
 
     public async login(req: Request, res: Response): Promise<any> {
@@ -82,13 +82,11 @@ class UserController {
 
     public async update(req: Request, res: Response): Promise<any> {
         let error;
-
-        const { id } = req.params;
-        await promisePool.query('UPDATE user SET ? WHERE username = ?', [req.body, id]).then(() => {
-            res.status(200).json({message: 'Updated user ' + id});
+        await promisePool.query('UPDATE user SET ? WHERE id = ?', [req.body.user, req.body.data.id]).then(() => {
+            res.status(200).json({message: 'Updated user ' + req.body.data.id});
         }).catch(err => {
-            if(err.sqlMessage.includes('user_email_IDX')) return error = "Este email ya se encuentra registrado";
-            if(err.sqlMessage.includes('user_username_IDX')) return error = "Este nombre de usuario ya esta en uso";
+            if(err.sqlMessage.includes('user_username_IDX')) error = "Este nombre de usuario ya esta en uso";
+            else if(err.sqlMessage.includes('user_email_IDX')) error = "Este email ya se encuentra registrado";
             error = err.sqlMessage
             res.status(400).json({message: error})
         });
@@ -327,7 +325,38 @@ class UserController {
 
     public async getBuscadorConfig(req: Request, res: Response): Promise<any> {
         await promisePool.query('SELECT * FROM preferencias WHERE user_id = ?', [req.body.data.id]).then(([rows,]: any) => {
-            res.json(rows);
+            res.json(rows[0]);
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        })
+
+        return res;
+    }
+
+    public async updateBuscadorConfig(req: Request, res: Response): Promise<any> {
+        await promisePool.query('UPDATE preferencias SET ? WHERE user_id = ?', [req.body.config, req.body.data.id]).then(() => {
+            res.status(200).json({message: 'Configuracion actualizada con exito'});
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        })
+
+        return res;
+    }
+
+    public async createBuscadorConfig(req: Request, res: Response): Promise<any> {
+        req.body.config.user_id = req.body.data.id;
+        await promisePool.query('INSERT INTO preferencias SET ?', [req.body.config]).then(() => {
+            res.status(200).json({message: 'Configuracion creada con exito'});
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        })
+
+        return res;
+    }
+
+    public async deleteBuscadorConfig(req: Request, res: Response): Promise<any> {
+        await promisePool.query('DELETE FROM preferencias WHERE user_id = ?', [req.body.data.id]).then(() => {
+            res.status(200).json({message: 'Configuracion removida con exito'});
         }, err => {
             res.status(400).json({message: err.sqlMessage})
         })
