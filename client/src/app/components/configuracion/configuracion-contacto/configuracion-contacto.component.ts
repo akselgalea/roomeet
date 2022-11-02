@@ -20,6 +20,10 @@ export class ConfiguracionContactoComponent implements OnInit {
       console.log(err);
     });
 
+    this.getMyInfo();
+  }
+
+  getMyInfo() {
     this.userService.getMyInfoContacto().subscribe((res: any) => {
       this.misformas = res;
     }, err => {
@@ -28,17 +32,37 @@ export class ConfiguracionContactoComponent implements OnInit {
   }
 
   addFormaContacto(form: NgForm) {
-    console.log(form.controls);
+    let data = {
+      forma_id: form.controls["forma"].value,
+      link: form.controls["link"].value
+    }
+
+    this.userService.addFormaContacto(data).subscribe(() => {
+      this.ns.notification('success', 'Operacion realizada con exito', 'Forma de contacto agregada');
+      this.getMyInfo();
+    }, err => {
+      this.ns.notification('error', 'Ha ocurrido un problema', err.error.message);
+    })
   }
 
-  editarFormaContacto() {
-    console.log("works");
+  editarFormaContacto(f: any) {
+    f.editar = true;
+    console.log(f);
+  }
+
+  updateFormaContacto() {
+    let link = document.getElementById('newlink');
+    console.log(link?.getAttribute.value);
+  }
+
+  stopEdit(f: any) {
+    f.editar = false;
   }
 
   deleteFormaContacto(id: string) {
-    console.log(id);
     this.userService.deleteFormaContacto(id).subscribe(() => {
-      this.ns.notification('success', 'Operacion realizada con exito', 'Forma de contacto eliminada')
+      this.misformas = this.misformas.filter((item: any) => item.id !== id);
+      this.ns.notification('success', 'Operacion realizada con exito', 'Forma de contacto eliminada');
     }, err => {
       console.log(err);
       this.ns.notification('error', 'Ha ocurrido un problema', err.error.message)

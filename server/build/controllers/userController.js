@@ -136,7 +136,7 @@ class UserController {
             return res;
         });
     }
-    //Hobbies
+    // Hobbies -------------------------------------------------------------------------------
     createHobbie(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.promisePool.query('INSERT INTO hobbies set ?', [req.body]).then(() => {
@@ -180,7 +180,7 @@ class UserController {
             return res;
         });
     }
-    //Favoritos -- DONE
+    // Favoritos -------------------------------------------------------------------------------
     getFavoritos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.promisePool.query('SELECT u.id, u.username, u.nombre, u.sexo, u.profesion, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [req.body.data.id]).then(([rows,]) => __awaiter(this, void 0, void 0, function* () {
@@ -241,6 +241,7 @@ class UserController {
             return res;
         });
     }
+    // Solicitudes -------------------------------------------------------------------------------
     getSolicitudes(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.promisePool.query('SELECT pc.*, u.username, u.nombre, u.foto_perfil FROM peticion_contacto AS pc JOIN user AS u ON u.id = pc.user_id WHERE pc.contactado_id = ? && pc.estado != 2', [req.body.data.id]).then(([rows,]) => __awaiter(this, void 0, void 0, function* () {
@@ -322,6 +323,17 @@ class UserController {
             return res;
         });
     }
+    // Info contacto -------------------------------------------------------------------------------
+    getFormasContacto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('SELECT * FROM formas_contacto').then(([data,]) => {
+                res.json(data);
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
     getInfoContacto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.promisePool.query('SELECT fu.id, f.forma, fu.link FROM formas_contacto_user AS fu JOIN formas_contacto AS f ON f.id = fu.forma_id WHERE fu.user_id = ?', [req.params.id]).then(([data,]) => {
@@ -342,16 +354,28 @@ class UserController {
             return res;
         });
     }
-    getFormasContacto(req, res) {
+    addInfoContacto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.promisePool.query('SELECT * FROM formas_contacto').then(([data,]) => {
-                res.json(data);
+            req.body.forma.user_id = req.body.data.id;
+            yield database_1.promisePool.query('INSERT INTO formas_contacto_user SET ?', [req.body.forma]).then(() => {
+                res.status(200).json({ message: 'Forma de contacto agregada con exito' });
             }, err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
             return res;
         });
     }
+    deleteInfoContacto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('DELETE FROM formas_contacto_user WHERE id = ?', [req.params.id]).then(() => {
+                res.status(200).json({ message: 'Forma de contacto removida con exito' });
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
+    // Buscador Config -------------------------------------------------------------------------------
     getBuscadorConfig(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.promisePool.query('SELECT * FROM preferencias WHERE user_id = ?', [req.body.data.id]).then(([rows,]) => {

@@ -20,6 +20,7 @@
 <div class="contact-info" *ngIf="showInfo">
     <span (click)="closeInfo()" class="cerrar fas fa-times"></span>
     <div>
+        <h2 *ngIf="info.length == 0">Este usuario no tiene formas de contactos disponibles</h2>
         <div class="contact-link" *ngFor="let forma of info">
             <p>{{forma.forma}}: {{forma.link}}</p>
         </div>

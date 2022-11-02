@@ -54,8 +54,8 @@ export class SolicitudesComponent implements OnInit {
     solicitud.estado = 2;
 
     this.userService.updateSolicitud(solicitud.id, 2).subscribe((res: any) => {
+      this.solicitudes.solis = this.solicitudes.solis.filter((item: any) => item.id !== solicitud.id);
       this.ns.notification('success', 'Solicitud rechazada con exito', 'Este usuario no podra ver tu informacion de contacto');
-      this.ngOnInit();
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
     })
@@ -64,7 +64,7 @@ export class SolicitudesComponent implements OnInit {
   eliminarSol(id: string) {
     this.userService.deleteSolicitud(id).subscribe((res: any) => {
       this.ns.notification('success', 'Operacion realizada con exito', res.message);
-      this.ngOnInit()
+      this.solicitudes.mysolis = this.solicitudes.mysolis.filter((item: any) => item.id !== id);
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
     })

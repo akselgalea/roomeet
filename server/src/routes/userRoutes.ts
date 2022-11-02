@@ -58,8 +58,13 @@ class UserRoutes {
 
         //Info contacto
         this.router.get('/contacto', verifyToken, userController.getMyInfoContacto);
+        this.router.post('/contacto', verifyToken, userController.addInfoContacto);
+        this.router.put('/contacto', verifyToken, userController.getMyInfoContacto);
+        //Get another user contact info
         this.router.get('/:id/contacto', verifyToken, userController.getInfoContacto);
-        this.router.get('/formas-contacto', verifyToken, userController.getFormasContacto)
+        //Get user contact info
+        this.router.get('/formas-contacto', verifyToken, userController.getFormasContacto);
+        this.router.delete('/formas-contacto/:id', verifyToken, userController.deleteInfoContacto);
 
         //Configuracion
         this.router.get('/configuracion/buscador', verifyToken, userController.getBuscadorConfig);

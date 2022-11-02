@@ -127,7 +127,7 @@ class UserController {
         return res;
     }
 
-    //Hobbies
+    // Hobbies -------------------------------------------------------------------------------
     public async createHobbie(req: Request, res: Response): Promise<any> {
         await promisePool.query('INSERT INTO hobbies set ?', [req.body]).then(() => {
             res.json({message: 'Hobbie creado con exito!'})
@@ -173,7 +173,7 @@ class UserController {
     }
 
 
-    //Favoritos -- DONE
+    // Favoritos -------------------------------------------------------------------------------
     public async getFavoritos(req: Request, res: Response): Promise<any> {
         await promisePool.query('SELECT u.id, u.username, u.nombre, u.sexo, u.profesion, u.foto_perfil, u.reputacion FROM user u LEFT JOIN favoritos_user fu ON u.id = fu.favorito where user_id = ? && u.estado = 0', [req.body.data.id]).then(async ([rows,]: any) => {
             await promisePool.query('SELECT u.id, pc.id AS soli_id, pc.estado FROM peticion_contacto AS pc JOIN user AS u ON u.id = pc.contactado_id WHERE pc.user_id = ?', [req.body.data.id]).then(([data,]: any) => {
@@ -233,6 +233,7 @@ class UserController {
         return res;
     }
 
+    // Solicitudes -------------------------------------------------------------------------------
     public async getSolicitudes(req: Request, res: Response): Promise<any> {
         await promisePool.query('SELECT pc.*, u.username, u.nombre, u.foto_perfil FROM peticion_contacto AS pc JOIN user AS u ON u.id = pc.user_id WHERE pc.contactado_id = ? && pc.estado != 2', [req.body.data.id]).then(async ([rows,]: any) => {
             await promisePool.query('SELECT pc.*, u.username, u.nombre, u.foto_perfil FROM peticion_contacto AS pc JOIN user AS u ON u.id = pc.contactado_id WHERE pc.user_id = ?', [req.body.data.id]).then(([data,]: any) => {
@@ -313,6 +314,17 @@ class UserController {
         return res;
     }
 
+    // Info contacto -------------------------------------------------------------------------------
+    public async getFormasContacto(req: Request, res: Response): Promise<any> {
+        await promisePool.query('SELECT * FROM formas_contacto').then(([data, ]: any) => {
+            res.json(data)
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        })
+        
+        return res;
+    }
+    
     public async getInfoContacto(req: Request, res: Response): Promise<any> {
         await promisePool.query('SELECT fu.id, f.forma, fu.link FROM formas_contacto_user AS fu JOIN formas_contacto AS f ON f.id = fu.forma_id WHERE fu.user_id = ?', [req.params.id]).then(([data, ]: any) => {
             res.json(data)
@@ -333,16 +345,28 @@ class UserController {
         return res;
     }
 
-    public async getFormasContacto(req: Request, res: Response): Promise<any> {
-        await promisePool.query('SELECT * FROM formas_contacto').then(([data, ]: any) => {
-            res.json(data)
+    public async addInfoContacto(req: Request, res: Response): Promise<any> {
+        req.body.forma.user_id = req.body.data.id;
+        await promisePool.query('INSERT INTO formas_contacto_user SET ?', [req.body.forma]).then(() => {
+            res.status(200).json({message: 'Forma de contacto agregada con exito'})
         }, err => {
             res.status(400).json({message: err.sqlMessage})
         })
-        
+
         return res;
     }
 
+    public async deleteInfoContacto(req: Request, res: Response): Promise<any> {
+        await promisePool.query('DELETE FROM formas_contacto_user WHERE id = ?', [req.params.id]).then(() => {
+            res.status(200).json({message: 'Forma de contacto removida con exito'})
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        })
+
+        return res;
+    }
+
+    // Buscador Config -------------------------------------------------------------------------------
     public async getBuscadorConfig(req: Request, res: Response): Promise<any> {
         await promisePool.query('SELECT * FROM preferencias WHERE user_id = ?', [req.body.data.id]).then(([rows,]: any) => {
             res.json(rows[0]);

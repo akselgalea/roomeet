@@ -55,6 +55,7 @@ export class UserService {
   //Info contacto
   getInfoContacto(id: string) { return this.http.get(`${this.API_URI}/users/${id}/contacto`); }
   getMyInfoContacto() { return this.http.get(`${this.API_URI}/users/contacto`); }
+  addFormaContacto(forma: any) { return this.http.post(`${this.API_URI}/users/contacto`, {forma: forma});}
   getFormasContacto() { return this.http.get(`${this.API_URI}/users/formas-contacto`); }
   deleteFormaContacto(id: string) { return this.http.delete(`${this.API_URI}/users/formas-contacto/${id}`); }
 

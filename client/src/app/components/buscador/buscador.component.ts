@@ -38,8 +38,8 @@ export class BuscadorComponent implements OnInit {
 
   addToFav(id: any) {
     this.userService.createFavorito(id).subscribe((res: any) => {
+      this.users = this.users.filter((item: any) => item.id !== id);
       this.ns.notification('success', res.message, 'Se ha agregado a tus favoritos');
-      this.ngOnInit();
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
     });

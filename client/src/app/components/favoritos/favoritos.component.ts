@@ -38,8 +38,8 @@ export class FavoritosComponent implements OnInit {
 
   delFav(id: string) {
     this.userService.deleteFavorito(id).subscribe((res: any) => {
+      this.users = this.users.filter((item: any) => item.id !== id);
       this.ns.notification('success', 'Operacion realizada con exito', res.message);
-      this.ngOnInit()
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
     })
