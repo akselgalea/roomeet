@@ -137,6 +137,16 @@ class UserController {
         });
     }
     // Hobbies -------------------------------------------------------------------------------
+    getHobbies(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ?', [req.body.data.id]).then(([rows,]) => {
+                res.json(rows);
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
     createHobbie(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.promisePool.query('INSERT INTO hobbies set ?', [req.body]).then(() => {
@@ -180,6 +190,27 @@ class UserController {
             return res;
         });
     }
+    // Fotos -----------------------------------------------------------------------------------
+    getImages(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [req.body.data.id]).then(([rows,]) => {
+                res.json(rows);
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
+    deleteImage(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('DELETE FROM fotos_user WHERE id = ?', [req.params.id]).then(() => {
+                res.status(200).json({ message: 'Foto removida con exito' });
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
     // Favoritos -------------------------------------------------------------------------------
     getFavoritos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -189,7 +220,7 @@ class UserController {
                 }, err => {
                     res.status(400).json({ message: err.sqlMessage });
                 });
-            })).catch(err => {
+            }), err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
             return res;
@@ -220,7 +251,7 @@ class UserController {
             const { fav } = req.params;
             yield database_1.promisePool.query('DELETE FROM favoritos_user WHERE favorito = ? && user_id = ?', [fav, req.body.data.id]).then(() => {
                 res.status(200).json({ message: 'Favorito removido con exito!' });
-            }).catch(err => {
+            }, err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
             return res;
@@ -359,6 +390,16 @@ class UserController {
             req.body.forma.user_id = req.body.data.id;
             yield database_1.promisePool.query('INSERT INTO formas_contacto_user SET ?', [req.body.forma]).then(() => {
                 res.status(200).json({ message: 'Forma de contacto agregada con exito' });
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
+    updateInfoContacto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('UPDATE formas_contacto_user SET link = ? WHERE id = ?', [req.body.link, req.params.id]).then(() => {
+                res.status(200).json({ message: 'Forma de contacto actualizada con exito' });
             }, err => {
                 res.status(400).json({ message: err.sqlMessage });
             });

@@ -7,6 +7,9 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 
+    p, input{ width: 100%; }
+    p {word-break: break-all;}
+
     button {
         float: right
     }

@@ -54,7 +54,7 @@
 
         <div class="guard-send">
             <a [routerLink]="['/login']">Iniciar sesion</a>
-            <button type="submit" [disabled]="register.invalid" [ngClass]="!register.pristine && register.invalid ? 'btn-disabled' : ''">Entrar</button>
+            <button type="submit" [disabled]="register.invalid">Entrar</button>
         </div>
     </form>
 </div>

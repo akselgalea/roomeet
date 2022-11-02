@@ -53,9 +53,9 @@ export class EditarperfilComponent implements OnInit {
 
   editarPerfil(editForm: NgForm) {
     let data = {
-      username: editForm.controls["username"].pristine ? this.user.username : editForm.controls["username"].value,
-      nombre: editForm.controls["name"].pristine ? this.user.nombre : editForm.controls["name"].value,
-      descripcion: editForm.controls["description"].pristine ? this.user.descripcion : editForm.controls["description"].value,
+      username: editForm.controls["username"].value,
+      nombre: editForm.controls["name"].value,
+      descripcion: editForm.controls["description"].value,
       sexo: editForm.controls["sex"].pristine ? this.user.sexo : editForm.controls["sex"].value,
       profesion: editForm.controls["profession"].pristine ? this.user.profesion : editForm.controls["profession"].value,
       fumador: editForm.controls["smokes"].pristine ? this.user.fumador : editForm.controls["smokes"].value,

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup, NgForm } from '@angular/forms';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -40,6 +40,7 @@ export class ConfiguracionContactoComponent implements OnInit {
     this.userService.addFormaContacto(data).subscribe(() => {
       this.ns.notification('success', 'Operacion realizada con exito', 'Forma de contacto agregada');
       this.getMyInfo();
+      form.reset();
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un problema', err.error.message);
     })
@@ -50,9 +51,20 @@ export class ConfiguracionContactoComponent implements OnInit {
     console.log(f);
   }
 
-  updateFormaContacto() {
-    let link = document.getElementById('newlink');
-    console.log(link?.getAttribute.value);
+  updateFormaContacto(form: NgForm, f: any) {
+    let data = {
+      id: f.id,
+      link: form.controls["newlink"].value
+    }
+
+    this.userService.updateFormaContacto(data).subscribe((res: any) => {
+      f.link = data.link;
+      f.editar = false;
+      this.ns.notification('success', 'Operacion realizada con exito', 'Forma de contacto actualizada');
+    }, err => {
+      console.log(err);
+      this.ns.notification('error', 'Ha ocurrido un problema', err.error.message)  
+    })
   }
 
   stopEdit(f: any) {

@@ -128,6 +128,15 @@ class UserController {
     }
 
     // Hobbies -------------------------------------------------------------------------------
+    public async getHobbies(req: Request, res: Response): Promise<any> {
+        await promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ?', [req.body.data.id]).then(([rows,]: any) => {
+            res.json(rows);
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        })
+        return res;
+    }
+    
     public async createHobbie(req: Request, res: Response): Promise<any> {
         await promisePool.query('INSERT INTO hobbies set ?', [req.body]).then(() => {
             res.json({message: 'Hobbie creado con exito!'})
@@ -172,6 +181,25 @@ class UserController {
         return res
     }
 
+    // Fotos -----------------------------------------------------------------------------------
+    public async getImages(req: Request, res: Response): Promise<any> {
+        await promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [req.body.data.id]).then(([rows,]: any) => {
+            res.json(rows)
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        })
+
+        return res;
+    }
+
+    public async deleteImage(req: Request, res: Response): Promise<any> {
+        await promisePool.query('DELETE FROM fotos_user WHERE id = ?', [req.params.id]).then(() => {
+            res.status(200).json({message: 'Foto removida con exito'});
+        }, err => {
+            res.status(400).json({message: err.sqlMessage});
+        })
+        return res;
+    }
 
     // Favoritos -------------------------------------------------------------------------------
     public async getFavoritos(req: Request, res: Response): Promise<any> {
@@ -181,9 +209,9 @@ class UserController {
             }, err => {
                 res.status(400).json({message: err.sqlMessage});
             })
-        }).catch(err => {
+        }, err => {
             res.status(400).json({message: err.sqlMessage})
-        });
+        })
 
         return res
     }
@@ -212,9 +240,9 @@ class UserController {
 
         await promisePool.query('DELETE FROM favoritos_user WHERE favorito = ? && user_id = ?', [fav, req.body.data.id]).then(() => {
             res.status(200).json({message: 'Favorito removido con exito!'})
-        }).catch(err => {
+        }, err => {
             res.status(400).json({message: err.sqlMessage})
-        });
+        })
 
         return res
     }
@@ -352,6 +380,16 @@ class UserController {
         }, err => {
             res.status(400).json({message: err.sqlMessage})
         })
+
+        return res;
+    }
+
+    public async updateInfoContacto(req: Request, res: Response): Promise<any> {
+        await promisePool.query('UPDATE formas_contacto_user SET link = ? WHERE id = ?', [req.body.link, req.params.id]).then(() => {
+            res.status(200).json({message: 'Forma de contacto actualizada con exito'})
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        }) 
 
         return res;
     }

@@ -42,7 +42,15 @@ export class UserService {
   deleteFavorito(id: string) { return this.http.delete(`${this.API_URI}/users/favoritos/${id}`); }
 
   //Hobbies
+  getHobbies() { return this.http.get(`${this.API_URI}/users/hobbies`); }
   addHobbie(id: string) { return this.http.post(`${this.API_URI}/users/hobbies/add`, {hobbie: id}); }
+
+  //Fotos
+  getFotos() { return this.http.get(`${this.API_URI}/users/images`); }
+  deleteFoto(id: string, link: string) {
+    // this.http.delete(`${this.API_URI}/users/images/del/${link}`);
+    return this.http.delete(`${this.API_URI}/users/images/${id}`);
+  }
 
   //Solicitudes
   getSolicitudes() { return this.http.get(`${this.API_URI}/users/solicitudes`); }
@@ -56,6 +64,7 @@ export class UserService {
   getInfoContacto(id: string) { return this.http.get(`${this.API_URI}/users/${id}/contacto`); }
   getMyInfoContacto() { return this.http.get(`${this.API_URI}/users/contacto`); }
   addFormaContacto(forma: any) { return this.http.post(`${this.API_URI}/users/contacto`, {forma: forma});}
+  updateFormaContacto(data: any) { return this.http.put(`${this.API_URI}/users/contacto/${data.id}`, {link: data.link}); }
   getFormasContacto() { return this.http.get(`${this.API_URI}/users/formas-contacto`); }
   deleteFormaContacto(id: string) { return this.http.delete(`${this.API_URI}/users/formas-contacto/${id}`); }
 

@@ -31,17 +31,24 @@ class UserRoutes {
         this.router.get('/perfil/:id', verifyToken, userController.getUser);
         this.router.post('/login', userController.login);
         this.router.post('/register', userController.create);
-        this.router.post('/upload-image', upload.single("file"), verifyToken, userController.uploadImage);
         this.router.post('/comfirm-pass', verifyToken, userController.comparePass);
         this.router.put('/', verifyToken, userController.update);
         this.router.delete('/', verifyToken, userController.delete);
-
+        
         //User hobbies
+        this.router.get('/hobbies', verifyToken, userController.getHobbies);
         this.router.post('/hobbies', verifyToken, userController.createHobbie);
         this.router.post('/hobbies/add', verifyToken, userController.addHobbie);
         this.router.delete('/hobbies/:id', verifyToken, userController.removeHobbie);
         this.router.delete('/hobbies/:id', verifyToken, userController.deleteHobbie);
-
+        
+        //User fotos
+        this.router.get('/images', verifyToken, userController.getImages);
+        this.router.delete('/images/:id', verifyToken, userController.deleteImage);
+        // this.router.delete('/images/:id', verifyToken, userController.deleteImage);
+        this.router.post('/upload-image', upload.single("file"), verifyToken, userController.uploadImage);
+        
+        
         //User favoritos
         this.router.get('/favorito/:id', verifyToken, userController.isFavorito);
         this.router.get('/favoritos', verifyToken, userController.getFavoritos);
@@ -59,10 +66,10 @@ class UserRoutes {
         //Info contacto
         this.router.get('/contacto', verifyToken, userController.getMyInfoContacto);
         this.router.post('/contacto', verifyToken, userController.addInfoContacto);
-        this.router.put('/contacto', verifyToken, userController.getMyInfoContacto);
+        this.router.put('/contacto/:id', verifyToken, userController.updateInfoContacto);
         //Get another user contact info
         this.router.get('/:id/contacto', verifyToken, userController.getInfoContacto);
-        //Get user contact info
+        //Get types of contact info
         this.router.get('/formas-contacto', verifyToken, userController.getFormasContacto);
         this.router.delete('/formas-contacto/:id', verifyToken, userController.deleteInfoContacto);
 

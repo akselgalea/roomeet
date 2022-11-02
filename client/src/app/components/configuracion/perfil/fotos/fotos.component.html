@@ -1,1 +1,19 @@
-<p>fotos works!</p>
+<div class="fotos-container" *ngFor="let foto of fotos">
+    <img [src]="api_url + foto.link" />
+    <ng-container *ngIf="!!foto.editar;else noEditar">
+        <form #editarFoto="ngForm" (ngSubmit)="updateFoto(editarFoto, foto)">
+            <input type="text" #description="ngModel" ngModel="{{foto.descripcion}}" name="description" required>
+        </form>
+        <div>
+            <button type="button" (click)="updateFoto(editarFoto, foto)" [disabled]="editarFoto.pristine || editarFoto.invalid"><span class="fas fa-save"></span> Guardar</button>
+            <button type="button" (click)="stopEdit(foto)"><span class="far fa-minus-square"></span> Cancelar</button>    
+        </div>
+    </ng-container>
+    <ng-template #noEditar>
+        <p>{{foto.descripcion}}</p>
+        <div>
+            <button type="button" class="bg-red" (click)="deleteFoto(foto.id, foto.link)"><span class="far fa-minus-square"></span> Eliminar</button>
+            <button type="button" (click)="editFoto(foto)"><span class="far fa-edit"></span> Editar</button>
+        </div>
+    </ng-template>
+</div>
