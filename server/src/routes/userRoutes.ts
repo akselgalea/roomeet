@@ -44,6 +44,7 @@ class UserRoutes {
         
         //User fotos
         this.router.get('/images', verifyToken, userController.getImages);
+        this.router.put('/images/:id', verifyToken, userController.updateImage);
         this.router.delete('/images/:id', verifyToken, userController.deleteImage);
         // this.router.delete('/images/:id', verifyToken, userController.deleteImage);
         this.router.post('/upload-image', upload.single("file"), verifyToken, userController.uploadImage);

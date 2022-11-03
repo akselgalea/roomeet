@@ -40,6 +40,7 @@ class UserRoutes {
         this.router.delete('/hobbies/:id', verifyToken, userController_1.userController.deleteHobbie);
         //User fotos
         this.router.get('/images', verifyToken, userController_1.userController.getImages);
+        this.router.put('/images/:id', verifyToken, userController_1.userController.updateImage);
         this.router.delete('/images/:id', verifyToken, userController_1.userController.deleteImage);
         // this.router.delete('/images/:id', verifyToken, userController.deleteImage);
         this.router.post('/upload-image', upload.single("file"), verifyToken, userController_1.userController.uploadImage);

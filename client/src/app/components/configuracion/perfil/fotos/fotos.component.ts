@@ -22,8 +22,14 @@ export class FotosComponent implements OnInit {
   }
 
   updateFoto(form: NgForm, foto: any) {
-    foto.descripcion = form.controls['description'].value;
-    foto.editar = false;
+    this.userService.updateFoto(foto.id, form.controls['description'].value).subscribe((res: any) => {
+      foto.descripcion = form.controls['description'].value;
+      foto.editar = false;
+      this.ns.notification('success', 'Operacion realizada con exito', 'La foto ha sido actualizada');
+    }, err => {
+      console.log(err);
+      this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
+    })
   }
 
   editFoto(foto: any) {

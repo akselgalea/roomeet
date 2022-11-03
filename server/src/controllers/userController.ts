@@ -192,6 +192,16 @@ class UserController {
         return res;
     }
 
+    public async updateImage(req: Request, res: Response): Promise<any> {
+        await promisePool.query('UPDATE fotos_user SET descripcion = ? WHERE id = ?', [req.body.description, req.params.id]).then(() => {
+            res.status(200).json({message: 'Foto actualizada con exito'})
+        }, err => {
+            res.status(400).json({message: err.sqlMessage})
+        })
+
+        return res;
+    }
+
     public async deleteImage(req: Request, res: Response): Promise<any> {
         await promisePool.query('DELETE FROM fotos_user WHERE id = ?', [req.params.id]).then(() => {
             res.status(200).json({message: 'Foto removida con exito'});

@@ -47,6 +47,7 @@ export class UserService {
 
   //Fotos
   getFotos() { return this.http.get(`${this.API_URI}/users/images`); }
+  updateFoto(id: string, desc: string) { return this.http.put(`${this.API_URI}/users/images/${id}`, {description: desc}); }
   deleteFoto(id: string, link: string) {
     // this.http.delete(`${this.API_URI}/users/images/del/${link}`);
     return this.http.delete(`${this.API_URI}/users/images/${id}`);

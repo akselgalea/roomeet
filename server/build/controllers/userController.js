@@ -201,6 +201,16 @@ class UserController {
             return res;
         });
     }
+    updateImage(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.promisePool.query('UPDATE fotos_user SET descripcion = ? WHERE id = ?', [req.body.description, req.params.id]).then(() => {
+                res.status(200).json({ message: 'Foto actualizada con exito' });
+            }, err => {
+                res.status(400).json({ message: err.sqlMessage });
+            });
+            return res;
+        });
+    }
     deleteImage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.promisePool.query('DELETE FROM fotos_user WHERE id = ?', [req.params.id]).then(() => {
