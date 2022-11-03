@@ -115,27 +115,6 @@ class UserController {
             return res;
         });
     }
-    uploadImage(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const file = req.file;
-            if (file) {
-                let data = {
-                    link: file.path,
-                    descripcion: req.body.descripcion,
-                    user_id: req.body.data.id
-                };
-                yield database_1.promisePool.query('INSERT INTO fotos_user set ?', data).then(() => {
-                    res.json({ message: "Imagen subida con exito!" });
-                }, err => {
-                    res.status(400).json({ message: err.sqlMessage });
-                });
-            }
-            else {
-                res.status(400).json({ message: 'Errol al subir la imagen' });
-            }
-            return res;
-        });
-    }
     // Hobbies -------------------------------------------------------------------------------
     getHobbies(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -211,6 +190,22 @@ class UserController {
             return res;
         });
     }
+    updateFotoPerfil(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const file = req.file;
+            if (file) {
+                yield database_1.promisePool.query('UPDATE user SET foto_perfil = ? WHERE id = ?', [file.path, req.body.data.id]).then(() => {
+                    res.json({ message: "Foto de perfil actualizada con exito!" });
+                }, err => {
+                    res.status(400).json({ message: err.sqlMessage });
+                });
+            }
+            else {
+                res.status(400).json({ message: 'Errol al subir la imagen' });
+            }
+            return res;
+        });
+    }
     deleteImage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.promisePool.query('DELETE FROM fotos_user WHERE id = ?', [req.params.id]).then(() => {
@@ -218,6 +213,27 @@ class UserController {
             }, err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
+            return res;
+        });
+    }
+    uploadImage(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const file = req.file;
+            if (file) {
+                let data = {
+                    link: file.path,
+                    descripcion: req.body.descripcion,
+                    user_id: req.body.data.id
+                };
+                yield database_1.promisePool.query('INSERT INTO fotos_user set ?', data).then(() => {
+                    res.json({ message: "Imagen subida con exito!" });
+                }, err => {
+                    res.status(400).json({ message: err.sqlMessage });
+                });
+            }
+            else {
+                res.status(400).json({ message: 'Errol al subir la imagen' });
+            }
             return res;
         });
     }

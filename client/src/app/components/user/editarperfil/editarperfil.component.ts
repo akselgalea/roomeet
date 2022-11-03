@@ -13,6 +13,8 @@ import { UserService } from 'src/app/services/user.service';
 export class EditarperfilComponent implements OnInit {
   type = "password";
   api_url = '';
+  preview: any;
+  upload: any;
   confirmed = false;
   user: User = {}; 
 
@@ -45,6 +47,7 @@ export class EditarperfilComponent implements OnInit {
   getUser() {
     this.userService.getPerfil().subscribe((res : any) => {
       this.user = res;
+      this.preview = this.api_url + res.foto_perfil || 'assets/images/users/default.jpg';
       console.log(res);
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un problema', err.error.message)
@@ -70,5 +73,26 @@ export class EditarperfilComponent implements OnInit {
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un problema', err.error.message);
     });
+  }
+
+  loadImg(event : any) {
+    const reader = new FileReader();
+    this.upload = event.target.files[0];
+    reader.readAsDataURL(event.target.files[0])
+    reader.onload = (e: any) => {
+      this.preview = e.target.result;
+    }
+  }
+
+  uploadImg(form: NgForm) {
+    const data = new FormData();
+    data.append("file", this.upload);
+
+    this.userService.updateFotoPerfil(data).subscribe((res: any) => {
+      this.ns.notification('success', res.message, 'Se ha actualizado tu foto de perfil');
+      form.reset();
+    }, err => {
+      this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
+    })
   }
 }

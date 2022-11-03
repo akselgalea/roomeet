@@ -27,6 +27,17 @@
 </div>
 
 <ng-template #confirmedContent>
+
+    <div class="foto-perfil">
+        <div class="preview">
+            <p>Foto de perfil</p>
+            <img src={{preview}} alt="">
+        </div>
+        <form (ngSubmit)="uploadImg(newImg)" #newImg="ngForm">
+            <input accept="image/*" type="file" #newfoto="ngModel" ngModel name="newimage" (change)="loadImg($event)" required>
+            <button type="submit" [disabled]="newImg.invalid">Aplicar cambios</button>
+        </form>
+    </div>
     <form #editProfile="ngForm" (ngSubmit)="editarPerfil(editProfile)">
         <div class="editar-perfil">
             <div class="d-flex flexd-col">

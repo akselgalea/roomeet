@@ -31,7 +31,6 @@ export class UserService {
   getUsers() { return this.http.get(`${this.API_URI}/users/buscador`); }
   getPerfil() { return this.http.get(`${this.API_URI}/users/perfil`); }
   getUser(id: string) { return this.http.get(`${this.API_URI}/users/perfil/${id}`); }
-  uploadImg(img: any) { return this.http.post(`${this.API_URI}/users/upload-image`, img); }
   updateUser(user: User) { return this.http.put(`${this.API_URI}/users`, {user: user}); }
   deleteUser(id: string) { return this.http.delete(`${this.API_URI}/users/${id}`); }
   
@@ -40,14 +39,16 @@ export class UserService {
   getFavoritos() { return this.http.get(`${this.API_URI}/users/favoritos`); }
   createFavorito(id: string) { return this.http.post(`${this.API_URI}/users/favoritos`, {favorito: id}); }
   deleteFavorito(id: string) { return this.http.delete(`${this.API_URI}/users/favoritos/${id}`); }
-
+  
   //Hobbies
   getHobbies() { return this.http.get(`${this.API_URI}/users/hobbies`); }
   addHobbie(id: string) { return this.http.post(`${this.API_URI}/users/hobbies/add`, {hobbie: id}); }
-
+  
   //Fotos
   getFotos() { return this.http.get(`${this.API_URI}/users/images`); }
   updateFoto(id: string, desc: string) { return this.http.put(`${this.API_URI}/users/images/${id}`, {description: desc}); }
+  updateFotoPerfil(img: any) { return this.http.put(`${this.API_URI}/users/foto-perfil`, img); }
+  uploadImg(img: any) { return this.http.post(`${this.API_URI}/users/upload-image`, img); }
   deleteFoto(id: string, link: string) {
     // this.http.delete(`${this.API_URI}/users/images/del/${link}`);
     return this.http.delete(`${this.API_URI}/users/images/${id}`);

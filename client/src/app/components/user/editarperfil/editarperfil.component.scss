@@ -22,7 +22,19 @@
             min-height: 150px;
         }
     }
-} 
+}
+
+.foto-perfil {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    
+    .preview {
+        img {
+            max-width: 150px;
+        }
+    }
+}
 
 @media (max-width: 768px) {
     .fl-card {justify-content: center;}

@@ -42,7 +42,7 @@ class UserRoutes {
         this.router.get('/images', verifyToken, userController_1.userController.getImages);
         this.router.put('/images/:id', verifyToken, userController_1.userController.updateImage);
         this.router.delete('/images/:id', verifyToken, userController_1.userController.deleteImage);
-        // this.router.delete('/images/:id', verifyToken, userController.deleteImage);
+        this.router.put('/foto-perfil', upload.single("file"), verifyToken, userController_1.userController.updateFotoPerfil);
         this.router.post('/upload-image', upload.single("file"), verifyToken, userController_1.userController.uploadImage);
         //User favoritos
         this.router.get('/favorito/:id', verifyToken, userController_1.userController.isFavorito);
