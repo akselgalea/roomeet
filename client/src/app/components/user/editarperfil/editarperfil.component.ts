@@ -48,7 +48,6 @@ export class EditarperfilComponent implements OnInit {
     this.userService.getPerfil().subscribe((res : any) => {
       this.user = res;
       this.preview = this.api_url + res.foto_perfil || 'assets/images/users/default.jpg';
-      console.log(res);
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un problema', err.error.message)
     })

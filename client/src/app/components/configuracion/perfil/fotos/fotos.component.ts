@@ -17,7 +17,6 @@ export class FotosComponent implements OnInit {
     this.api_url = this.userService.SV_URL;
     this.userService.getFotos().subscribe((res: any) => {
       this.fotos = res;
-      console.log(this.fotos);
     })
   }
 

@@ -41,8 +41,11 @@ export class UserService {
   deleteFavorito(id: string) { return this.http.delete(`${this.API_URI}/users/favoritos/${id}`); }
   
   //Hobbies
-  getHobbies() { return this.http.get(`${this.API_URI}/users/hobbies`); }
-  addHobbie(id: string) { return this.http.post(`${this.API_URI}/users/hobbies/add`, {hobbie: id}); }
+  getHobbies() { return this.http.get(`${this.API_URI}/users/hobbies/all`); }
+  getMyHobbies() { return this.http.get(`${this.API_URI}/users/hobbies`); }
+  addHobbie(id: string) { return this.http.post(`${this.API_URI}/users/hobbies/add`, {hobbie_id: id}); }
+  createHobbie(data: any) { return this.http.post(`${this.API_URI}/users/hobbies`, data); }
+  removeHobbie(id: string) { return this.http.delete(`${this.API_URI}/users/hobbies/remove/${id}`); }
   
   //Fotos
   getFotos() { return this.http.get(`${this.API_URI}/users/images`); }

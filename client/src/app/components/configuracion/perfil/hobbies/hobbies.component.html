@@ -1,11 +1,57 @@
-<h2>Añadir un hobbie</h2>
-<form>
-    <input type="text" value="hobbie">
-</form>
+<ng-container *ngIf="categoria">
+    <h2>Añadir un hobbie</h2>
 
-<h2>Mis hobbies</h2>
-<div *ngFor="let h of hobbies">
-    <p></p>
-    <p></p>
-    <p></p>
-</div>
+    <form class="add-hobbie" #addHobbieForm="ngForm" (ngSubmit)="addHobbie(addHobbieForm)">
+        <div class="form-group">
+            <label for="category">Categoria</label>
+            <select name="category" #category="ngModel" ngModel (change)="setCategoria(category.control.value, hobbie)" required>
+                <option value="" selected disabled hidden>Elige una opción</option>
+                <option *ngFor="let c of categorias" value={{c.id}}>{{c.categoria}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="hobbie">Hobbie</label>
+            <select name="hobbie" #hobbie="ngModel" ngModel required>
+                <option value="" selected disabled hidden>Elige una opción</option>
+                <option *ngFor="let h of categoria.hobbies" value={{h.id}}>{{h.hobbie}}</option>
+            </select>
+        </div>
+        <div class="buttons">
+            <button type="submit" [disabled]="addHobbieForm.invalid || addHobbieForm.pristine || hobbie.pristine"><span class="far fa-plus-square"></span> Añadir</button>
+        </div>
+    </form>
+    
+    <h3>El hobbie que tienes no esta en la lista? Crea un hobbie!</h3>
+    <form #createHobbieForm="ngForm" class="create-hobbie" (ngSubmit)="createHobbie(createHobbieForm)">
+        <div class="form-group">
+            <label for="category">Categoria</label>
+            <select name="category" #category="ngModel" ngModel required>
+                <option value="" selected disabled hidden>Elige una opción</option>
+                <option *ngFor="let c of categorias" value={{c.id}}>{{c.categoria}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="newHobbie">Nuevo hobbie</label>
+            <input type="text" name="hobbie" #hobbie="ngModel" ngModel required>
+        </div>
+        <div class="buttons">
+            <button type="submit" [disabled]="createHobbieForm.invalid || createHobbieForm.pristine"><span class="far fa-plus-square"></span> Añadir</button>
+        </div>
+    </form>
+    
+    <h2>Mis hobbies</h2>
+    <div class="hobbies-header">
+        <p>Hobbie</p>
+        <p>Categoria</p>
+        <p></p>
+    </div>
+    <div class="hobbies">
+        <div class="hobbie" *ngFor="let h of myhobbies">
+            <p>{{h.hobbie}}</p>
+            <p class="categoria">{{h.categoria}}</p>
+            <div class="buttons">
+                <button type="button" (click)="removeHobbie(h.id)" class="bg-red"><span class="far fa-minus-square"></span> Eliminar</button>
+            </div>
+        </div>
+    </div>
+</ng-container>

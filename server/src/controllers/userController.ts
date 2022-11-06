@@ -108,7 +108,24 @@ class UserController {
 
     // Hobbies -------------------------------------------------------------------------------
     public async getHobbies(req: Request, res: Response): Promise<any> {
-        await promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ?', [req.body.data.id]).then(([rows,]: any) => {
+        await promisePool.query('SELECT * FROM categorias_hobbies').then(async ([rows,]: any) => {
+            const data = await Promise.all(
+                rows.map(async (item: any) => {
+                    const [rows,] = await promisePool.query('SELECT id, hobbie FROM hobbies WHERE categoria_id = ?', [item.id]);
+                    item.hobbies = rows;
+                    return item
+                })
+            )
+
+            res.json(data);
+        }, err => {
+            res.status(400).json({message: err});
+        });
+        return res;
+    }
+
+    public async getMyHobbies(req: Request, res: Response): Promise<any> {
+        await promisePool.query('SELECT hu.id, h.hobbie, ch.categoria FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id JOIN categorias_hobbies ch ON ch.id = h.categoria_id WHERE hu.user_id = ? ORDER BY ch.categoria', [req.body.data.id]).then(([rows,]: any) => {
             res.json(rows);
         }, err => {
             res.status(400).json({message: err.sqlMessage})
@@ -117,20 +134,19 @@ class UserController {
     }
     
     public async createHobbie(req: Request, res: Response): Promise<any> {
-        await promisePool.query('INSERT INTO hobbies set ?', [req.body]).then(() => {
+        await promisePool.query('INSERT INTO hobbies SET hobbie = ?, categoria_id = ?', [req.body.hobbie.toLowerCase(), req.body.categoria_id]).then(() => {
             res.json({message: 'Hobbie creado con exito!'})
         }).catch(err => {
-            res.status(400).json({message: err.sqlMessage})
+            if(err.sqlMessage.includes('hobbie')) res.status(400).json({message: 'Este hobbie ya existe'});
+            else res.status(400).json({message: err.sqlMessage});
         });
 
         return res
     }
 
     public async addHobbie(req: Request, res: Response): Promise<any> {
-        const {id} = req.body.id; 
-
-        await promisePool.query('INSERT INTO hobbies_user SET hobbies_id = ?, user_id = ?', [id, req.body.data.id]).then(() => {
-            res.status(200).json({message: 'Adding hobbie to user ' + req.body.data.id});
+        await promisePool.query('INSERT INTO hobbies_user SET hobbie_id = ?, user_id = ?', [req.body.hobbie_id, req.body.data.id]).then(() => {
+            res.status(200).json({message: 'Added hobbie to user ' + req.body.data.id});
         }).catch(err => {
             res.status(400).json({message: err.sqlMessage});
         });
@@ -140,7 +156,7 @@ class UserController {
 
     public async removeHobbie(req: Request, res: Response): Promise<any> {
         const { id } = req.params;
-        await promisePool.query('DELETE FROM hobbies_user where id = ?', [id]).then(() => {
+        await promisePool.query('DELETE FROM hobbies_user WHERE id = ?', [id]).then(() => {
             res.status(200).json({message: 'Hobbie removido con exito!'});
         }).catch(err => {
             res.status(400).json({message: err.sqlMessage});

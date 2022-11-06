@@ -20,3 +20,12 @@
     p {word-break: break-all;} 
     p, input {width: 100%}
 }
+
+@media (max-width: 678px) {
+    .fotos-container {
+        display: flex;
+        flex-direction: column;
+        
+        p {text-align: center;}
+    }
+}

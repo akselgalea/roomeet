@@ -33,10 +33,11 @@ class UserRoutes {
         this.router.put('/', verifyToken, userController_1.userController.update);
         this.router.delete('/', verifyToken, userController_1.userController.delete);
         //User hobbies
-        this.router.get('/hobbies', verifyToken, userController_1.userController.getHobbies);
+        this.router.get('/hobbies/all', verifyToken, userController_1.userController.getHobbies);
+        this.router.get('/hobbies', verifyToken, userController_1.userController.getMyHobbies);
         this.router.post('/hobbies', verifyToken, userController_1.userController.createHobbie);
         this.router.post('/hobbies/add', verifyToken, userController_1.userController.addHobbie);
-        this.router.delete('/hobbies/:id', verifyToken, userController_1.userController.removeHobbie);
+        this.router.delete('/hobbies/remove/:id', verifyToken, userController_1.userController.removeHobbie);
         this.router.delete('/hobbies/:id', verifyToken, userController_1.userController.deleteHobbie);
         //User fotos
         this.router.get('/images', verifyToken, userController_1.userController.getImages);
