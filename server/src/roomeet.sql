@@ -24,11 +24,11 @@ CREATE TABLE IF NOT EXISTS `categorias_hobbies` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla roomeet.categorias_hobbies: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla roomeet.categorias_hobbies: ~4 rows (aproximadamente)
 /*!40000 ALTER TABLE `categorias_hobbies` DISABLE KEYS */;
 REPLACE INTO `categorias_hobbies` (`id`, `categoria`) VALUES
-	(1, 'ninguna'),
-	(2, 'musica'),
+	(1, 'otros'),
+	(2, 'arte'),
 	(3, 'deporte'),
 	(4, 'literatura');
 /*!40000 ALTER TABLE `categorias_hobbies` ENABLE KEYS */;
@@ -183,10 +183,17 @@ CREATE TABLE IF NOT EXISTS `hobbies` (
 -- Volcando datos para la tabla roomeet.hobbies: ~4 rows (aproximadamente)
 /*!40000 ALTER TABLE `hobbies` DISABLE KEYS */;
 REPLACE INTO `hobbies` (`id`, `hobbie`, `categoria_id`) VALUES
-	(1, 'Bailar', 2),
-	(2, 'Cantar', 2),
-	(3, 'Leer', 4),
-	(4, 'Ping pong', 3);
+	(1, 'bailar', 2),
+	(2, 'cantar', 2),
+	(3, 'leer', 4),
+	(4, 'ping pong', 3),
+	(11, 'escultura', 2),
+	(12, 'escritor', 4),
+	(13, 'futbol', 3),
+	(14, 'coleccionar tazos', 1),
+	(15, 'astrologia', 1),
+	(16, 'pintar', 2),
+	(17, 'dibujar', 2);
 /*!40000 ALTER TABLE `hobbies` ENABLE KEYS */;
 
 -- Volcando estructura para tabla roomeet.hobbies_user
@@ -213,7 +220,14 @@ REPLACE INTO `hobbies_user` (`id`, `hobbie_id`, `user_id`) VALUES
 	(8, 3, 2),
 	(9, 3, 5),
 	(11, 1, 1),
-	(12, 4, 1);
+	(15, 4, 1),
+	(16, 11, 1),
+	(17, 12, 1),
+	(18, 13, 1),
+	(19, 14, 1),
+	(20, 15, 1),
+	(21, 16, 1),
+	(22, 17, 1);
 /*!40000 ALTER TABLE `hobbies_user` ENABLE KEYS */;
 
 -- Volcando estructura para tabla roomeet.peticion_contacto

@@ -51,11 +51,12 @@ export class HobbiesComponent implements OnInit {
   createHobbie(form: NgForm) {
     let data = {
       hobbie: form.controls['hobbie'].value,
-      categoria_id: form.controls['category'].value
+      categoria_id: form.controls['categor'].value
     }
 
     this.userService.createHobbie(data).subscribe((res: any) => {
       this.ns.notification('success', 'Operacion realizada con exito', 'Hobbie creado exitosamente');
+      this.getCategorias();
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
     })
@@ -63,7 +64,7 @@ export class HobbiesComponent implements OnInit {
   }
 
   setCategoria(id: any, hobbie: NgModel) {
-    if(!hobbie.pristine) hobbie.reset();
+    if(hobbie.control.value != '') hobbie.reset();
     this.categoria = this.categorias.find((item: any) => id == item.id);
   }
 

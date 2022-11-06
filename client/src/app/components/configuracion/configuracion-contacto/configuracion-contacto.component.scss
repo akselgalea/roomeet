@@ -18,6 +18,8 @@
 .fl-header {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 1rem;
+    border-bottom: solid 1px black;
 }
 
 @media (min-width: 568px) {

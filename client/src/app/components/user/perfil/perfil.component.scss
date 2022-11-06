@@ -69,13 +69,15 @@
 
     .uc-hobbies {
         display: flex;
+        align-items: center;
+        flex-wrap: wrap;
         gap: 1rem;
 
         p {
+            color: white;
             padding: 0 .5rem;
-            background-color: rgb(255, 196, 86);
             border-radius: 2px;
-            border: solid 1px rgba(255, 166, 0, 0.822);
+            border: solid 1px rgba(0, 0, 0, 0.822);
         }
     }
 
@@ -196,6 +198,11 @@
         }
     }
 }
+
+.bg-grey {background-color: rgb(167, 167, 167);}
+.bg-red {background-color: rgb(226, 1, 1);}
+.bg-green {background-color: rgb(32, 161, 32);}
+.bg-yellow {background-color: rgba(255, 166, 0, 0.822);}
 
 //Media Querys
 @media (max-width: 850px) {

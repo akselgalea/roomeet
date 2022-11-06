@@ -1,7 +1,7 @@
 export interface Hobbie {
     id?: number,
     hobbie?: string,
-    categoria?: string
+    categoria_id?: number
 }
 
 export interface Favorito {

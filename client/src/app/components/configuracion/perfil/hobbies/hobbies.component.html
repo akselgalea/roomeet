@@ -11,7 +11,7 @@
         </div>
         <div class="form-group">
             <label for="hobbie">Hobbie</label>
-            <select name="hobbie" #hobbie="ngModel" ngModel required>
+            <select name="hobbie" #hobbie="ngModel" ngModel required [disabled]="category.value == ''">
                 <option value="" selected disabled hidden>Elige una opción</option>
                 <option *ngFor="let h of categoria.hobbies" value={{h.id}}>{{h.hobbie}}</option>
             </select>
@@ -24,15 +24,15 @@
     <h3>El hobbie que tienes no esta en la lista? Crea un hobbie!</h3>
     <form #createHobbieForm="ngForm" class="create-hobbie" (ngSubmit)="createHobbie(createHobbieForm)">
         <div class="form-group">
-            <label for="category">Categoria</label>
-            <select name="category" #category="ngModel" ngModel required>
+            <label for="categor">Categoria</label>
+            <select name="categor" #categor="ngModel" ngModel required>
                 <option value="" selected disabled hidden>Elige una opción</option>
                 <option *ngFor="let c of categorias" value={{c.id}}>{{c.categoria}}</option>
             </select>
         </div>
         <div class="form-group">
-            <label for="newHobbie">Nuevo hobbie</label>
-            <input type="text" name="hobbie" #hobbie="ngModel" ngModel required>
+            <label for="hobbie">Nuevo hobbie</label>
+            <input type="text" name="hobbie" #hobbie="ngModel" ngModel required [disabled]="categor.value == ''">
         </div>
         <div class="buttons">
             <button type="submit" [disabled]="createHobbieForm.invalid || createHobbieForm.pristine"><span class="far fa-plus-square"></span> Añadir</button>
@@ -47,7 +47,7 @@
     </div>
     <div class="hobbies">
         <div class="hobbie" *ngFor="let h of myhobbies">
-            <p>{{h.hobbie}}</p>
+            <p class="hobbie-text">{{h.hobbie}}</p>
             <p class="categoria">{{h.categoria}}</p>
             <div class="buttons">
                 <button type="button" (click)="removeHobbie(h.id)" class="bg-red"><span class="far fa-minus-square"></span> Eliminar</button>
