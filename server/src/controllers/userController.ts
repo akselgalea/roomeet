@@ -13,9 +13,9 @@ class UserController {
         const {data} = req.body;
 
         await promisePool.query(
-            'SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE username != ? EXCEPT SELECT u.id, u.username, u.nombre, u.descripcion, u.sexo, u.profesion, u.bebedor, u.fumador, u.fiestas, u.mascotas, u.hijos, u.foto_perfil FROM favoritos_user JOIN user as u ON favorito = u.id WHERE user_id = ?'
-        , [data.username, req.body.data.id]).then(([users,]) => {
-            res.json(users);
+            'CALL getUsers(?)'
+        , [req.body.data.id]).then(([users,]: any) => {
+            res.json(users[0]);
         }, err => {
             res.status(400).json({message: err.sqlMessage});
         });
@@ -395,8 +395,8 @@ class UserController {
     }
     
     public async getInfoContacto(req: Request, res: Response): Promise<any> {
-        await promisePool.query('SELECT fu.id, f.forma, fu.link FROM formas_contacto_user AS fu JOIN formas_contacto AS f ON f.id = fu.forma_id WHERE fu.user_id = ?', [req.params.id]).then(([data, ]: any) => {
-            res.json(data)
+        await promisePool.query('CALL getInfoContacto(?)', [req.params.id]).then(([data, ]: any) => {
+            res.json(data[0])
         }, err => {
             res.status(400).json({message: err.sqlMessage})
         })
@@ -405,8 +405,8 @@ class UserController {
     }
 
     public async getMyInfoContacto(req: Request, res: Response): Promise<any> {
-        await promisePool.query('SELECT fu.id, f.forma, fu.link FROM formas_contacto_user AS fu JOIN formas_contacto AS f ON f.id = fu.forma_id WHERE fu.user_id = ?', [req.body.data.id]).then(([data, ]: any) => {
-            res.json(data)
+        await promisePool.query('CALL getInfoContacto(?)', [req.body.data.id]).then(([data, ]: any) => {
+            res.json(data[0])
         }, err => {
             res.status(400).json({message: err.sqlMessage})
         })

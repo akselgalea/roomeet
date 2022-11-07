@@ -23,8 +23,8 @@ class UserController {
     buscador(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data } = req.body;
-            yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE username != ? EXCEPT SELECT u.id, u.username, u.nombre, u.descripcion, u.sexo, u.profesion, u.bebedor, u.fumador, u.fiestas, u.mascotas, u.hijos, u.foto_perfil FROM favoritos_user JOIN user as u ON favorito = u.id WHERE user_id = ?', [data.username, req.body.data.id]).then(([users,]) => {
-                res.json(users);
+            yield database_1.promisePool.query('CALL getUsers(?)', [req.body.data.id]).then(([users,]) => {
+                res.json(users[0]);
             }, err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
@@ -410,8 +410,8 @@ class UserController {
     }
     getInfoContacto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.promisePool.query('SELECT fu.id, f.forma, fu.link FROM formas_contacto_user AS fu JOIN formas_contacto AS f ON f.id = fu.forma_id WHERE fu.user_id = ?', [req.params.id]).then(([data,]) => {
-                res.json(data);
+            yield database_1.promisePool.query('CALL getInfoContacto(?)', [req.params.id]).then(([data,]) => {
+                res.json(data[0]);
             }, err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
@@ -420,8 +420,8 @@ class UserController {
     }
     getMyInfoContacto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.promisePool.query('SELECT fu.id, f.forma, fu.link FROM formas_contacto_user AS fu JOIN formas_contacto AS f ON f.id = fu.forma_id WHERE fu.user_id = ?', [req.body.data.id]).then(([data,]) => {
-                res.json(data);
+            yield database_1.promisePool.query('CALL getInfoContacto(?)', [req.body.data.id]).then(([data,]) => {
+                res.json(data[0]);
             }, err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
