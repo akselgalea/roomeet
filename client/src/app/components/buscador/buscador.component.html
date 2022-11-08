@@ -6,6 +6,9 @@
     <div class="user-card" *ngFor="let user of users">
         <div class="uc-username">
             <p>{{user.username}}</p>
+            <div class="afinidad" title="afinidad">
+                <p>{{user.afinidad}}</p>
+            </div>
         </div>
         <img [src]="api_url + user.foto_perfil" alt="">
         <div class="uc-row uc-name">

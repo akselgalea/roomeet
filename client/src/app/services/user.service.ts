@@ -28,7 +28,7 @@ export class UserService {
 
   registerUser(user: User) { return this.http.post(`${this.API_URI}/users/register`, user); }
   comfirmPass(pass: string) { return this.http.post(`${this.API_URI}/users/comfirm-pass`, {password: pass}); }
-  getUsers() { return this.http.get(`${this.API_URI}/users/buscador`); }
+  getUsers(config: any) { return this.http.post(`${this.API_URI}/users/buscador`, {config: config}); }
   getPerfil() { return this.http.get(`${this.API_URI}/users/perfil`); }
   getUser(id: string) { return this.http.get(`${this.API_URI}/users/perfil/${id}`); }
   updateUser(user: User) { return this.http.put(`${this.API_URI}/users`, {user: user}); }

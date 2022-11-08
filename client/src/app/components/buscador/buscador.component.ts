@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from 'src/app/models/User';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { UserService } from '../../services/user.service';
 
@@ -10,7 +9,7 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./buscador.component.scss']
 })
 export class BuscadorComponent implements OnInit {
-  users: User[] = [];
+  users: any = [];
   api_url = '';
   constructor(private userService: UserService, private ns: NotificationsService, private router: Router) { }
 
@@ -21,9 +20,9 @@ export class BuscadorComponent implements OnInit {
       (res: any) => {
         if(!res) this.router.navigate(['/preferencias/buscador']);
         else {
-          this.userService.getUsers().subscribe(
-            res => {
-              this.users = (res as User[]);
+          this.userService.getUsers(res).subscribe(
+            (res: any) => {
+              this.users = res;
             },
             err => {
               console.log(err.error.message);

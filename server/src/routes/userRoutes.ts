@@ -26,7 +26,7 @@ class UserRoutes {
     config(): void {
         //Directly to the user
         this.router.get('/', verifyToken, userController.list);
-        this.router.get('/buscador', verifyToken, userController.buscador);
+        this.router.post('/buscador', verifyToken, userController.buscador);
         this.router.get('/perfil', verifyToken, userController.getPerfil);
         this.router.get('/perfil/:id', verifyToken, userController.getUser);
         this.router.post('/login', userController.login);

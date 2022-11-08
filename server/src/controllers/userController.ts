@@ -10,12 +10,21 @@ class UserController {
     }
 
     public async buscador (req: Request, res: Response): Promise<any> {
-        const {data} = req.body;
+        const {config} = req.body;
+        let users: any = [];
 
-        await promisePool.query(
-            'CALL getUsers(?)'
-        , [req.body.data.id]).then(([users,]: any) => {
-            res.json(users[0]);
+        await promisePool.query('CALL getUsers(?)', [req.body.data.id]).then( ([data,]: any) => {
+            users = data[0];
+            users.map((item: any) => {
+                item.afinidad = 0;
+                
+                for (const [key, value] of Object.entries(config)) {
+                    if(value == 2) item.afinidad += 1;
+                    else if(value == item[key]) item.afinidad += 2;
+                }
+            })
+
+            res.json(users.sort((a: any, b: any) => b.afinidad - a.afinidad));
         }, err => {
             res.status(400).json({message: err.sqlMessage});
         });
@@ -447,7 +456,7 @@ class UserController {
 
     // Buscador Config -------------------------------------------------------------------------------
     public async getBuscadorConfig(req: Request, res: Response): Promise<any> {
-        await promisePool.query('SELECT * FROM preferencias WHERE user_id = ?', [req.body.data.id]).then(([rows,]: any) => {
+        await promisePool.query('SELECT sexo, bebedor, fumador, fiestas, mascotas, hijos FROM preferencias WHERE user_id = ?', [req.body.data.id]).then(([rows,]: any) => {
             res.json(rows[0]);
         }, err => {
             res.status(400).json({message: err.sqlMessage})

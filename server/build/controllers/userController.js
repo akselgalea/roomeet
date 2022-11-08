@@ -22,9 +22,20 @@ class UserController {
     }
     buscador(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data } = req.body;
-            yield database_1.promisePool.query('CALL getUsers(?)', [req.body.data.id]).then(([users,]) => {
-                res.json(users[0]);
+            const { config } = req.body;
+            let users = [];
+            yield database_1.promisePool.query('CALL getUsers(?)', [req.body.data.id]).then(([data,]) => {
+                users = data[0];
+                users.map((item) => {
+                    item.afinidad = 0;
+                    for (const [key, value] of Object.entries(config)) {
+                        if (value == 2)
+                            item.afinidad += 1;
+                        else if (value == item[key])
+                            item.afinidad += 2;
+                    }
+                });
+                res.json(users.sort((a, b) => b.afinidad - a.afinidad));
             }, err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
@@ -462,7 +473,7 @@ class UserController {
     // Buscador Config -------------------------------------------------------------------------------
     getBuscadorConfig(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.promisePool.query('SELECT * FROM preferencias WHERE user_id = ?', [req.body.data.id]).then(([rows,]) => {
+            yield database_1.promisePool.query('SELECT sexo, bebedor, fumador, fiestas, mascotas, hijos FROM preferencias WHERE user_id = ?', [req.body.data.id]).then(([rows,]) => {
                 res.json(rows[0]);
             }, err => {
                 res.status(400).json({ message: err.sqlMessage });
