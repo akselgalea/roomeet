@@ -10,10 +10,11 @@
         <h1>Iniciar sesion</h1>
         <div class="form-group">
             <label for="username">Nombre de usuario</label>
-            <input type="text" #username="ngModel" ngModel name="username" minlength="6" maxlength="20" required>
+            <input type="text" #username="ngModel" ngModel name="username" pattern="[a-zA-Z0-9-]+" minlength="6" maxlength="20" required>
             <!-- Validacion -->
             <div  *ngIf="username.touched && username.invalid">
                 <p class="text-danger" *ngIf="username.errors?.['required']">Campo obligatorio</p>
+                <p class="text-danger" *ngIf="username.errors?.['pattern']">Este campo no acepta caracteres especiales</p>
                 <p class="text-danger" *ngIf="username.errors?.['minlength']">Este campo requiere min. 6 caracteres</p>
             </div>
             <div class="text-success" *ngIf="username.valid">Perfecto!</div>

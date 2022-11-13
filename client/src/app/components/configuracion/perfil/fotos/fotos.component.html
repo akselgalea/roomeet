@@ -1,3 +1,4 @@
+<h1 *ngIf="fotos.length == 0">No tienes fotos</h1>
 <div class="fotos-container" *ngFor="let foto of fotos">
     <img [src]="api_url + foto.link" />
     <ng-container *ngIf="!!foto.editar;else noEditar">

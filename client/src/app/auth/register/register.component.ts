@@ -13,6 +13,8 @@ import * as SHA256 from 'crypto-js/sha256';
 })
 export class RegisterComponent implements OnInit {
   type = "password";
+  passValida = true;
+
   constructor(private userService: UserService, private ns:NotificationsService, private router: Router) { }
 
   ngOnInit(): void {
@@ -24,23 +26,35 @@ export class RegisterComponent implements OnInit {
       email: register.controls["email"].value,
       password: SHA256(register.controls["password"].value).toString()
     }
-
-    this.userService.registerUser(data).subscribe((res: any) => {
-      this.ns.notification('success', res.message, 'Has sido registrado correctamente');
-      this.userService.login(data).subscribe((res: any) => {
-        localStorage.setItem('token', res.token);
-        this.router.navigate(['/preferencias']);
+    if (this.validarCampo(data.username || '', data.password || '')) {
+      this.userService.registerUser(data).subscribe((res: any) => {
+        this.ns.notification('success', res.message, 'Has sido registrado correctamente');
+        this.userService.login(data).subscribe((res: any) => {
+          localStorage.setItem('token', res.token);
+          this.router.navigate(['/preferencias']);
+        }, err => {
+          this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
+          this.router.navigate(['/login'])
+        })
       }, err => {
-        this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
-        this.router.navigate(['/login'])
+        this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
       })
-    }, err => {
-      this.ns.notification('error', 'Ha ocurrido un error', err.error.message)
-    })
+    } else this.ns.notification('error', 'Ha ocurrido un error', 'Has ingresado los datos incorrectamente');
   }
 
   setType() {
     if(this.type === "password") this.type = "text";
     else this.type = "password";
+  }
+
+  validarCampo(username: string, password: string) {
+    let re_u = new RegExp("^([a-z0-9]{6,20})$");
+    if(!re_u.test(username)) return false;
+    if(password.slice(-1) == ' ' || password.slice(1) == ' ') {
+      this.passValida = false;
+      return false;
+    }
+    
+    return true;
   }
 }

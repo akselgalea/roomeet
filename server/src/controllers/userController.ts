@@ -13,7 +13,7 @@ class UserController {
         const {config} = req.body;
         let users: any = [];
 
-        await promisePool.query('CALL getUsers(?)', [req.body.data.id]).then( ([data,]: any) => {
+        await promisePool.query('CALL getUsers(?, ?)', [req.body.data.id, config.sexo]).then( ([data,]: any) => {
             users = data[0];
             users.map((item: any) => {
                 item.afinidad = 0;

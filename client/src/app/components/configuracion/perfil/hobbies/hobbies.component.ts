@@ -12,6 +12,7 @@ export class HobbiesComponent implements OnInit {
   myhobbies: any = [];
   categorias: any = [];
   categoria: any = null;
+  valido = true;
 
   constructor(private userService: UserService, private ns: NotificationsService) { }
 
@@ -50,17 +51,21 @@ export class HobbiesComponent implements OnInit {
 
   createHobbie(form: NgForm) {
     let data = {
-      hobbie: form.controls['hobbie'].value,
+      hobbie: form.controls['newhobbie'].value.trimStart().trimEnd(),
       categoria_id: form.controls['categor'].value
     }
 
-    this.userService.createHobbie(data).subscribe((res: any) => {
-      this.ns.notification('success', 'Operacion realizada con exito', 'Hobbie creado exitosamente');
-      this.getCategorias();
-    }, err => {
-      this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
-    })
-    form.reset();
+    if(this.validarCampo(data.hobbie)) {
+      this.userService.createHobbie(data).subscribe((res: any) => {
+        this.ns.notification('success', 'Operacion realizada con exito', 'Hobbie creado exitosamente');
+        this.getCategorias();
+      }, err => {
+        this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
+      })
+      form.reset();
+    } else {
+      this.ns.notification('error', 'Ha ocurrido un error', 'Campo hobbie no valido');
+    }
   }
 
   setCategoria(id: any, hobbie: NgModel) {
@@ -75,5 +80,15 @@ export class HobbiesComponent implements OnInit {
     }, err => {
       console.log(err);
     })
+  }
+
+  validarCampo(text: string) {
+    let re = new RegExp("^([a-z0-9 ]{1,50})$");
+    if(re.test(text)) return true;
+    else return false;
+  }
+
+  validarCampoOnChange(text: string) {
+    this.valido = !/^\s/.test(text);
   }
 }

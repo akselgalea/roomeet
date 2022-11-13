@@ -10,7 +10,6 @@ export class AuthedGuard implements CanActivate {
   
   canActivate(){
     if(this.userService.isLogged()) {
-      console.log('Token no valido o ya expiro');
       this.router.navigate(['/perfil']);
       return false;
     }

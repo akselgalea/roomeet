@@ -24,7 +24,7 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const { config } = req.body;
             let users = [];
-            yield database_1.promisePool.query('CALL getUsers(?)', [req.body.data.id]).then(([data,]) => {
+            yield database_1.promisePool.query('CALL getUsers(?, ?)', [req.body.data.id, config.sexo]).then(([data,]) => {
                 users = data[0];
                 users.map((item) => {
                     item.afinidad = 0;

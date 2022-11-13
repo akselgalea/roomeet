@@ -1,5 +1,5 @@
 <ng-container *ngIf="categoria">
-    <h2>Añadir un hobbie</h2>
+    <h2>Añadir un hobby</h2>
 
     <form class="add-hobbie" #addHobbieForm="ngForm" (ngSubmit)="addHobbie(addHobbieForm)">
         <div class="form-group">
@@ -10,7 +10,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="hobbie">Hobbie</label>
+            <label for="hobbie">Hobby</label>
             <select name="hobbie" #hobbie="ngModel" ngModel required [disabled]="category.value == ''">
                 <option value="" selected disabled hidden>Elige una opción</option>
                 <option *ngFor="let h of categoria.hobbies" value={{h.id}}>{{h.hobbie}}</option>
@@ -21,7 +21,7 @@
         </div>
     </form>
     
-    <h3>El hobbie que tienes no esta en la lista? Crea un hobbie!</h3>
+    <h3>El hobby que tienes no esta en la lista? Crea un hobby!</h3>
     <form #createHobbieForm="ngForm" class="create-hobbie" (ngSubmit)="createHobbie(createHobbieForm)">
         <div class="form-group">
             <label for="categor">Categoria</label>
@@ -30,18 +30,20 @@
                 <option *ngFor="let c of categorias" value={{c.id}}>{{c.categoria}}</option>
             </select>
         </div>
-        <div class="form-group">
-            <label for="hobbie">Nuevo hobbie</label>
-            <input type="text" name="hobbie" #hobbie="ngModel" ngModel required [disabled]="categor.value == ''">
+        <div class="form-group validation">
+            <label for="hobbie">Nuevo hobby</label>
+            <input type="text" name="newhobbie" #newhobbie="ngModel" ngModel pattern="^([a-z0-9 ]{1,50})$" required [disabled]="categor.value == ''" ngCha (ngModelChange)="validarCampoOnChange(newhobbie.value)">
+            <div class="validation-msg text-danger" *ngIf="newhobbie.errors?.['pattern']">Este campo no admite caracteres especiales!</div>
+            <div class="validation-msg text-danger" *ngIf="!valido">Este campo esta vacio!</div>
         </div>
         <div class="buttons">
-            <button type="submit" [disabled]="createHobbieForm.invalid || createHobbieForm.pristine"><span class="far fa-plus-square"></span> Añadir</button>
+            <button type="submit" [disabled]="createHobbieForm.invalid || createHobbieForm.pristine || !valido"><span class="far fa-plus-square"></span> Añadir</button>
         </div>
     </form>
     
     <h2>Mis hobbies</h2>
     <div class="hobbies-header">
-        <p>Hobbie</p>
+        <p>Hobby</p>
         <p>Categoria</p>
         <p></p>
     </div>

@@ -49,6 +49,15 @@ p {margin: 0}
     }
 }
 
+.validation {
+    position: relative;
+
+    .validation-msg {
+        position: absolute;
+        top: 3.2rem;
+    }
+}
+
 .centered {
     display: flex;
     justify-content: center;

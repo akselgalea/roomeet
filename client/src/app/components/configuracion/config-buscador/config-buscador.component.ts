@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -20,7 +21,7 @@ export class ConfigBuscadorComponent implements OnInit {
 
   noconfig = false;
 
-  constructor(private userService: UserService, private ns: NotificationsService) { }
+  constructor(private userService: UserService, private ns: NotificationsService, private router: Router) { }
 
   ngOnInit(): void {
     this.userService.getBuscadorConfig().subscribe((res: any) => {
@@ -43,13 +44,17 @@ export class ConfigBuscadorComponent implements OnInit {
 
     if(this.noconfig) {
       this.userService.createBuscadorConfig(data).subscribe((res: any) => {
-        this.ns.notification('success', 'Configuracion guardada con exito', 'Ahora podras encontrar a tu roomie ideal')
+        this.ns.notification('success', 'Configuracion guardada con exito', 'Ahora podras encontrar a tu roomie ideal');
+        this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
+        this.router.navigate(['/preferencias/buscador']));
       }, err => {
         this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
       })
     } else {
       this.userService.updateBuscadorConfig(data).subscribe((res: any) => {
-        this.ns.notification('success', 'Configuracion guardada con exito', 'Ahora podras encontrar a tu roomie ideal')
+        this.ns.notification('success', 'Configuracion guardada con exito', 'Ahora podras encontrar a tu roomie ideal');
+        this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
+        this.router.navigate(['/preferencias/buscador']));
       }, err => {
         this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
       })

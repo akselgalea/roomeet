@@ -60,9 +60,9 @@ CREATE TABLE IF NOT EXISTS `favoritos_user` (
   KEY `FK_favorito_user_user` (`user_id`),
   CONSTRAINT `FK_favorito_user_favorito` FOREIGN KEY (`favorito`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_favorito_user_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla roomeet.favoritos_user: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla roomeet.favoritos_user: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `favoritos_user` DISABLE KEYS */;
 REPLACE INTO `favoritos_user` (`id`, `favorito`, `user_id`) VALUES
 	(10, 2, 75),
@@ -85,7 +85,9 @@ REPLACE INTO `favoritos_user` (`id`, `favorito`, `user_id`) VALUES
 	(50, 2, 5),
 	(52, 6, 5),
 	(77, 2, 74),
-	(78, 75, 1);
+	(78, 75, 1),
+	(79, 1, 74),
+	(80, 74, 1);
 /*!40000 ALTER TABLE `favoritos_user` ENABLE KEYS */;
 
 -- Volcando estructura para tabla roomeet.formas_contacto
@@ -155,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `fotos_user` (
   CONSTRAINT `FK_fotos_user_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla roomeet.fotos_user: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla roomeet.fotos_user: ~9 rows (aproximadamente)
 /*!40000 ALTER TABLE `fotos_user` DISABLE KEYS */;
 REPLACE INTO `fotos_user` (`id`, `link`, `descripcion`, `user_id`) VALUES
 	(23, 'uploads/1665633249103_miamor.jpg', 'Mi amoooorrr <3', 1),
@@ -182,12 +184,19 @@ DELIMITER ;
 -- Volcando estructura para procedimiento roomeet.getUsers
 DELIMITER //
 CREATE PROCEDURE `getUsers`(
-	IN `userId` INT
+	IN `userId` INT,
+	IN `prefSexo` INT
 )
 BEGIN
-	SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE id != userId
-	EXCEPT SELECT u.id, u.username, u.nombre, u.descripcion, u.sexo, u.profesion, u.bebedor, u.fumador, u.fiestas, u.mascotas, u.hijos, u.foto_perfil FROM favoritos_user
-	JOIN user as u ON favorito = u.id WHERE user_id = userId;
+	IF prefSexo = 0 OR prefSexo = 1 THEN
+		SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE id != userId AND sexo = prefSexo
+		EXCEPT SELECT u.id, u.username, u.nombre, u.descripcion, u.sexo, u.profesion, u.bebedor, u.fumador, u.fiestas, u.mascotas, u.hijos, u.foto_perfil FROM favoritos_user
+		JOIN user as u ON favorito = u.id WHERE user_id = userId;
+	ELSE
+		SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE id != userId
+		EXCEPT SELECT u.id, u.username, u.nombre, u.descripcion, u.sexo, u.profesion, u.bebedor, u.fumador, u.fiestas, u.mascotas, u.hijos, u.foto_perfil FROM favoritos_user
+		JOIN user as u ON favorito = u.id WHERE user_id = userId;
+	END IF;
 END//
 DELIMITER ;
 
@@ -200,9 +209,9 @@ CREATE TABLE IF NOT EXISTS `hobbies` (
   UNIQUE KEY `hobbie` (`hobbie`),
   KEY `FK_hobbie_categoria` (`categoria_id`),
   CONSTRAINT `FK_hobbie_categoria` FOREIGN KEY (`categoria_id`) REFERENCES `categorias_hobbies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla roomeet.hobbies: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla roomeet.hobbies: ~11 rows (aproximadamente)
 /*!40000 ALTER TABLE `hobbies` DISABLE KEYS */;
 REPLACE INTO `hobbies` (`id`, `hobbie`, `categoria_id`) VALUES
 	(1, 'bailar', 2),
@@ -230,7 +239,7 @@ CREATE TABLE IF NOT EXISTS `hobbies_user` (
   CONSTRAINT `FK_hobbies_user_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla roomeet.hobbies_user: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla roomeet.hobbies_user: ~11 rows (aproximadamente)
 /*!40000 ALTER TABLE `hobbies_user` DISABLE KEYS */;
 REPLACE INTO `hobbies_user` (`id`, `hobbie_id`, `user_id`) VALUES
 	(2, 1, 2),
@@ -257,9 +266,9 @@ CREATE TABLE IF NOT EXISTS `peticion_contacto` (
   KEY `FK_peticion_user` (`user_id`),
   CONSTRAINT `FK_peticion_contactado` FOREIGN KEY (`contactado_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_peticion_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla roomeet.peticion_contacto: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla roomeet.peticion_contacto: ~10 rows (aproximadamente)
 /*!40000 ALTER TABLE `peticion_contacto` DISABLE KEYS */;
 REPLACE INTO `peticion_contacto` (`id`, `estado`, `contactado_id`, `user_id`) VALUES
 	(1, 1, 1, 2),
@@ -267,11 +276,11 @@ REPLACE INTO `peticion_contacto` (`id`, `estado`, `contactado_id`, `user_id`) VA
 	(3, 2, 1, 12),
 	(4, 2, 1, 5),
 	(6, 1, 2, 1),
-	(19, 0, 75, 74),
 	(20, 1, 1, 74),
 	(21, 0, 2, 74),
 	(22, 1, 5, 1),
-	(23, 0, 75, 1);
+	(25, 0, 6, 1),
+	(26, 1, 74, 1);
 /*!40000 ALTER TABLE `peticion_contacto` ENABLE KEYS */;
 
 -- Volcando estructura para tabla roomeet.preferencias
@@ -288,15 +297,16 @@ CREATE TABLE IF NOT EXISTS `preferencias` (
   UNIQUE KEY `user_id` (`user_id`),
   KEY `preferencias_FK` (`user_id`),
   CONSTRAINT `FK_preferencias_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla roomeet.preferencias: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla roomeet.preferencias: ~5 rows (aproximadamente)
 /*!40000 ALTER TABLE `preferencias` DISABLE KEYS */;
 REPLACE INTO `preferencias` (`id`, `sexo`, `bebedor`, `fumador`, `fiestas`, `mascotas`, `hijos`, `user_id`) VALUES
 	(1, 0, 0, 0, 0, 0, 0, 1),
 	(3, 0, 0, 0, 0, 0, 0, 74),
 	(4, 2, 1, 1, 1, 2, 0, 12),
-	(5, 0, 2, 0, 0, 0, 0, 79);
+	(5, 0, 2, 0, 0, 0, 0, 79),
+	(7, 1, 0, 0, 0, 0, 0, 81);
 /*!40000 ALTER TABLE `preferencias` ENABLE KEYS */;
 
 -- Volcando estructura para tabla roomeet.publicaciones
@@ -335,9 +345,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_username_IDX` (`username`) USING BTREE,
   UNIQUE KEY `user_email_IDX` (`email`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla roomeet.user: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla roomeet.user: ~11 rows (aproximadamente)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 REPLACE INTO `user` (`id`, `username`, `email`, `password`, `nombre`, `descripcion`, `sexo`, `profesion`, `bebedor`, `fumador`, `fiestas`, `mascotas`, `hijos`, `foto_perfil`, `estado`, `reputacion`, `role_id`) VALUES
 	(1, 'aksel2202', 'afyaksel@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Aksel Galea', 'Descripción épica digna de nobel 😎', 0, 0, 0, 0, 0, 1, 0, 'uploads/1665634512901_308198810_193998656430240_7511973942936051402_n.jpg', 0, 100, 'admin'),
@@ -347,7 +357,10 @@ REPLACE INTO `user` (`id`, `username`, `email`, `password`, `nombre`, `descripci
 	(12, 'aksel2', '123@123', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Axel 2022', NULL, 0, NULL, 1, 1, 1, 1, 0, 'uploads/default.jpg', 0, 100, 'user'),
 	(74, 'usuario', '1@1', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Usuario premium 1', 'Soy un usuario premium rey!', 2, NULL, 0, 0, 0, 0, 0, 'uploads/default.jpg', 0, 100, 'user'),
 	(75, 'usuario2', '1@2', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Nombresaso', NULL, 2, NULL, 0, 0, 0, 0, 0, 'uploads/default.jpg', 0, 100, 'user'),
-	(79, 'cris123', 'cris@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Cristian Del Villar', 'Descripcion!', 0, 0, 1, 1, 0, 0, 0, 'uploads\\1667872174560_code.png', 0, 100, 'user');
+	(79, 'cris123', 'cris@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Cristian Del Villar', 'Descripcion!', 0, 0, 1, 1, 0, 0, 0, 'uploads\\1667872174560_code.png', 0, 100, 'user'),
+	(80, '      ', '1@123.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', NULL, NULL, 2, NULL, 0, 0, 0, 0, 0, 'uploads/default.jpg', 0, 100, 'user'),
+	(81, 'usuarioprueba', 'prueba@mail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', NULL, NULL, 2, NULL, 0, 0, 0, 0, 0, 'uploads/default.jpg', 0, 100, 'user'),
+	(83, 'aksel220', 'dahzek4ever@hotmail.com', '8b6fa01313ce51afc09e610f819250da501778ad363cba4f9e312a6ec823d42a', NULL, NULL, 2, NULL, 0, 0, 0, 0, 0, 'uploads/default.jpg', 0, 100, 'user');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
