@@ -56,8 +56,8 @@ export class EditarperfilComponent implements OnInit {
   editarPerfil(editForm: NgForm) {
     let data = {
       username: editForm.controls["username"].value,
-      nombre: editForm.controls["name"].value,
-      descripcion: editForm.controls["description"].value,
+      nombre: editForm.controls["name"].value.trimStart().trimEnd(),
+      descripcion: editForm.controls["description"].value.trimStart().trimEnd(),
       sexo: editForm.controls["sex"].pristine ? this.user.sexo : editForm.controls["sex"].value,
       profesion: editForm.controls["profession"].pristine ? this.user.profesion : editForm.controls["profession"].value,
       fumador: editForm.controls["smokes"].pristine ? this.user.fumador : editForm.controls["smokes"].value,
@@ -67,11 +67,13 @@ export class EditarperfilComponent implements OnInit {
       hijos: editForm.controls["childs"].pristine ? this.user.hijos : editForm.controls["childs"].value
     }
     
-    this.userService.updateUser(data).subscribe(res => {
-      this.ns.notification('success', 'Operacion realizada con exito', 'Usuario actualizado!');
-    }, err => {
-      this.ns.notification('error', 'Ha ocurrido un problema', err.error.message);
-    });
+    if(this.validarCampo(data.username)) {
+      this.userService.updateUser(data).subscribe(res => {
+        this.ns.notification('success', 'Operacion realizada con exito', 'Usuario actualizado!');
+      }, err => {
+        this.ns.notification('error', 'Ha ocurrido un problema', err.error.message);
+      });
+    } else this.ns.notification('error', 'Ha ocurrido un error', 'Has ingresado los datos incorrectamente');
   }
 
   loadImg(event : any) {
@@ -93,5 +95,12 @@ export class EditarperfilComponent implements OnInit {
     }, err => {
       this.ns.notification('error', 'Ha ocurrido un error', err.error.message);
     })
+  }
+
+  validarCampo(username: string) {
+    let re_u = new RegExp("^([a-z0-9]{6,20})$");
+    if(!re_u.test(username)) return false;
+    
+    return true;
   }
 }

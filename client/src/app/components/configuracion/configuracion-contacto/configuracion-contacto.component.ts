@@ -34,7 +34,7 @@ export class ConfiguracionContactoComponent implements OnInit {
   addFormaContacto(form: NgForm) {
     let data = {
       forma_id: form.controls["forma"].value,
-      link: form.controls["link"].value
+      link: form.controls["link"].value.trimStart().trimEnd()
     }
 
     this.userService.addFormaContacto(data).subscribe(() => {
@@ -54,7 +54,7 @@ export class ConfiguracionContactoComponent implements OnInit {
   updateFormaContacto(form: NgForm, f: any) {
     let data = {
       id: f.id,
-      link: form.controls["newlink"].value
+      link: form.controls["newlink"].value.trimStart().trimEnd()
     }
 
     this.userService.updateFormaContacto(data).subscribe((res: any) => {

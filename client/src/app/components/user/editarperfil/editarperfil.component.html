@@ -43,8 +43,9 @@
             <div class="d-flex flexd-col">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" #username="ngModel" ngModel="{{user.username}}" name="username" minlength="6" maxlength="20" [required]="!username.pristine && username.value == '' ? true : false" disabled>
+                    <input type="text" #username="ngModel" ngModel="{{user.username}}" name="username" pattern="[a-zA-Z0-9-]+" minlength="6" maxlength="20" [required]="!username.pristine && username.value == '' ? true : false" disabled>
                     <p class="text-danger" *ngIf="username.errors?.['minlength'] || !username.pristine && username.value == '' ">Este campo requiere min. 6 caracteres</p>
+                    <p class="text-danger" *ngIf="username.errors?.['pattern']">Este campo no acepta caracteres especiales</p>
                 </div>
                 <div class="form-group">
                     <label for="name">Nombre</label>
