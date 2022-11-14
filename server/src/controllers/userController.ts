@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import { promisePool } from '../database';
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const { promisify } = require('util');
+const unlinkAsync = promisify(fs.unlink);
 
 class UserController {
     public async list (req: Request, res: Response): Promise<any> {
@@ -222,7 +225,8 @@ class UserController {
     }
 
     public async deleteImage(req: Request, res: Response): Promise<any> {
-        await promisePool.query('DELETE FROM fotos_user WHERE id = ?', [req.params.id]).then(() => {
+        await promisePool.query('DELETE FROM fotos_user WHERE id = ?', [req.params.id]).then(async () => {
+            await unlinkAsync(req.body.link);
             res.status(200).json({message: 'Foto removida con exito'});
         }, err => {
             res.status(400).json({message: err.sqlMessage});

@@ -12,6 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = void 0;
 const database_1 = require("../database");
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const { promisify } = require('util');
+const unlinkAsync = promisify(fs.unlink);
 class UserController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -236,9 +239,10 @@ class UserController {
     }
     deleteImage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.promisePool.query('DELETE FROM fotos_user WHERE id = ?', [req.params.id]).then(() => {
+            yield database_1.promisePool.query('DELETE FROM fotos_user WHERE id = ?', [req.params.id]).then(() => __awaiter(this, void 0, void 0, function* () {
+                yield unlinkAsync(req.body.link);
                 res.status(200).json({ message: 'Foto removida con exito' });
-            }, err => {
+            }), err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
             return res;

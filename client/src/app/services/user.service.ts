@@ -53,7 +53,7 @@ export class UserService {
   uploadImg(img: any) { return this.http.post(`${this.API_URI}/users/upload-image`, img); }
   deleteFoto(id: string, link: string) {
     // this.http.delete(`${this.API_URI}/users/images/del/${link}`);
-    return this.http.delete(`${this.API_URI}/users/images/${id}`);
+    return this.http.post(`${this.API_URI}/users/images/${id}`, {link: link});
   }
 
   //Solicitudes
