@@ -25,7 +25,6 @@ export class BuscadorComponent implements OnInit {
               this.users = res;
             },
             err => {
-              console.log(err.error.message);
               this.ns.notification('error', 'Ha ocurrido un error', 'Operacion fallida')
             }
           );

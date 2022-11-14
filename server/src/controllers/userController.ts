@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import e, { Request, Response } from 'express';
 import { promisePool } from '../database';
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
@@ -16,16 +16,25 @@ class UserController {
         const {config} = req.body;
         let users: any = [];
 
-        await promisePool.query('CALL getUsers(?, ?)', [req.body.data.id, config.sexo]).then( ([data,]: any) => {
+        const [hobbies,]: any = await promisePool.query('SELECT hu.id, h.hobbie, ch.categoria FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id JOIN categorias_hobbies ch ON ch.id = h.categoria_id WHERE hu.user_id = ? ORDER BY ch.categoria', [req.body.data.id]);
+        await promisePool.query('CALL getUsers(?, ?)', [req.body.data.id, config.sexo]).then(async ([data,]: any) => {
             users = data[0];
-            users.map((item: any) => {
-                item.afinidad = 0;
-                
-                for (const [key, value] of Object.entries(config)) {
-                    if(value == 2) item.afinidad += 1;
-                    else if(value == item[key]) item.afinidad += 2;
-                }
-            })
+            await Promise.all(
+                users.map(async (item: any) => {
+                    item.afinidad = 0;
+                    
+                    for (const [key, value] of Object.entries(config)) {
+                        if(value == 2) item.afinidad += 1;
+                        else if(value == item[key]) item.afinidad += 2;
+                    }
+
+                    const [rows,]:any = await promisePool.query('SELECT hu.id, h.hobbie, ch.categoria FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id JOIN categorias_hobbies ch ON ch.id = h.categoria_id WHERE hu.user_id = ? ORDER BY ch.categoria', [item.id]);
+
+                    if(rows.length > 0) rows.forEach((element : any) => {
+                        if(hobbies.find((el: any) => el.hobbie === element.hobbie)) item.afinidad += 1;
+                    });
+                })
+            )
 
             res.json(users.sort((a: any, b: any) => b.afinidad - a.afinidad));
         }, err => {

@@ -1,3 +1,8 @@
+<div class="popup" *ngIf="loadingService.visibility | async">
+  <p>Cargando...</p>
+  <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+</div>
+
 <ng-container *ngIf="router.url != '/login' &&  router.url != '/registro'; else noContainer">
   <app-navigation></app-navigation>
   
