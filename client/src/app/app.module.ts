@@ -22,6 +22,7 @@ import { ConfigBuscadorComponent } from './components/configuracion/config-busca
 import { HobbiesComponent } from './components/configuracion/perfil/hobbies/hobbies.component';
 import { FotosComponent } from './components/configuracion/perfil/fotos/fotos.component';
 import { ConfiguracionContactoComponent } from './components/configuracion/configuracion-contacto/configuracion-contacto.component';
+import { HttpLoadingInterceptorService } from './services/http-loading-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { ConfiguracionContactoComponent } from './components/configuracion/confi
     {provide: JWT_OPTIONS, useValue: JWT_OPTIONS},
     JwtHelperService,
     //Interceptor
-    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: HttpLoadingInterceptorService, multi: true}
   ],
   bootstrap: [AppComponent]
 })
