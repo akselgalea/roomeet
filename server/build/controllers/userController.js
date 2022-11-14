@@ -24,9 +24,10 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const { config } = req.body;
             let users = [];
-            yield database_1.promisePool.query('CALL getUsers(?, ?)', [req.body.data.id, config.sexo]).then(([data,]) => {
+            const [hobbies,] = yield database_1.promisePool.query('SELECT hu.id, h.hobbie, ch.categoria FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id JOIN categorias_hobbies ch ON ch.id = h.categoria_id WHERE hu.user_id = ? ORDER BY ch.categoria', [req.body.data.id]);
+            yield database_1.promisePool.query('CALL getUsers(?, ?)', [req.body.data.id, config.sexo]).then(([data,]) => __awaiter(this, void 0, void 0, function* () {
                 users = data[0];
-                users.map((item) => {
+                yield Promise.all(users.map((item) => __awaiter(this, void 0, void 0, function* () {
                     item.afinidad = 0;
                     for (const [key, value] of Object.entries(config)) {
                         if (value == 2)
@@ -34,9 +35,15 @@ class UserController {
                         else if (value == item[key])
                             item.afinidad += 2;
                     }
-                });
+                    const [rows,] = yield database_1.promisePool.query('SELECT hu.id, h.hobbie, ch.categoria FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id JOIN categorias_hobbies ch ON ch.id = h.categoria_id WHERE hu.user_id = ? ORDER BY ch.categoria', [item.id]);
+                    if (rows.length > 0)
+                        rows.forEach((element) => {
+                            if (hobbies.find((el) => el.hobbie === element.hobbie))
+                                item.afinidad += 1;
+                        });
+                })));
                 res.json(users.sort((a, b) => b.afinidad - a.afinidad));
-            }, err => {
+            }), err => {
                 res.status(400).json({ message: err.sqlMessage });
             });
             return res;
