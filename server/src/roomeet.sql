@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         10.9.3-MariaDB - mariadb.org binary distribution
+-- Versión del servidor:         10.11.0-MariaDB - mariadb.org binary distribution
 -- SO del servidor:              Win64
 -- HeidiSQL Versión:             11.3.0.6295
 -- --------------------------------------------------------
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `categorias_hobbies` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla roomeet.categorias_hobbies: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla roomeet.categorias_hobbies: ~4 rows (aproximadamente)
 /*!40000 ALTER TABLE `categorias_hobbies` DISABLE KEYS */;
 REPLACE INTO `categorias_hobbies` (`id`, `categoria`) VALUES
 	(1, 'otros'),
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `favoritos_user` (
   CONSTRAINT `FK_favorito_user_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla roomeet.favoritos_user: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla roomeet.favoritos_user: ~21 rows (aproximadamente)
 /*!40000 ALTER TABLE `favoritos_user` DISABLE KEYS */;
 REPLACE INTO `favoritos_user` (`id`, `favorito`, `user_id`) VALUES
 	(10, 2, 75),
@@ -84,9 +84,7 @@ REPLACE INTO `favoritos_user` (`id`, `favorito`, `user_id`) VALUES
 	(49, 74, 6),
 	(50, 2, 5),
 	(52, 6, 5),
-	(77, 2, 74),
 	(78, 75, 1),
-	(79, 1, 74),
 	(80, 74, 1);
 /*!40000 ALTER TABLE `favoritos_user` ENABLE KEYS */;
 
@@ -157,12 +155,10 @@ CREATE TABLE IF NOT EXISTS `fotos_user` (
   CONSTRAINT `FK_fotos_user_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla roomeet.fotos_user: ~9 rows (aproximadamente)
+-- Volcando datos para la tabla roomeet.fotos_user: ~7 rows (aproximadamente)
 /*!40000 ALTER TABLE `fotos_user` DISABLE KEYS */;
 REPLACE INTO `fotos_user` (`id`, `link`, `descripcion`, `user_id`) VALUES
 	(23, 'uploads/1665633249103_miamor.jpg', 'Mi amoooorrr <3', 1),
-	(24, 'uploads/1665634436790_278559119_10220626151429184_3524319958639572027_n.jpg', 'Yo con lentes', 1),
-	(25, 'uploads/1665634499873_78273701_10215298077550667_1485843008338264064_n.jpg', 'Yo con un gato', 1),
 	(26, 'uploads/1665634512901_308198810_193998656430240_7511973942936051402_n.jpg', 'Dibujo que hizo el amor de mi vida', 1),
 	(27, 'uploads/1665634537104_304892690_10221222435375910_3713512612682555694_n.jpg', 'Caricatura que hizo mi mujer', 1),
 	(28, 'uploads/1665673900907_280671177_375458494530837_1878306170965297269_n.jpg', '', 2),
@@ -174,10 +170,17 @@ REPLACE INTO `fotos_user` (`id`, `link`, `descripcion`, `user_id`) VALUES
 -- Volcando estructura para procedimiento roomeet.getInfoContacto
 DELIMITER //
 CREATE PROCEDURE `getInfoContacto`(
-	IN `userId` INT)
+	IN `userId` INT,
+	IN `userRequestingId` INT
+)
 BEGIN
-    SELECT fu.id, f.forma, fu.link FROM formas_contacto_user AS fu
-    JOIN formas_contacto AS f ON f.id = fu.forma_id WHERE fu.user_id = userId;
+	IF (SELECT COUNT(id) FROM peticion_contacto WHERE estado = 1 AND user_id = userRequestingId AND contactado_id = userId) > 0 THEN
+   	SELECT fu.id, f.forma, fu.link FROM formas_contacto_user AS fu
+   	JOIN formas_contacto AS f ON f.id = fu.forma_id WHERE fu.user_id = userId;
+   ELSE
+   	SIGNAL SQLSTATE '45000' SET
+      MESSAGE_TEXT = 'No tienes permiso para acceder a la información de contacto de este usuario';
+   END IF;
 END//
 DELIMITER ;
 
@@ -237,9 +240,9 @@ CREATE TABLE IF NOT EXISTS `hobbies_user` (
   KEY `FK_hobbies_user_user` (`user_id`),
   CONSTRAINT `FK_hobbies_user_hobbie` FOREIGN KEY (`hobbie_id`) REFERENCES `hobbies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_hobbies_user_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla roomeet.hobbies_user: ~11 rows (aproximadamente)
+-- Volcando datos para la tabla roomeet.hobbies_user: ~16 rows (aproximadamente)
 /*!40000 ALTER TABLE `hobbies_user` DISABLE KEYS */;
 REPLACE INTO `hobbies_user` (`id`, `hobbie_id`, `user_id`) VALUES
 	(2, 1, 2),
@@ -252,7 +255,12 @@ REPLACE INTO `hobbies_user` (`id`, `hobbie_id`, `user_id`) VALUES
 	(11, 1, 1),
 	(16, 11, 1),
 	(21, 16, 1),
-	(22, 17, 1);
+	(22, 17, 1),
+	(24, 1, 74),
+	(25, 2, 74),
+	(26, 11, 74),
+	(27, 16, 74),
+	(28, 17, 74);
 /*!40000 ALTER TABLE `hobbies_user` ENABLE KEYS */;
 
 -- Volcando estructura para tabla roomeet.peticion_contacto
@@ -302,8 +310,8 @@ CREATE TABLE IF NOT EXISTS `preferencias` (
 -- Volcando datos para la tabla roomeet.preferencias: ~5 rows (aproximadamente)
 /*!40000 ALTER TABLE `preferencias` DISABLE KEYS */;
 REPLACE INTO `preferencias` (`id`, `sexo`, `bebedor`, `fumador`, `fiestas`, `mascotas`, `hijos`, `user_id`) VALUES
-	(1, 0, 0, 0, 0, 0, 0, 1),
-	(3, 0, 0, 0, 0, 0, 0, 74),
+	(1, 2, 2, 2, 2, 2, 2, 1),
+	(3, 2, 0, 0, 0, 0, 0, 74),
 	(4, 2, 1, 1, 1, 2, 0, 12),
 	(5, 0, 2, 0, 0, 0, 0, 79),
 	(7, 1, 0, 0, 0, 0, 0, 81);

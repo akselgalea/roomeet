@@ -432,7 +432,7 @@ class UserController {
     }
     getInfoContacto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.promisePool.query('CALL getInfoContacto(?)', [req.params.id]).then(([data,]) => {
+            yield database_1.promisePool.query('CALL getInfoContacto(?, ?)', [req.params.id, req.body.data.id]).then(([data,]) => {
                 res.json(data[0]);
             }, err => {
                 res.status(400).json({ message: err.sqlMessage });

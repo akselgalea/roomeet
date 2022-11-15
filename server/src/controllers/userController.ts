@@ -417,7 +417,7 @@ class UserController {
     }
     
     public async getInfoContacto(req: Request, res: Response): Promise<any> {
-        await promisePool.query('CALL getInfoContacto(?)', [req.params.id]).then(([data, ]: any) => {
+        await promisePool.query('CALL getInfoContacto(?, ?)', [req.params.id, req.body.data.id]).then(([data, ]: any) => {
             res.json(data[0])
         }, err => {
             res.status(400).json({message: err.sqlMessage})
