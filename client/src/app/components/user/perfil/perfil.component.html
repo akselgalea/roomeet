@@ -1,6 +1,6 @@
 <div class="user-container container-mw" *ngIf="!error && user.id;else notFound">
     <div class="uc-presentacion">
-        <img class="u-fperfil" [src]="api_url + user.foto_perfil" alt="">
+        <img class="u-fperfil" [src]="api_url + user.foto_perfil || 'assets/images/users/default.jpg'" alt="">
         <div class="u-name">
             <p>
                 {{user.nombre}}
