@@ -31,7 +31,7 @@ const routes: Routes = [
   {path: 'preferencias/perfil/fotos', component: FotosComponent, canActivate: [AuthGuard]},
   {path: 'preferencias/buscador', component: ConfigBuscadorComponent, canActivate: [AuthGuard]},
   {path: 'preferencias/contacto', component: ConfiguracionContactoComponent, canActivate: [AuthGuard]},
-  {path: "**", pathMatch: "full", component: PagenotfoundComponent}
+  {path: "**", pathMatch: "full", component: PagenotfoundComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
