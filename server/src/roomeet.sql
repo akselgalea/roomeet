@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         10.11.0-MariaDB - mariadb.org binary distribution
+-- Versión del servidor:         10.9.3-MariaDB - mariadb.org binary distribution
 -- SO del servidor:              Win64
 -- HeidiSQL Versión:             11.3.0.6295
 -- --------------------------------------------------------
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `favoritos_user` (
   CONSTRAINT `FK_favorito_user_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla roomeet.favoritos_user: ~21 rows (aproximadamente)
+-- Volcando datos para la tabla roomeet.favoritos_user: ~17 rows (aproximadamente)
 /*!40000 ALTER TABLE `favoritos_user` DISABLE KEYS */;
 REPLACE INTO `favoritos_user` (`id`, `favorito`, `user_id`) VALUES
 	(10, 2, 75),
@@ -71,8 +71,6 @@ REPLACE INTO `favoritos_user` (`id`, `favorito`, `user_id`) VALUES
 	(18, 74, 75),
 	(21, 1, 75),
 	(34, 2, 1),
-	(35, 5, 1),
-	(36, 6, 1),
 	(40, 1, 2),
 	(41, 6, 2),
 	(42, 12, 2),
@@ -83,9 +81,7 @@ REPLACE INTO `favoritos_user` (`id`, `favorito`, `user_id`) VALUES
 	(48, 75, 6),
 	(49, 74, 6),
 	(50, 2, 5),
-	(52, 6, 5),
-	(78, 75, 1),
-	(80, 74, 1);
+	(52, 6, 5);
 /*!40000 ALTER TABLE `favoritos_user` ENABLE KEYS */;
 
 -- Volcando estructura para tabla roomeet.formas_contacto
@@ -310,7 +306,7 @@ CREATE TABLE IF NOT EXISTS `preferencias` (
 -- Volcando datos para la tabla roomeet.preferencias: ~5 rows (aproximadamente)
 /*!40000 ALTER TABLE `preferencias` DISABLE KEYS */;
 REPLACE INTO `preferencias` (`id`, `sexo`, `bebedor`, `fumador`, `fiestas`, `mascotas`, `hijos`, `user_id`) VALUES
-	(1, 2, 2, 2, 2, 2, 2, 1),
+	(1, 2, 0, 0, 0, 0, 0, 1),
 	(3, 2, 0, 0, 0, 0, 0, 74),
 	(4, 2, 1, 1, 1, 2, 0, 12),
 	(5, 0, 2, 0, 0, 0, 0, 79),
