@@ -3,44 +3,46 @@
 </div>
 
 <div class="uc-container">
-    <div class="user-card" *ngFor="let user of users">
-        <div class="uc-username">
-            <p>{{user.username}}</p>
-            <div class="afinidad" title="afinidad">
-                <p>{{user.afinidad}}</p>
+    <div class="users">
+        <div class="user-card" *ngFor="let user of users">
+            <div class="uc-username">
+                <p>{{user.username}}</p>
+                <div class="afinidad" title="afinidad">
+                    <p>{{user.afinidad}}</p>
+                </div>
             </div>
-        </div>
-        <img [src]="api_url + user.foto_perfil || 'assets/images/users/default.jpg'" alt="">
-        <div class="uc-row uc-name">
-            <span class="fas" [ngClass]="{'fa-mars': user.sexo == 0, 'fa-venus': user.sexo == 1, 'fa-genderless': user.sexo == 2}"></span>
-            <p>{{user.nombre}}</p>
-        </div>
-        <div class="uc-row uc-links">
-            <a [routerLink]="['/user', user.username]"><span class="fas fa-user-circle"></span> Ver perfil</a>
-            <a (click)="addToFav(user.id)"><span class="fas fa-heart"></span> Favoritos</a>
-        </div>
-        <!-- <div class="uc-desc">
-            <p>{{user.descripcion}}</p>
-        </div> -->
-        <div class="uc-row">
-            <span class="fas fa-beer"></span>
-            <p>{{user.bebedor == 0 ? 'No bebe' : 'Consume alcohol'}}</p>
-        </div>
-        <div class="uc-row">
-            <span class="fas fa-smoking"></span>
-            <p>{{user.fumador == 0 ? 'No fuma' : 'Fumador'}}</p>
-        </div>
-        <div class="uc-row">
-            <span class="fas fa-glass-cheers"></span>
-            <p>{{user.fiestas == 0 ? 'No hace fiestas' : 'Hace fiestas'}}</p>
-        </div>
-        <div class="uc-row">
-            <span class="fas fa-paw"></span>
-            <p>{{user.mascotas == 0 ? 'No tiene mascotas' : 'Tiene mascota(s)'}}</p>
-        </div>
-        <div class="uc-row">
-            <span class="fas fa-baby"></span>
-            <p>{{user.hijos == 0 ? 'No tiene hijos' : 'Tiene hijo(s)'}}</p>
-        </div>
-    </div>    
+            <img [src]="api_url + user.foto_perfil || 'assets/images/users/default.jpg'" alt="">
+            <div class="uc-row uc-name">
+                <span class="fas" [ngClass]="{'fa-mars': user.sexo == 0, 'fa-venus': user.sexo == 1, 'fa-genderless': user.sexo == 2}"></span>
+                <p>{{user.nombre}}</p>
+            </div>
+            <div class="uc-row uc-links">
+                <a [routerLink]="['/user', user.username]"><span class="fas fa-user-circle"></span> Ver perfil</a>
+                <a (click)="addToFav(user.id)"><span class="fas fa-heart"></span> Favoritos</a>
+            </div>
+            <!-- <div class="uc-desc">
+                <p>{{user.descripcion}}</p>
+            </div> -->
+            <div class="uc-row">
+                <span class="fas fa-beer"></span>
+                <p>{{user.bebedor == 0 ? 'No bebe' : 'Consume alcohol'}}</p>
+            </div>
+            <div class="uc-row">
+                <span class="fas fa-smoking"></span>
+                <p>{{user.fumador == 0 ? 'No fuma' : 'Fumador'}}</p>
+            </div>
+            <div class="uc-row">
+                <span class="fas fa-glass-cheers"></span>
+                <p>{{user.fiestas == 0 ? 'No hace fiestas' : 'Hace fiestas'}}</p>
+            </div>
+            <div class="uc-row">
+                <span class="fas fa-paw"></span>
+                <p>{{user.mascotas == 0 ? 'No tiene mascotas' : 'Tiene mascota(s)'}}</p>
+            </div>
+            <div class="uc-row">
+                <span class="fas fa-baby"></span>
+                <p>{{user.hijos == 0 ? 'No tiene hijos' : 'Tiene hijo(s)'}}</p>
+            </div>
+        </div> 
+    </div>   
 </div>

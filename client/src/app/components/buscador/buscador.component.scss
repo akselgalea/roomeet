@@ -1,9 +1,16 @@
 .uc-container {
     display: flex;
+    justify-content: center;
+}
+
+.users {
+    max-width: 1400px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     gap: 1rem;
     font-size: 1.1rem;
     font-family: 'Titillium Web', sans-serif;
-    flex-wrap: wrap;
 }
 
 .user-card {
@@ -87,5 +94,11 @@
 
     .user-card {
         width: 90%;
+    }
+}
+
+@media (max-width: 1269px) {
+    .users {
+        justify-content: center;
     }
 }
