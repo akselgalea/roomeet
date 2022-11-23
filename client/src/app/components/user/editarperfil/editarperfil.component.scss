@@ -49,6 +49,26 @@
             border: solid 3px black;
         }
     }
+
+    form {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.upload-btn {
+    display: inline-block;
+    margin-right: 2rem;
+    padding: .5rem 1.5rem;
+    border: solid 3px white;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    border-radius: 0.3rem;
+    cursor: pointer;
+}
+
+.upload-btn:hover {
+    border-color: black;
 }
 
 @media (max-width: 768px) {
@@ -58,5 +78,10 @@
 @media (max-width: 567px) {
     .editar-perfil {
         grid-template-columns: 1fr;
+    }
+
+    .foto-perfil form {
+        flex-direction: column;
+        gap: 1rem;
     }
 }

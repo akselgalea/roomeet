@@ -30,6 +30,7 @@ export class PerfilComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       if(params.has("id")) {
         this.userService.getUser(params.get("id") as string).subscribe(res => {
+          console.log(res);
           this.user = res;
           this.isFavorite(this.user.id);
         },

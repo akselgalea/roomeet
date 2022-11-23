@@ -58,8 +58,8 @@ class UserController {
             const [user,] = yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE username = ?', [data.username]);
             if (user.length > 0) {
                 const [fotos,] = yield database_1.promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [user[0].id]);
-                const [hobbies,] = yield database_1.promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ? ORDER BY h.categoria_id DESC', [user[0].id]);
-                return res.json(Object.assign(Object.assign(Object.assign({}, user[0]), { 'fotos': fotos }), { 'hobbies': hobbies }));
+                const [hobbies,] = yield database_1.promisePool.query('CALL getHobbies(?)', [user[0].id]);
+                return res.json(Object.assign(Object.assign(Object.assign({}, user[0]), { 'fotos': fotos }), { 'hobbies': hobbies[0] }));
             }
             return res.status(404).json({ message: "Este usuario no existe" });
         });
@@ -70,8 +70,8 @@ class UserController {
             const [user,] = yield database_1.promisePool.query('SELECT id, username, nombre, descripcion, sexo, profesion, bebedor, fumador, fiestas, mascotas, hijos, foto_perfil FROM user WHERE username = ?', [id]);
             if (user.length > 0) {
                 const [fotos,] = yield database_1.promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [user[0].id]);
-                const [hobbies,] = yield database_1.promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ? ORDER BY h.categoria_id DESC', [user[0].id]);
-                return res.status(200).json(Object.assign(Object.assign(Object.assign({}, user[0]), { 'fotos': fotos }), { 'hobbies': hobbies }));
+                const [hobbies,] = yield database_1.promisePool.query('CALL getHobbies(?)', [user[0].id]);
+                return res.status(200).json(Object.assign(Object.assign(Object.assign({}, user[0]), { 'fotos': fotos }), { 'hobbies': hobbies[0] }));
             }
             return res.status(404).json({ message: "Este usuario no existe" });
         });

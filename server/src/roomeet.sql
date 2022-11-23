@@ -163,6 +163,16 @@ REPLACE INTO `fotos_user` (`id`, `link`, `descripcion`, `user_id`) VALUES
 	(31, 'uploads/1665673977755_304892690_10221222435375910_3713512612682555694_n.jpg', '', 5);
 /*!40000 ALTER TABLE `fotos_user` ENABLE KEYS */;
 
+-- Volcando estructura para procedimiento roomeet.getHobbies
+DELIMITER //
+CREATE PROCEDURE `getHobbies`(
+	IN `userId` INT
+)
+BEGIN
+	SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = userId ORDER BY h.categoria_id DESC;
+END//
+DELIMITER ;
+
 -- Volcando estructura para procedimiento roomeet.getInfoContacto
 DELIMITER //
 CREATE PROCEDURE `getInfoContacto`(
@@ -275,12 +285,12 @@ CREATE TABLE IF NOT EXISTS `peticion_contacto` (
 -- Volcando datos para la tabla roomeet.peticion_contacto: ~10 rows (aproximadamente)
 /*!40000 ALTER TABLE `peticion_contacto` DISABLE KEYS */;
 REPLACE INTO `peticion_contacto` (`id`, `estado`, `contactado_id`, `user_id`) VALUES
-	(1, 1, 1, 2),
+	(1, 0, 1, 2),
 	(2, 2, 1, 6),
 	(3, 2, 1, 12),
 	(4, 2, 1, 5),
 	(6, 1, 2, 1),
-	(20, 1, 1, 74),
+	(20, 0, 1, 74),
 	(21, 0, 2, 74),
 	(22, 1, 5, 1),
 	(25, 0, 6, 1),
@@ -362,7 +372,6 @@ REPLACE INTO `user` (`id`, `username`, `email`, `password`, `nombre`, `descripci
 	(74, 'usuario', '1@1', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Usuario premium 1', 'Soy un usuario premium rey!', 2, NULL, 0, 0, 0, 0, 0, 'uploads/default.jpg', 0, 100, 'user'),
 	(75, 'usuario2', '1@2', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Nombresaso', NULL, 2, NULL, 0, 0, 0, 0, 0, 'uploads/default.jpg', 0, 100, 'user'),
 	(79, 'cris123', 'cris@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Cristian Del Villar', 'Descripcion!', 0, 0, 1, 1, 0, 0, 0, 'uploads\\1667872174560_code.png', 0, 100, 'user'),
-	(80, '      ', '1@123.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', NULL, NULL, 2, NULL, 0, 0, 0, 0, 0, 'uploads/default.jpg', 0, 100, 'user'),
 	(81, 'usuarioprueba', 'prueba@mail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', NULL, NULL, 2, NULL, 0, 0, 0, 0, 0, 'uploads/default.jpg', 0, 100, 'user'),
 	(83, 'aksel220', 'dahzek4ever@hotmail.com', '8b6fa01313ce51afc09e610f819250da501778ad363cba4f9e312a6ec823d42a', NULL, NULL, 2, NULL, 0, 0, 0, 0, 0, 'uploads/default.jpg', 0, 100, 'user');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;

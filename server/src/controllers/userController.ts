@@ -50,9 +50,9 @@ class UserController {
         
         if((user as any).length > 0) {
             const [fotos, ] = await promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [(user as any)[0].id]);
-            const [hobbies, ] = await promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ? ORDER BY h.categoria_id DESC', [(user as any)[0].id]);
+            const [hobbies, ] = await promisePool.query('CALL getHobbies(?)', [(user as any)[0].id]);
 
-            return res.json({...(user as any)[0], ...{'fotos': fotos}, ...{'hobbies': hobbies}});
+            return res.json({...(user as any)[0], ...{'fotos': fotos}, ...{'hobbies': (hobbies as any)[0]}});
         } 
     
         return res.status(404).json({message: "Este usuario no existe"});
@@ -64,9 +64,9 @@ class UserController {
         
         if((user as any).length > 0) {
             const [fotos, ] = await promisePool.query('SELECT id, link, descripcion FROM fotos_user WHERE user_id = ?', [(user as any)[0].id]);
-            const [hobbies, ] = await promisePool.query('SELECT hu.id, h.hobbie, h.categoria_id FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id WHERE hu.user_id = ? ORDER BY h.categoria_id DESC', [(user as any)[0].id]);
+            const [hobbies, ] = await promisePool.query('CALL getHobbies(?)', [(user as any)[0].id]);
 
-            return res.status(200).json({...(user as any)[0], ...{'fotos': fotos}, ...{'hobbies': hobbies}});
+            return res.status(200).json({...(user as any)[0], ...{'fotos': fotos}, ...{'hobbies': (hobbies as any)[0]}});
         } 
     
         return res.status(404).json({message: "Este usuario no existe"});

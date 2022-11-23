@@ -27,13 +27,14 @@
 </div>
 
 <ng-template #confirmedContent>
+    <h2>Foto de perfil</h2>
     <div class="foto-perfil">
         <div class="preview">
-            <h2>Foto de perfil</h2>
             <img class="fperfil" src={{preview}} width="150" height="150" alt="">
         </div>
         <form (ngSubmit)="uploadImg(newImg)" #newImg="ngForm">
-            <input accept="image/*" type="file" #newfoto="ngModel" ngModel name="newimage" (change)="loadImg($event)" required>
+            <input accept="image/*" type="file" id="newimage" #newfoto="ngModel" ngModel name="newimage" (change)="loadImg($event)" required hidden>
+            <label for="newimage" class="upload-btn">Subir imagen</label>
             <button type="submit" [disabled]="newImg.invalid">Aplicar cambios</button>
         </form>
     </div>
