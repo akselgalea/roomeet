@@ -31,7 +31,9 @@ export class UserService {
   getPerfil() { return this.http.get(`${this.API_URI}/users/perfil`); }
   getUser(id: string) { return this.http.get(`${this.API_URI}/users/perfil/${id}`); }
   updateUser(user: User) { return this.http.put(`${this.API_URI}/users`, {user: user}); }
-  deleteUser(id: string) { return this.http.delete(`${this.API_URI}/users/${id}`); }
+  // deleteUser(id: string) { return this.http.delete(`${this.API_URI}/users/${id}`); }
+
+  reportUser(data: any) { return this.http.post(`${this.API_URI}/users/reportar`, {reporte: data}) }
   
   //Favoritos
   isFavorito(id: string) { return this.http.get(`${this.API_URI}/users/favorito/${id}`); }

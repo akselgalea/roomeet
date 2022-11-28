@@ -17,7 +17,6 @@
                 <p class="text-danger" *ngIf="username.errors?.['pattern']">Este campo no acepta caracteres especiales</p>
                 <p class="text-danger" *ngIf="username.errors?.['minlength']">Este campo requiere min. 6 caracteres</p>
             </div>
-            <div class="text-success" *ngIf="username.valid">Perfecto!</div>
         </div>
 
         <div class="form-group">
@@ -31,7 +30,6 @@
                 <p *ngIf="password.errors?.['required']">Campo obligatorio</p>
                 <p class="text-danger" *ngIf="password.errors?.['minlength']">Este campo requiere min. 8 caracteres</p>
             </div>
-            <div class="text-success" *ngIf="password.valid">Perfecto!</div>
         </div>
         <div class="guard-send">
             <a [routerLink]="['/registro']">Crear cuenta</a>

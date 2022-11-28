@@ -1,5 +1,6 @@
+<h1 class="text-center">Administrar Fotos</h1>
 <h1 *ngIf="fotos.length == 0">No tienes fotos</h1>
-<div class="fotos-container" *ngFor="let foto of fotos">
+<div class="fotos-container container-mw" *ngFor="let foto of fotos">
     <img [src]="api_url + foto.link" />
     <ng-container *ngIf="!!foto.editar;else noEditar">
         <form #editarFoto="ngForm" (ngSubmit)="updateFoto(editarFoto, foto)">

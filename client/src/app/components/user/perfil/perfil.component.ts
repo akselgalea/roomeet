@@ -22,6 +22,7 @@ export class PerfilComponent implements OnInit {
   preview = '';
   api_url = '';
   showform = false;
+  showReport = false;
 
   constructor(private userService: UserService, private route: ActivatedRoute, private ns: NotificationsService, private http: HttpClient, private router: Router) { }
 
@@ -110,6 +111,25 @@ export class PerfilComponent implements OnInit {
     }, err => {
       console.log(err);
     })
+  }
+
+  openReport() {this.showReport = true;}
+  closeReport() {this.showReport = false;}
+
+  sendReport(reporte: NgForm) {
+    console.log(reporte);
+    let data = {
+      motivo: reporte.controls['motivo'].value,
+      reporte: reporte.controls['reporte'].value,
+      reportado_id: this.user.id
+    }
+
+    this.userService.reportUser(data).subscribe((res: any) => {
+      this.showReport = false;
+      this.ns.notification('success', 'Operacion realizada con exito', res.message);
+    }, err => {
+      this.ns.notification('error', err.error.message, 'Ha ocurrido un error');
+    });
   }
 
   editPerfil() {this.router.navigate(['preferencias/perfil'])}

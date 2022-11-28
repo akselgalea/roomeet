@@ -1,10 +1,8 @@
-<div class="fl-container">
-    <div class="fl-card">
-        <div class="fl-links">
-            <a [routerLink]="['/preferencias/perfil']"><span class="fas fa-user-alt"></span> Configurar perfil</a>
-            <a [routerLink]="['/preferencias/buscador']"><span class="fas fa-search"></span> Configurar buscador</a>
-            <a [routerLink]="['/preferencias/contacto']"><span class="far fa-comment-alt"></span> Configurar medios de contacto</a>
-            <a (click)="logOut()"><span class="fas fa-sign-out-alt"></span> Cerrar sesion</a>
-        </div>
+<div class="container-mw">
+    <div class="fl-links f-column">
+        <a [routerLink]="['/preferencias/perfil']"><span class="fas fa-user-alt"></span> Configurar perfil</a>
+        <a [routerLink]="['/preferencias/buscador']"><span class="fas fa-search"></span> Configurar buscador</a>
+        <a [routerLink]="['/preferencias/contacto']"><span class="far fa-comment-alt"></span> Configurar medios de contacto</a>
+        <a (click)="logOut()"><span class="fas fa-sign-out-alt"></span> Cerrar sesion</a>
     </div>
 </div>

@@ -13,7 +13,7 @@
             </div>
             <img [src]="api_url + user.foto_perfil || 'assets/images/users/default.jpg'" alt="">
             <div class="uc-row uc-name">
-                <span class="fas" [ngClass]="{'fa-mars': user.sexo == 0, 'fa-venus': user.sexo == 1, 'fa-genderless': user.sexo == 2}"></span>
+                <span class="fas" [ngClass]="{'fa-mars': user.sexo == 'Masculino', 'fa-venus': user.sexo == 'Femenino', 'fa-genderless': user.sexo == 'No Binario'}"></span>
                 <p>{{user.nombre}}</p>
             </div>
             <div class="uc-row uc-links">
@@ -25,23 +25,23 @@
             </div> -->
             <div class="uc-row">
                 <span class="fas fa-beer"></span>
-                <p>{{user.bebedor == 0 ? 'No bebe' : 'Consume alcohol'}}</p>
+                <p>{{user.bebedor == 'No' ? 'No bebe' : 'Consume alcohol'}}</p>
             </div>
             <div class="uc-row">
                 <span class="fas fa-smoking"></span>
-                <p>{{user.fumador == 0 ? 'No fuma' : 'Fumador'}}</p>
+                <p>{{user.fumador == 'No' ? 'No fuma' : 'Fumador'}}</p>
             </div>
             <div class="uc-row">
                 <span class="fas fa-glass-cheers"></span>
-                <p>{{user.fiestas == 0 ? 'No hace fiestas' : 'Hace fiestas'}}</p>
+                <p>{{user.fiestas == 'No' ? 'No hace fiestas' : 'Hace fiestas'}}</p>
             </div>
             <div class="uc-row">
                 <span class="fas fa-paw"></span>
-                <p>{{user.mascotas == 0 ? 'No tiene mascotas' : 'Tiene mascota(s)'}}</p>
+                <p>{{user.mascotas == 'No' ? 'No tiene mascotas' : 'Tiene mascota(s)'}}</p>
             </div>
             <div class="uc-row">
                 <span class="fas fa-baby"></span>
-                <p>{{user.hijos == 0 ? 'No tiene hijos' : 'Tiene hijo(s)'}}</p>
+                <p>{{user.hijos == 'No' ? 'No tiene hijos' : 'Tiene hijo(s)'}}</p>
             </div>
         </div> 
     </div>   

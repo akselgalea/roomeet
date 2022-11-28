@@ -1,7 +1,7 @@
 <h1 class="text-center">Solicitudes de contacto</h1>
-<div class="fl-container solicitudes">
-    <h1>Solicitudes Recibidas</h1>
-    <h1 *ngIf="solicitudes.solis.length == 0">No tienes solicitudes de contacto</h1>
+<div class="fl-container solicitudes container-mw">
+    <h2>Solicitudes Recibidas</h2>
+    <h2 *ngIf="solicitudes.solis.length == 0">No tienes solicitudes de contacto</h2>
     <div *ngFor="let soli of solicitudes.solis">
         <div class="fl-header">{{soli.nombre}}</div>
         <div class="fl-card">
@@ -18,9 +18,9 @@
     </div>
 </div>
 
-<div class="fl-container solicitudes">
-    <h1>Solicitudes Enviadas</h1>
-    <h1 *ngIf="solicitudes.mysolis.length == 0">No tienes solicitudes de contacto</h1>
+<div class="fl-container solicitudes container-mw">
+    <h2>Solicitudes Enviadas</h2>
+    <h2 *ngIf="solicitudes.mysolis.length == 0">No tienes solicitudes de contacto</h2>
     <div *ngFor="let soli of solicitudes.mysolis">
         <div class="fl-header" [ngSwitch]="soli.estado">
             <p>{{soli.nombre}}</p>

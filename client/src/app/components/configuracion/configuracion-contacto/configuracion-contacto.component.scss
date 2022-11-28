@@ -5,7 +5,7 @@
 
 .forma-contacto {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
 
     p, input{ width: 100%; }
     p {word-break: break-all;}
@@ -17,19 +17,29 @@
 
 .fl-header {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
     margin-bottom: 1rem;
     border-bottom: solid 1px black;
 }
 
 @media (min-width: 568px) {
-    .formas-form {
-        grid-template-columns: 200px 1fr 120px;
-    }
+    .formas-form {grid-template-columns: 200px 1fr 120px;}
+    .forma-contacto {grid-template-columns: 100px 1fr 1fr;}
+    .fl-header{grid-template-columns: 100px 1fr 1fr;}
 }
 
 @media (max-width: 567px) {
     .formas-form {
         grid-template-rows: 1fr 1fr 1fr;
+    }
+
+    .forma-contacto {
+        grid-template-rows: 1fr;
+        gap: .5rem;
+    }
+
+    .fl-header {
+        grid-template-rows: auto 1fr;
+        gap: .5rem;
     }
 }

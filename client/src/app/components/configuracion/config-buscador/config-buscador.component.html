@@ -1,59 +1,61 @@
-<h2>Selecciona las preferencias del buscador basandote en tu Roomie ideal!</h2>
-<form class="radio-inputs" #configForm="ngForm" (ngSubmit)="saveConfig(configForm)">
-    <div>
-        <p>Como se identifica?</p>
-        <input type="radio" #sex="ngModel" ngModel name="sex" value="0" [checked]="config.sexo == 0">
-        <label>Hombre</label>
-        <input type="radio" #sex="ngModel" ngModel name="sex" value="1" [checked]="config.sexo == 1">
-        <label>Mujer</label>
-        <input type="radio" #sex="ngModel" ngModel name="sex" value="2" [checked]="config.sexo == 2">
-        <label>Irrelevante</label>
-    </div>
-    <div>
-        <p>Bebe alcohol?</p>
-        <input type="radio" #drinks="ngModel" ngModel name="drinks" value="0" [checked]="config.bebedor == 0">
-        <label>No</label>
-        <input type="radio" #drinks="ngModel" ngModel name="drinks" value="2" [checked]="config.bebedor == 2">
-        <label>Irrelevante</label>
-        <input type="radio" #drinks="ngModel" ngModel name="drinks" value="1" [checked]="config.bebedor == 1">
-        <label>Si</label>
-    </div>
-    <div>
-        <p>Fuma cigarrillos?</p>
-        <input type="radio" #smokes="ngModel" ngModel name="smokes" value="0" [checked]="config.fumador == 0">
-        <label>No</label>
-        <input type="radio" #smokes="ngModel" ngModel name="smokes" value="2" [checked]="config.fumador == 2">
-        <label>Irrelevante</label>
-        <input type="radio" #smokes="ngModel" ngModel name="smokes" value="1" [checked]="config.fumador == 1">
-        <label>Si</label>
-    </div>
-    <div>
-        <p>Le gusta hacer fiestas?</p>
-        <input type="radio" #parties="ngModel" ngModel name="parties" value="0" [checked]="config.fiestas == 0">
-        <label>No</label>
-        <input type="radio" #parties="ngModel" ngModel name="parties" value="2" [checked]="config.fiestas == 2">
-        <label>Irrelevante</label>
-        <input type="radio" #parties="ngModel" ngModel name="parties" value="1" [checked]="config.fiestas == 1">
-        <label>Si</label>
-    </div>
-    <div>
-        <p>Tiene mascotas?</p>
-        <input type="radio" #pets="ngModel" ngModel name="pets" value="0" [checked]="config.mascotas == 0">
-        <label>No</label>
-        <input type="radio" #pets="ngModel" ngModel name="pets" value="2" [checked]="config.mascotas == 2">
-        <label>Irrelevante</label>
-        <input type="radio" #pets="ngModel" ngModel name="pets" value="1" [checked]="config.mascotas == 1">
-        <label>Si</label>
-    </div>
-    <div>
-        <p>Tiene hijos?</p>
-        <input type="radio" #childs="ngModel" ngModel name="childs" value="0" [checked]="config.hijos == 0">
-        <label>No</label>
-        <input type="radio" #childs="ngModel" ngModel name="childs" value="2" [checked]="config.hijos == 2">
-        <label>Irrelevante</label>
-        <input type="radio" #childs="ngModel" ngModel name="childs" value="1" [checked]="config.hijos == 1">
-        <label>Si</label>
-    </div>
-
-    <button type="submit" [disabled]="configForm.pristine" ><span class="fas fa-save"></span> Guardar configuracion</button>
-</form>
+<div class="container-mw">
+    <h2>Selecciona las preferencias del buscador basandote en tu Roomie ideal!</h2>
+    <form class="radio-inputs" #configForm="ngForm" (ngSubmit)="saveConfig(configForm)">
+        <div>
+            <p>Como se identifica?</p>
+            <input type="radio" #sex="ngModel" ngModel name="sex" value="Masculino" [checked]="config.sexo == 'Masculino'">
+            <label>Hombre</label>
+            <input type="radio" #sex="ngModel" ngModel name="sex" value="Femenino" [checked]="config.sexo == 'Femenino'">
+            <label>Mujer</label>
+            <input type="radio" #sex="ngModel" ngModel name="sex" value="Irrelevante" [checked]="config.sexo == 'Irrelevante'">
+            <label>Irrelevante</label>
+        </div>
+        <div>
+            <p>Bebe alcohol?</p>
+            <input type="radio" #drinks="ngModel" ngModel name="drinks" value="No" [checked]="config.bebedor == 'No'">
+            <label>No</label>
+            <input type="radio" #drinks="ngModel" ngModel name="drinks" value="Irrelevante" [checked]="config.bebedor == 'Irrelevante'">
+            <label>Irrelevante</label>
+            <input type="radio" #drinks="ngModel" ngModel name="drinks" value="Si" [checked]="config.bebedor == 'Si'">
+            <label>Si</label>
+        </div>
+        <div>
+            <p>Fuma cigarrillos?</p>
+            <input type="radio" #smokes="ngModel" ngModel name="smokes" value="No" [checked]="config.fumador == 'No'">
+            <label>No</label>
+            <input type="radio" #smokes="ngModel" ngModel name="smokes" value="Irrelevante" [checked]="config.fumador == 'Irrelevante'">
+            <label>Irrelevante</label>
+            <input type="radio" #smokes="ngModel" ngModel name="smokes" value="Si" [checked]="config.fumador == 'Si'">
+            <label>Si</label>
+        </div>
+        <div>
+            <p>Le gusta hacer fiestas?</p>
+            <input type="radio" #parties="ngModel" ngModel name="parties" value="No" [checked]="config.fiestas == 'No'">
+            <label>No</label>
+            <input type="radio" #parties="ngModel" ngModel name="parties" value="Irrelevante" [checked]="config.fiestas == 'Irrelevante'">
+            <label>Irrelevante</label>
+            <input type="radio" #parties="ngModel" ngModel name="parties" value="Si" [checked]="config.fiestas == 'Si'">
+            <label>Si</label>
+        </div>
+        <div>
+            <p>Tiene mascotas?</p>
+            <input type="radio" #pets="ngModel" ngModel name="pets" value="No" [checked]="config.mascotas == 'No'">
+            <label>No</label>
+            <input type="radio" #pets="ngModel" ngModel name="pets" value="Irrelevante" [checked]="config.mascotas == 'Irrelevante'">
+            <label>Irrelevante</label>
+            <input type="radio" #pets="ngModel" ngModel name="pets" value="Si" [checked]="config.mascotas == 'Si'">
+            <label>Si</label>
+        </div>
+        <div>
+            <p>Tiene hijos?</p>
+            <input type="radio" #childs="ngModel" ngModel name="childs" value="No" [checked]="config.hijos == 'No'">
+            <label>No</label>
+            <input type="radio" #childs="ngModel" ngModel name="childs" value="Irrelevante" [checked]="config.hijos == 'Irrelevante'">
+            <label>Irrelevante</label>
+            <input type="radio" #childs="ngModel" ngModel name="childs" value="Si" [checked]="config.hijos == 'Si'">
+            <label>Si</label>
+        </div>
+    
+        <button type="submit" [disabled]="configForm.pristine" ><span class="fas fa-save"></span> Guardar configuracion</button>
+    </form>
+</div>

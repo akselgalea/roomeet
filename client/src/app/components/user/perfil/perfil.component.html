@@ -4,7 +4,8 @@
         <div class="u-name">
             <p>
                 {{user.nombre}}
-                <span class="fas" [ngClass]="{'fa-mars': user.sexo == 0, 'fa-venus': user.sexo == 1, 'fa-genderless': user.sexo == 2}"></span>
+                <span class="fas" [ngClass]="{'fa-mars': user.sexo == 'Masculino', 'fa-venus': user.sexo == 'Femenino', 'fa-genderless': user.sexo == 'No Binario'}"></span>
+                <span class="report fas fa-exclamation-circle" *ngIf="!owner" title="Reportar Perfil" (click)="openReport()"></span>
             </p>
             <ng-container *ngIf="!owner;else isOwner">
                 <a class="fav" *ngIf="!favorito;else isFav" (click)="addToFav(user.id)"><span class="fas fa-heart"></span> Favoritos</a>
@@ -27,29 +28,30 @@
     <div class="desc-gustos">
         <div class="uc-desc">
             <h2>Descripcion</h2>
+            <p *ngIf="!user.descripcion">Sin descripcion</p>
             <p>{{user.descripcion}}</p>
         </div>
         <div class="uc-gustos">
             <h2>Gustos</h2>
             <div class="uc-row">
                 <span class="fas fa-beer"></span>
-                <p>{{user.bebedor == 0 ? 'No bebe' : 'Consume alcohol'}}</p>
+                <p>{{user.bebedor == 'No' ? 'No bebe' : 'Consume alcohol'}}</p>
             </div>
             <div class="uc-row">
                 <span class="fas fa-smoking"></span>
-                <p>{{user.fumador == 0 ? 'No fuma' : 'Fumador'}}</p>
+                <p>{{user.fumador == 'No' ? 'No fuma' : 'Fumador'}}</p>
             </div>
             <div class="uc-row">
                 <span class="fas fa-glass-cheers"></span>
-                <p>{{user.fiestas == 0 ? 'No hace fiestas' : 'Hace fiestas'}}</p>
+                <p>{{user.fiestas == 'No' ? 'No hace fiestas' : 'Hace fiestas'}}</p>
             </div>
             <div class="uc-row">
                 <span class="fas fa-paw"></span>
-                <p>{{user.mascotas == 0 ? 'No tiene mascotas' : 'Tiene mascota(s)'}}</p>
+                <p>{{user.mascotas == 'No' ? 'No tiene mascotas' : 'Tiene mascota(s)'}}</p>
             </div>
             <div class="uc-row">
                 <span class="fas fa-baby"></span>
-                <p>{{user.hijos == 0 ? 'No tiene hijos' : 'Tiene hijo(s)'}}</p>
+                <p>{{user.hijos == 'No' ? 'No tiene hijos' : 'Tiene hijo(s)'}}</p>
             </div>
         </div>
     </div>
@@ -90,6 +92,38 @@
         <input accept="image/*" type="file" #newfoto="ngModel" ngModel name="newimage" (change)="loadImg($event)" required>
         <button type="submit" [disabled]="newImg.invalid">Subir</button>
     </form>
+</div>
+
+<div class="modal-reporte container-mw" *ngIf="showReport">
+    <div class="report-container shadow">
+        <span (click)="closeReport()" class="cerrar fas fa-times"></span>
+        <form (ngSubmit)="sendReport(reporte)" #reporte="ngForm">
+            <div>
+                <p>Motivo</p>
+                <div class="form-group">
+                    <input type="radio" #motivo="ngModel" ngModel name="motivo" value="Perfil ofensivo" required>
+                    <label>Perfil ofensivo</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" #motivo="ngModel" ngModel name="motivo" value="Actitud inapropiada">
+                    <label>Actitud inapropiada</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" #motivo="ngModel" ngModel name="motivo" value="Mal roomie">
+                    <label>Mal roomie</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" #motivo="ngModel" ngModel name="motivo" value="Otro">
+                    <label>Otro</label>
+                </div>
+            </div>
+            <div class="d-flex f-column gap-0 mt-1">
+                <label for="reporte">Descripcion del reporte</label>
+                <textarea rows="4" maxlength="250" #reporte="ngModel" ngModel name="reporte" required></textarea>
+            </div>
+            <button type="submit" [disabled]="reporte.invalid">Enviar reporte</button>
+        </form>
+    </div>
 </div>
 
 <ng-template #notFound>

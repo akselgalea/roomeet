@@ -1,45 +1,47 @@
-<h2>Añadir forma de contacto</h2>
-<form class="formas-form" *ngIf="formas" #contacto="ngForm" (ngSubmit)="addFormaContacto(contacto)">
-    <div class="d-flex form-group">
-        <label for="forma">Forma </label>
-        <select #forma="ngModel" ngModel name="forma" required>
-            <option value="" selected disabled hidden>Elige una opción</option>
-            <ng-container *ngFor="let f of formas">
-                <option [value]="f.id">{{f.forma}}</option>
+<div class="container-mw">
+    <h2>Añadir forma de contacto</h2>
+    <form class="formas-form" *ngIf="formas" #contacto="ngForm" (ngSubmit)="addFormaContacto(contacto)">
+        <div class="d-flex form-group">
+            <label for="forma">Forma </label>
+            <select #forma="ngModel" ngModel name="forma" required>
+                <option value="" selected disabled hidden>Elige una opción</option>
+                <ng-container *ngFor="let f of formas">
+                    <option [value]="f.id">{{f.forma}}</option>
+                </ng-container>
+            </select>
+        </div>
+        <div class="d-flex form-group">
+            <label for="link">Link</label>
+            <input type="text" #link="ngModel" ngModel name="link" required>
+        </div>
+        <button type="submit" [disabled]="contacto.invalid"><span class="far fa-plus-square"></span> Añadir</button>
+    </form>
+    
+    <h2>Tus formas de contacto</h2>
+    <h4>Las personas podran ver estos datos cuando aceptes sus solicitudes de contacto</h4>
+    <div class="fl-container">
+        <div class="fl-header">
+            <p>Forma</p>
+            <p>Link</p>
+        </div>
+        <div class="fl-card forma-contacto" *ngFor="let f of misformas">
+            <p>{{f.forma}}</p>
+            <ng-container *ngIf="!!f.editar;else noEditar">
+                <form #editForm="ngForm">
+                    <input type="text" #newlink="ngModel" ngModel="{{f.link}}" name="newlink" required>
+                </form>
+                <div>
+                    <button type="button" (click)="updateFormaContacto(editForm, f)" [disabled]="editForm.pristine || editForm.invalid"><span class="fas fa-save"></span> Guardar</button>
+                    <button type="button" (click)="stopEdit(f)"><span class="far fa-minus-square"></span> Cancelar</button>
+                </div>
             </ng-container>
-        </select>
-    </div>
-    <div class="d-flex form-group">
-        <label for="link">Link</label>
-        <input type="text" #link="ngModel" ngModel name="link" required>
-    </div>
-    <button type="submit" [disabled]="contacto.invalid"><span class="far fa-plus-square"></span> Añadir</button>
-</form>
-
-<h2>Tus formas de contacto</h2>
-<h4>Las personas podran ver estos datos cuando aceptes sus solicitudes de contacto</h4>
-<div class="fl-container">
-    <div class="fl-header">
-        <p>Forma</p>
-        <p>Link</p>
-    </div>
-    <div class="fl-card forma-contacto" *ngFor="let f of misformas">
-        <p>{{f.forma}}</p>
-        <ng-container *ngIf="!!f.editar;else noEditar">
-            <form #editForm="ngForm">
-                <input type="text" #newlink="ngModel" ngModel="{{f.link}}" name="newlink" required>
-            </form>
-            <div>
-                <button type="button" (click)="updateFormaContacto(editForm, f)" [disabled]="editForm.pristine || editForm.invalid"><span class="fas fa-save"></span> Guardar</button>
-                <button type="button" (click)="stopEdit(f)"><span class="far fa-minus-square"></span> Cancelar</button>
-            </div>
-        </ng-container>
-        <ng-template #noEditar>
-            <p>{{f.link}}</p>
-            <div>
-                <button type="button" (click)="deleteFormaContacto(f.id)"><span class="far fa-minus-square"></span> Eliminar</button>
-                <button type="button" (click)="editarFormaContacto(f)"><span class="far fa-edit"></span> Editar</button>
-            </div>
-        </ng-template>
+            <ng-template #noEditar>
+                <p>{{f.link}}</p>
+                <div>
+                    <button type="button" (click)="deleteFormaContacto(f.id)"><span class="far fa-minus-square"></span> Eliminar</button>
+                    <button type="button" (click)="editarFormaContacto(f)"><span class="far fa-edit"></span> Editar</button>
+                </div>
+            </ng-template>
+        </div>
     </div>
 </div>

@@ -1,9 +1,28 @@
+.pc-container {
+    font-family: "Titillium Web", sans-serif;
+    max-width: 600px;
+    margin: auto;
+    border: solid 3px black;
+    border-radius: .5rem;
+    padding: 1.5rem;
+
+    h1 {margin-top: 0px;}
+    p {text-align: center;}
+
+    hr {
+        height: 2px;
+        background-color: black;
+        border-color: black;
+        margin: 1rem;
+    }
+}
+.pass-input {margin-top: -.5rem;}
+
 .pass-confirmation {
     max-width: 500px;
     margin: auto;
     button {
         margin-top: 1rem;
-        float: right;
     }
 }
 
