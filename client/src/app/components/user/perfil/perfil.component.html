@@ -94,10 +94,11 @@
     </form>
 </div>
 
-<div class="modal-reporte container-mw" *ngIf="showReport">
+<div class="modal-reporte" *ngIf="showReport">
     <div class="report-container shadow">
         <span (click)="closeReport()" class="cerrar fas fa-times"></span>
         <form (ngSubmit)="sendReport(reporte)" #reporte="ngForm">
+            <h3>Reporte</h3>
             <div>
                 <p>Motivo</p>
                 <div class="form-group">

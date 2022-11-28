@@ -209,13 +209,14 @@
 }
 
 .modal-reporte {
-    width: 100%;
+    max-width: 800px;
+    padding: 1rem;
     position: fixed;
     background-color: white;
     border-radius: 5px;
     left: 50%;
-    top: 25%;
-    transform: translate(-50%, -50%);
+    top: 50%;
+    transform: translate(-50%, -75%);
 
     button {
         margin-top: 1rem;
@@ -224,6 +225,7 @@
 
 .report-container {
     position: relative;
+    width: 100%;
     padding: 1rem;
     .cerrar {
         position: absolute;

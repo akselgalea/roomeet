@@ -117,19 +117,21 @@ export class PerfilComponent implements OnInit {
   closeReport() {this.showReport = false;}
 
   sendReport(reporte: NgForm) {
-    console.log(reporte);
     let data = {
       motivo: reporte.controls['motivo'].value,
-      reporte: reporte.controls['reporte'].value,
+      reporte: reporte.controls['reporte'].value.trimStart().trimEnd(),
       reportado_id: this.user.id
     }
 
-    this.userService.reportUser(data).subscribe((res: any) => {
-      this.showReport = false;
-      this.ns.notification('success', 'Operacion realizada con exito', res.message);
-    }, err => {
-      this.ns.notification('error', err.error.message, 'Ha ocurrido un error');
-    });
+    if(data.reporte == '') this.ns.notification('error', 'Reporte vacio', 'Rellena el reporte para continuar');
+    else {
+      this.userService.reportUser(data).subscribe((res: any) => {
+        this.showReport = false;
+        this.ns.notification('success', 'Operacion realizada con exito', res.message);
+      }, err => {
+        this.ns.notification('error', err.error.message, 'Ha ocurrido un error');
+      });
+    }
   }
 
   editPerfil() {this.router.navigate(['preferencias/perfil'])}
