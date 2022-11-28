@@ -17,6 +17,7 @@ class UserController {
         let users: any = [];
 
         const [hobbies,]: any = await promisePool.query('SELECT hu.id, h.hobbie, ch.categoria FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id JOIN categorias_hobbies ch ON ch.id = h.categoria_id WHERE hu.user_id = ? ORDER BY ch.categoria', [req.body.data.id]);
+        console.log(config.sexo);
         await promisePool.query('CALL getUsers(?, ?)', [req.body.data.id, config.sexo]).then(async ([data,]: any) => {
             users = data[0];
             await Promise.all(
@@ -24,7 +25,7 @@ class UserController {
                     item.afinidad = 0;
                     
                     for (const [key, value] of Object.entries(config)) {
-                        if(value == 2) item.afinidad += 1;
+                        if(value == 'Irrelevante') item.afinidad += 1;
                         else if(value == item[key]) item.afinidad += 2;
                     }
 
@@ -125,6 +126,16 @@ class UserController {
         });
 
         return res
+    }
+
+    public async report(req: Request, res: Response): Promise<any> {
+        let reporte = req.body.reporte;
+        reporte.user_id = req.body.data.id;
+        await promisePool.query('INSERT INTO reporte SET ?', [reporte]).then(() => {
+            res.json({message: 'Usuario reportado con exito!'})
+        }).catch(err => {
+            res.status(400).json({message: err.sqlMessage})
+        });
     }
 
     // Hobbies -------------------------------------------------------------------------------
@@ -427,8 +438,8 @@ class UserController {
     }
 
     public async getMyInfoContacto(req: Request, res: Response): Promise<any> {
-        await promisePool.query('CALL getInfoContacto(?)', [req.body.data.id]).then(([data, ]: any) => {
-            res.json(data[0])
+        await promisePool.query('SELECT fu.id, f.forma, fu.link FROM formas_contacto_user AS fu JOIN formas_contacto AS f ON f.id = fu.forma_id WHERE fu.user_id = ?', [req.body.data.id]).then(([data, ]: any) => {
+            res.json(data)
         }, err => {
             res.status(400).json({message: err.sqlMessage})
         })

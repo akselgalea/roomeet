@@ -34,6 +34,7 @@ class UserRoutes {
         this.router.post('/comfirm-pass', verifyToken, userController.comparePass);
         this.router.put('/', verifyToken, userController.update);
         this.router.delete('/', verifyToken, userController.delete);
+        this.router.post('/reportar', verifyToken, userController.report);
         
         //User hobbies
         this.router.get('/hobbies/all', verifyToken, userController.getHobbies);
