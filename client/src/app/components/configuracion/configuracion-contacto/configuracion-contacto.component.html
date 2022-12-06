@@ -32,13 +32,13 @@
                 </form>
                 <div>
                     <button type="button" (click)="updateFormaContacto(editForm, f)" [disabled]="editForm.pristine || editForm.invalid"><span class="fas fa-save"></span> Guardar</button>
-                    <button type="button" (click)="stopEdit(f)"><span class="far fa-minus-square"></span> Cancelar</button>
+                    <button class="bg-red" type="button" (click)="stopEdit(f)"><span class="far fa-minus-square"></span> Cancelar</button>
                 </div>
             </ng-container>
             <ng-template #noEditar>
                 <p>{{f.link}}</p>
                 <div>
-                    <button type="button" (click)="deleteFormaContacto(f.id)"><span class="far fa-minus-square"></span> Eliminar</button>
+                    <button class="bg-red" type="button" (click)="deleteFormaContacto(f.id)"><span class="far fa-minus-square"></span> Eliminar</button>
                     <button type="button" (click)="editarFormaContacto(f)"><span class="far fa-edit"></span> Editar</button>
                 </div>
             </ng-template>

@@ -11,12 +11,12 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ConfigBuscadorComponent implements OnInit {
   config: any = {
-    sexo: 2,
-    fumador: 2,
-    bebedor: 2,
-    fiestas: 2,
-    mascotas: 2,
-    hijos: 2
+    sexo: null,
+    fumador: null,
+    bebedor: null,
+    fiestas: null,
+    mascotas: null,
+    hijos: null
   };
 
   noconfig = false;
