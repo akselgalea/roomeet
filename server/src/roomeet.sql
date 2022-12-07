@@ -248,7 +248,7 @@ INSERT INTO `hobbies` (`id`, `hobbie`, `categoria_id`) VALUES
 	(16, 'pintar', 2),
 	(17, 'dibujar', 2),
 	(27, 'artesania', 2),
-	(28, 'lectura', 5);
+	(28, 'lecturas', 5);
 /*!40000 ALTER TABLE `hobbies` ENABLE KEYS */;
 
 -- Volcando estructura para tabla roomeet.hobbies_user

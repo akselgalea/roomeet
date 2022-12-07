@@ -7,11 +7,21 @@
         <div class="user-card" *ngFor="let user of users">
             <div class="uc-username">
                 <p>{{user.username}}</p>
-                <div class="afinidad" title="afinidad">
-                    <p>{{user.afinidad}}</p>
+                <div *ngIf="user.afinidad >= 12; else goodScore" title="afinidad" class="best">
+                    <i class="fas fa-star score-best"></i>
+                    <p class="afinidad score-good">{{user.afinidad}}</p>
                 </div>
+                <ng-template #goodScore>
+                    <div *ngIf="user.afinidad >= 8; else mediumScore" class="afinidad score-good" title="afinidad">{{user.afinidad}}</div>
+                </ng-template>
+                <ng-template #mediumScore>
+                    <div *ngIf="user.afinidad >= 5; else badScore" class="afinidad score-medium" title="afinidad">{{user.afinidad}}</div>
+                </ng-template>
+                <ng-template #badScore>
+                    <div class="afinidad score-low" title="afinidad">{{user.afinidad}}</div>
+                </ng-template>
             </div>
-            <img [src]="api_url + user.foto_perfil || 'assets/images/users/default.jpg'" alt="">
+            <img [src]="api_url + user.foto_perfil || 'assets/images/users/default.jpg'" width="200px" height="200px" alt="">
             <div class="uc-row uc-name">
                 <span class="fas" [ngClass]="{'fa-mars': user.sexo == 'Masculino', 'fa-venus': user.sexo == 'Femenino', 'fa-genderless': user.sexo == 'No Binario'}"></span>
                 <p>{{user.nombre}}</p>

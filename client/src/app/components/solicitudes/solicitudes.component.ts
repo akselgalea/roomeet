@@ -77,6 +77,15 @@ export class SolicitudesComponent implements OnInit {
     })
   }
 
+  async copy(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      this.ns.notification('success', 'Operacion realizada con exito', 'Texto copiado!');
+    } catch (err) {
+      this.ns.notification('error', 'Ha ocurrido un error', '');
+    }
+  }
+
   closeInfo() {
     this.showInfo = false;
   }

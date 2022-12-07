@@ -35,9 +35,11 @@ class UserController {
                     item.afinidad = 0;
                     for (const [key, value] of Object.entries(config)) {
                         if (value == 'Irrelevante')
-                            item.afinidad += 1;
+                            item.afinidad += 0;
                         else if (value == item[key])
                             item.afinidad += 2;
+                        else
+                            item.afinidad -= 2;
                     }
                     const [rows,] = yield database_1.promisePool.query('SELECT hu.id, h.hobbie, ch.categoria FROM hobbies_user hu JOIN hobbies h ON hu.hobbie_id = h.id JOIN categorias_hobbies ch ON ch.id = h.categoria_id WHERE hu.user_id = ? ORDER BY ch.categoria', [item.id]);
                     if (rows.length > 0)
@@ -46,6 +48,7 @@ class UserController {
                                 item.afinidad += 1;
                         });
                 })));
+                users = users.filter((item) => item.afinidad > 0);
                 res.json(users.sort((a, b) => b.afinidad - a.afinidad));
             }), err => {
                 res.status(400).json({ message: err.sqlMessage });

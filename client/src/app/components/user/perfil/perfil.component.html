@@ -19,7 +19,7 @@
         <h2>Hobbies</h2>
         <p *ngIf="user.hobbies && user.hobbies.length == 0">No hay hobbies disponibles.</p>
         <div class="uc-hobbies">
-            <p *ngFor="let hobbie of user.hobbies" [ngClass]="{'bg-grey': hobbie.categoria_id == 1, 'bg-red': hobbie.categoria_id == 2, 'bg-green': hobbie.categoria_id == 3, 'bg-yellow': hobbie.categoria_id == 4}">
+            <p *ngFor="let hobbie of user.hobbies" [ngClass]="{'bg-grey': hobbie.categoria_id == 1, 'bg-red': hobbie.categoria_id == 2, 'bg-green': hobbie.categoria_id == 3, 'bg-yellow': hobbie.categoria_id == 4, 'bg-black': hobbie.categoria_id == 5}">
                 {{hobbie.hobbie}}
             </p>
         </div>

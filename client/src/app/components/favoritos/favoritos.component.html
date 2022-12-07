@@ -4,7 +4,7 @@
     <div *ngFor="let user of users">
         <div class="fl-header">{{user.nombre}}</div>
         <div class="fl-card">
-            <img [src]="api_url + user.foto_perfil || 'assets/images/users/default.jpg'" alt="">
+            <img [src]="api_url + user.foto_perfil || 'assets/images/users/default.jpg'" width="85px" height="85px" alt="">
             <div class="fl-links">
                 <a [routerLink]="['/user', user.username]"><span class="fas fa-user-alt"></span> Ver perfil</a>
                 <ng-container [ngSwitch]="user.solicitud">

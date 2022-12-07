@@ -5,7 +5,7 @@
     <div *ngFor="let soli of solicitudes.solis">
         <div class="fl-header">{{soli.nombre}}</div>
         <div class="fl-card">
-            <img [src]="api_url + soli.foto_perfil" alt="">
+            <img [src]="api_url + soli.foto_perfil" width="85px" height="85px" alt="">
             <div class="fl-links">
                 <a [routerLink]="['/user', soli.username]"><span class="fas fa-user-alt"></span> Ver perfil</a>
                 <ng-container *ngIf="soli.estado == 0;else soliAceptada">
@@ -29,7 +29,7 @@
             <p *ngSwitchCase="2">Rechazada</p>
         </div>
         <div class="fl-card">
-            <img [src]="api_url + soli.foto_perfil" alt="">
+            <img [src]="api_url + soli.foto_perfil" width="85px" height="85px" alt="">
             <div class="fl-links">
                 <a [routerLink]="['/user', soli.username]"><span class="fas fa-user-alt"></span> Ver perfil</a>
                 <ng-container *ngIf="soli.estado == 0;else soliAceptada">
@@ -41,12 +41,16 @@
     </div>
 </div>
 
-<div class="contact-info" *ngIf="showInfo">
+<div class="contact-info shadow" *ngIf="showInfo">
     <span (click)="closeInfo()" class="cerrar fas fa-times"></span>
     <div>
-        <h2 *ngIf="info.length == 0">Este usuario no tiene formas de contactos disponibles</h2>
-        <div class="contact-link" *ngFor="let forma of info">
-            <p>{{forma.forma}}: {{forma.link}}</p>
+        <h2 *ngIf="info.length == 0" class="text-center">Este usuario no tiene formas de contactos disponibles</h2>
+        <div class="contact" *ngFor="let forma of info">
+            <div class="contact-link">
+                <p>{{forma.forma}}:</p>
+                <p>{{forma.link}}</p>
+            </div>
+            <button type="button" title="copiar al portapapeles" (click)="copy(forma.link)"><i class="far fa-clipboard"></i></button>
         </div>
     </div>
 </div>
